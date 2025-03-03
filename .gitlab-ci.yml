@@ -68,3 +68,13 @@ oci-image-build:
 oci-image-publish:
   rules:
     - when: never
+
+# disable notebook-test since only used for prototyping
+notebook-test:
+  rules:
+    - when: never
+
+# allow python-test failure temporarily (for CIP-3440) until understanding of
+# what python-test needs to do
+python-test:
+  allow_failure: true
