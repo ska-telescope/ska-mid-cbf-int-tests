@@ -65,8 +65,8 @@ docs-build:
 docs-build-rtd:
   allow_failure: true
 
-# Disable OCI jobs for pipeline performance, re-enable if int-tests is
-# ever interacted with through OCI
+# Disable OCI jobs for pipeline performance, re-enable if need to import images
+# for data collection or verification
 oci-image-lint:
   rules:
     - when: never

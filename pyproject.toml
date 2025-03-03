@@ -28,6 +28,11 @@ pylint-junit = "^0.3.2"
 pytest-json = "^0.4.0"
 pylance = "^0.5.9"
 
+[tool.poetry.group.docs.dependencies]
+sphinx = "^7.4.7"
+sphinx-rtd-theme = "^3.0.0"
+myst-parser = "^4.0.1"
+
 [build-system]
 requires = ["poetry-core>=1.8.0"]
 build-backend = "poetry.core.masonry.api"
