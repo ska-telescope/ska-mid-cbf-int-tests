@@ -1,0 +1,117 @@
+display: ":0"
+xauthority: "~/.Xauthority"
+
+global:
+  minikube: false
+  operator: true
+  exposeAllDS: true
+  annotations:
+    app.gitlab.com/app: ska-mid-cbf-int-tests
+    app.gitlab.com/env: ska
+  taranta_auth_enabled: false
+  taranta_dashboard_enabled: true
+  sub-system:
+    tango-base:
+      enabled: false
+    ska-tango-base:
+      enabled: false
+    ska-taranta:
+      enabled: false
+  retry:
+    - "--sleep=3"
+    - "--tries=100"
+  tango_host: databaseds-tango-base:10000
+  device_server_port: 45450
+  cluster_domain: cluster.local
+
+ska-tango-base:
+  enabled: true
+  vnc:
+    replicas: 1
+    enabled: true
+  tangorest:
+    enabled: true
+    replicas: 1
+  tangodb:
+    use_pv: true
+
+ska-tango-tangogql:
+  enabled: true
+  ska-tango-base:
+    enabled: false
+
+ska-taranta:
+  legacy_compatibility: true
+  enabled: true
+
+ska-tango-util:
+  enabled: true
+
+#telescope control
+## mid-cbf
+# Using talon demonstrator correlator (TDC) version of MCS and tmleafnode
+# Note: Versions and repository links defined here do not necessarily reflect what will be
+# deployed to the namespace. These values can be overwritten by Makefile processing at runtime
+# based on USE_DEV_BUILD and <repo>_HASH_VERSION variables.
+ska-mid-cbf-tdc-mcs:
+  # To use a version from CAR instead, update the signalVerificationVersion and replace the Gitlab svImageRegistry with the one below it 
+  signalVerificationVersion: 0.2.24-dev.c57cfd28a
+  svImageRegistry: "registry.gitlab.com/ska-telescope/ska-mid-cbf-signal-verification"
+  # svImageRegistry: "artefact.skao.int"
+  hostInfo:
+    environment: "mid-psi"
+    clusterDomain: "cluster.local"
+  enabled: true
+  global:
+    minikube: false
+  midcbf:
+    image:
+      registry: registry.gitlab.com/ska-telescope/ska-mid-cbf-tdc-mcs
+      # To use a tagged version from CAR instead, replace the Gitlab registry above with the one below and update the tag below
+      # registry: artefact.skao.int
+      image: ska-mid-cbf-tdc-mcs
+      tag: 1.1.1
+      pullPolicy: IfNotPresent
+  # MCS timeout values in seconds
+  controllerTimeout: 60
+  fspTimeout: 15
+  vccTimeout: 3
+  lruTimeout: 60
+  slimLinkTimeout: 10
+
+ska-mid-cbf-tdc-tmleafnode:
+  enabled: true
+  midcbf:
+    image:
+      registry: registry.gitlab.com/ska-telescope/ska-mid-cbf-tdc-mcs
+      # To use a tagged version from CAR instead, replace the Gitlab registry above with the one below and update the tag below
+      # registry: artefact.skao.int
+      image: ska-mid-cbf-tdc-mcs
+      tag: 0.15.2-dev.c9f9dcffa
+      pullPolicy: IfNotPresent
+
+ska-mid-cbf-engineering-console:
+  enabled: true
+  engineeringconsole:
+    image:
+      registry: registry.gitlab.com/ska-telescope/ska-mid-cbf-engineering-console
+      # To use a tagged version from CAR instead, replace the Gitlab registry above with the one below and update the tag below
+      # registry: artefact.skao.int
+      image: ska-mid-cbf-engineering-console
+      tag: 0.10.9-dev.c39f00159
+      pullPolicy: IfNotPresent
+
+# EDA
+ska-tango-archiver:
+  legacy_compatibility: true
+  enabled: false
+  telescope: SKA-mid
+  telescope_environment: MID_PSI
+  hostname: timescaledb.ska-eda-mid-db.svc.cluster.local
+  dbname: default_timescaledb
+  dbuser: admin
+  dbpassword: admin
+  port: 5432
+  configuration_manager: mid-eda/cm/01
+  event_subscriber: mid-eda/es/01
+  archwizard_config: MyHDB=tango://databaseds-tango-base.{{.Release.Name}}.svc.cluster.local:10000/mid-eda/cm/01
