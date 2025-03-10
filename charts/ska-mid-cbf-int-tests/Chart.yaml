@@ -19,19 +19,19 @@ dependencies:
   # deployed to the namespace. These values can be overwritten by Makefile processing at runtime
   # based on USE_DEV_BUILD and <repo>_HASH_VERSION variables.
   - name: ska-mid-cbf-tdc-mcs
-    version: 1.1.1
+    #version: 1.1.1
     repository: https://gitlab.com/api/v4/projects/65335629/packages/helm/dev
     # To use a tagged version, update the version above and use the CAR repository below instead
     # repository: https://artefact.skao.int/repository/helm-internal
     condition: ska-mid-cbf-tdc-mcs.enabled
   - name: ska-mid-cbf-tdc-tmleafnode
-    version: 1.1.1
+    #version: 1.1.1
     repository: https://gitlab.com/api/v4/projects/65335629/packages/helm/dev
     # To use a tagged version, update the version above and use the CAR repository below instead
     # repository: https://artefact.skao.int/repository/helm-internal
     condition: ska-mid-cbf-tdc-tmleafnode.enabled
   - name: ska-mid-cbf-engineering-console
-    version: 1.0.1
+    #version: 1.0.1
     repository: https://gitlab.com/api/v4/projects/29657133/packages/helm/dev
     # To use a tagged version, update the version above and use the CAR repository below instead
     # repository: https://artefact.skao.int/repository/helm-internal
