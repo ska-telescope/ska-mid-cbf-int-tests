@@ -1,44 +1,26 @@
-"""s"""
+"""TODO"""
 from __future__ import annotations
 
-from typing import Any, List
+from typing import List
 
-from assertive_logging_observer import AssertiveLoggingObserver
 from ska_control_model import ObsState
-from tango import DeviceProxy
 
 from constants.timeout_constants import TIMEOUT_LONG, TIMEOUT_SHORT
+
+from .device_client import DeviceClient
 
 OBS_STATE_ATTR_NAME = "obsState"
 
 
-class SubarrayClient:
-    """s"""
-
-    def __init__(
-        self: SubarrayClient,
-        subarray_fqdn: str,
-        alobserver: AssertiveLoggingObserver,
-    ):
-        self.fqdn = subarray_fqdn
-        self.proxy = DeviceProxy(self.fqdn)
-        self.alobserver = alobserver
-
-    def _subarray_log_msg(
-        self: SubarrayClient, subarray_cmd_name: str, input_str: Any = None
-    ) -> str:
-        """s"""
-        log_str = f"{self.fqdn} {subarray_cmd_name}"
-        if input_str is not None:
-            log_str += f" (cmd_param: {input_str})"
-        return log_str
+class SubarrayClient(DeviceClient):
+    """TODO"""
 
     def add_receptors(self: SubarrayClient, receptors: List[str]):
-        """s"""
+        """TODO"""
         add_receptors_cmd_name = "AddReceptors"
 
         self.alobserver.logger.info(
-            self._subarray_log_msg(add_receptors_cmd_name, receptors)
+            self._log_msg(add_receptors_cmd_name, receptors)
         )
 
         lrc_result = self.proxy.command_inout(
@@ -46,10 +28,7 @@ class SubarrayClient:
         )
 
         self.alobserver.observe_device_state_change(
-            self.fqdn,
-            OBS_STATE_ATTR_NAME,
-            ObsState.IDLE,
-            TIMEOUT_SHORT,
+            self.fqdn, OBS_STATE_ATTR_NAME, ObsState.IDLE, TIMEOUT_SHORT
         )
 
         self.alobserver.observe_lrc_result(
@@ -57,11 +36,11 @@ class SubarrayClient:
         )
 
     def remove_receptors(self: SubarrayClient, receptors: List[str]):
-        """s"""
+        """TODO"""
         remove_receptors_cmd_name = "RemoveReceptors"
 
         self.alobserver.logger.info(
-            self._subarray_log_msg(remove_receptors_cmd_name, receptors)
+            self._log_msg(remove_receptors_cmd_name, receptors)
         )
 
         going_to_empty = set(receptors) == set(
@@ -84,20 +63,17 @@ class SubarrayClient:
         )
 
     def remove_all_receptors(self: SubarrayClient):
-        """s"""
+        """TODO"""
         remove_all_receptors_cmd_name = "RemoveAllReceptors"
 
         self.alobserver.logger.info(
-            self._subarray_log_msg(remove_all_receptors_cmd_name)
+            self._log_msg(remove_all_receptors_cmd_name)
         )
 
         lrc_result = self.proxy.command_inout(remove_all_receptors_cmd_name)
 
         self.alobserver.observe_device_state_change(
-            self.fqdn,
-            OBS_STATE_ATTR_NAME,
-            ObsState.EMPTY,
-            TIMEOUT_SHORT,
+            self.fqdn, OBS_STATE_ATTR_NAME, ObsState.EMPTY, TIMEOUT_SHORT
         )
 
         self.alobserver.observe_lrc_result(
@@ -105,11 +81,11 @@ class SubarrayClient:
         )
 
     def configure_scan(self: SubarrayClient, configure_str: str):
-        """s"""
+        """TODO"""
         configure_scan_cmd_names = "ConfigureScan"
 
         self.alobserver.logger.info(
-            self._subarray_log_msg(configure_scan_cmd_names, configure_str)
+            self._log_msg(configure_scan_cmd_names, configure_str)
         )
 
         lrc_result = self.proxy.command_inout(
@@ -117,10 +93,7 @@ class SubarrayClient:
         )
 
         self.alobserver.observe_device_state_change(
-            self.fqdn,
-            OBS_STATE_ATTR_NAME,
-            ObsState.READY,
-            TIMEOUT_SHORT,
+            self.fqdn, OBS_STATE_ATTR_NAME, ObsState.READY, TIMEOUT_SHORT
         )
 
         self.alobserver.observe_lrc_result(
@@ -128,12 +101,10 @@ class SubarrayClient:
         )
 
     def scan(self: SubarrayClient, scan_str: str):
-        """s"""
+        """TODO"""
         scan_cmd_name = "Scan"
 
-        self.alobserver.logger.info(
-            self._subarray_log_msg(scan_cmd_name, scan_str)
-        )
+        self.alobserver.logger.info(self._log_msg(scan_cmd_name, scan_str))
 
         lrc_result = self.proxy.command_inout(scan_cmd_name, scan_str)
 
@@ -149,10 +120,10 @@ class SubarrayClient:
         )
 
     def end_scan(self: SubarrayClient):
-        """s"""
+        """TODO"""
         end_scan_cmd_name = "EndScan"
 
-        self.alobserver.logger.info(self._subarray_log_msg(end_scan_cmd_name))
+        self.alobserver.logger.info(self._log_msg(end_scan_cmd_name))
 
         lrc_result = self.proxy.command_inout(end_scan_cmd_name)
 
@@ -168,10 +139,10 @@ class SubarrayClient:
         )
 
     def go_to_idle(self: SubarrayClient):
-        """s"""
+        """TODO"""
         go_to_idle_name = "GoToIdle"
 
-        self.alobserver.logger.info(self._subarray_log_msg(go_to_idle_name))
+        self.alobserver.logger.info(self._log_msg(go_to_idle_name))
 
         lrc_result = self.proxy.command_inout(go_to_idle_name)
 
