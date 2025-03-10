@@ -65,9 +65,6 @@ include .make/xray.mk
 # include your own private variables for custom deployment configuration
 -include PrivateRules.mak
 
-# ska-tango-archiver params for EDA deployment
-include archiver/archiver.mk 
-
 TARANTA_PARAMS = --set ska-taranta.enabled=$(TARANTA) \
 				 --set global.taranta_auth_enabled=$(TARANTA_AUTH) \
 				 --set global.taranta_dashboard_enabled=$(TARANTA)
