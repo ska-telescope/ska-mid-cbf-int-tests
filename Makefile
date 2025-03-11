@@ -93,7 +93,7 @@ CHART_FILE=charts/ska-mid-cbf-int-tests/Chart.yaml
 VALUES_FILE=charts/ska-mid-cbf-int-tests/values.yaml
 CAR_REGISTRY=artefact.skao.int
 HELM_INTERNAL_REPO=https://${CAR_REGISTRY}/repository/helm-internal
-MCS_HELM_REPO=https://gitlab.com/api/v4/projects/65335629/packages/helm/dev
+MCS_HELM_REPO=https://gitlab.com/api/v4/projects/12488466/packages/helm/dev
 SV_REGISTRY_REPO=registry.gitlab.com/ska-telescope/ska-mid-cbf-signal-verification
 SV_CAR_REGISTRY=${CAR_REGISTRY}/ska-mid-cbf-signal-verification-visibility-capture
 EC_HELM_REPO=https://gitlab.com/api/v4/projects/29657133/packages/helm/dev
@@ -103,8 +103,8 @@ EC_CAR_REGISTRY=${CAR_REGISTRY}/ska-mid-cbf-engineering-console
 FIND_MAIN_TAG_SCRIPT := $(abspath $(dir $(firstword $(MAKEFILE_LIST))))/scripts/find_latest_main_tag.sh
 
 # Use Gitlab API to extract latest tags and builds from the main branch for MCS, to extract the hash versions
-MCS_LATEST_COMMIT:=$(shell curl -s https://gitlab.com/api/v4/projects/65335629/repository/branches/main | jq -r '.commit.short_id')
-MCS_LATEST_TAG:=$(shell $(FIND_MAIN_TAG_SCRIPT) 65335629)
+MCS_LATEST_COMMIT:=$(shell curl -s https://gitlab.com/api/v4/projects/12488466/repository/branches/main | jq -r '.commit.short_id')
+MCS_LATEST_TAG:=$(shell $(FIND_MAIN_TAG_SCRIPT) 12488466)
 MCS_HASH_VERSION?=$(MCS_LATEST_TAG)-dev.c$(MCS_LATEST_COMMIT)
 # Use Gitlab API to extract latest tags and builds from the main branch for SV, to extract the hash versions
 SV_LATEST_COMMIT:=$(shell curl -s https://gitlab.com/api/v4/projects/39434878/repository/branches/main | jq -r '.commit.short_id')
