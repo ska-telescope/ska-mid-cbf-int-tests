@@ -49,7 +49,7 @@ ska-tango-util:
 
 #telescope control
 ## mid-cbf
-# Using talon demonstrator correlator (TDC) version of MCS and tmleafnode
+# Using talon demonstrator correlator version of MCS and tmleafnode
 # Note: Versions and repository links defined here do not necessarily reflect what will be
 # deployed to the namespace. These values can be overwritten by Makefile processing at runtime
 # based on USE_DEV_BUILD and <repo>_HASH_VERSION variables.
@@ -79,7 +79,7 @@ ska-mid-cbf-mcs:
   lruTimeout: 60
   slimLinkTimeout: 10
 
-ska-mid-cbf-tdc-tmleafnode:
+ska-mid-cbf-tmleafnode:
   enabled: true
   midcbf:
     image:

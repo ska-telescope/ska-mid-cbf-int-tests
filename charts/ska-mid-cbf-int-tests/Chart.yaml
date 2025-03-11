@@ -24,12 +24,12 @@ dependencies:
     # To use a tagged version, update the version above and use the CAR repository below instead
     # repository: https://artefact.skao.int/repository/helm-internal
     condition: ska-mid-cbf-mcs.enabled
-  - name: ska-mid-cbf-tdc-tmleafnode
+  - name: ska-mid-cbf-tmleafnode
     version: 1.1.1
     repository: https://gitlab.com/api/v4/projects/65335629/packages/helm/dev
     # To use a tagged version, update the version above and use the CAR repository below instead
     # repository: https://artefact.skao.int/repository/helm-internal
-    condition: ska-mid-cbf-tdc-tmleafnode.enabled
+    condition: ska-mid-cbf-tmleafnode.enabled
   - name: ska-mid-cbf-engineering-console
     version: 1.0.1
     repository: https://gitlab.com/api/v4/projects/29657133/packages/helm/dev
