@@ -18,8 +18,12 @@ include .make/python.mk
 PYTEST_MARKER ?=
 ALO_ASSERTING ?= 1
 
+KUBE_NAMESPACE ?=
+TANGO_HOST ?=
+CLUSTER_DOMAIN = cluster.local
+
 # Add verbosity and INFO logging to python-test
-PYTHON_VARS_AFTER_PYTEST = -v --log-cli-level=INFO --alo-asserting $(ALO_ASSERTING)
+PYTHON_VARS_AFTER_PYTEST = -v --log-cli-level=INFO --alo-asserting $(ALO_ASSERTING) --namespace $(KUBE_NAMESPACE) --cluster-domain $(CLUSTER_DOMAIN) --tango-host $(TANGO_HOST)
 PYTHON_SWITCHES_FOR_PYLINT = --disable=redefined-outer-name,unused-argument
 
 # Quickly fix isort lint issues
