@@ -1,13 +1,15 @@
 """TODO"""
 from __future__ import annotations
 
+import abc
 from typing import Any
 
 from assertive_logging_observer import AssertiveLoggingObserver
+from ska_tango_testing.integration import TangoEventTracer
 from tango import DeviceProxy
 
 
-class DeviceClient:
+class DeviceClient(abc.ABC):
     """TODO"""
 
     # pylint: disable=too-few-public-methods
@@ -28,3 +30,7 @@ class DeviceClient:
         if input is not None:
             log_str += f" (cmd_param: {cmd_param})"
         return log_str
+
+    @abc.abstractmethod
+    def prep_event_tracer(self: DeviceClient, event_tracer: TangoEventTracer):
+        """TODO"""

@@ -19,4 +19,12 @@ def test_scan():
     alobserver = AssertiveLoggingObserver(
         AssertiveLoggingObserverMode.ASSERTING, test_logger
     )
-    alobserver.observe_true(False)
+    alobserver.observe_true(True)
+
+
+def test_scan_2():
+    """Test nominal scan sequence."""
+    alobserver = AssertiveLoggingObserver(
+        AssertiveLoggingObserverMode.ASSERTING, test_logger
+    )
+    alobserver.observe_true(True)

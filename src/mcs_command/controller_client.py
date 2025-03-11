@@ -1,17 +1,29 @@
 """TODO"""
 from __future__ import annotations
 
+from ska_tango_testing.integration import TangoEventTracer
 from tango import DevState
 
+from constants.tango_constants import (
+    ADMINMODE_ATTR_NAME,
+    LRC_ATTR_NAME,
+    STATE_ATTR_NAME,
+)
 from constants.timeout_constants import TIMEOUT_MEDIUM, TIMEOUT_SHORT
 
 from .device_client import DeviceClient
 
-STATE_ATTR_NAME = "state"
-
 
 class ControllerClient(DeviceClient):
     """TODO"""
+
+    def prep_event_tracer(
+        self: ControllerClient, event_tracer: TangoEventTracer
+    ):
+        """TODO"""
+        event_tracer.subscribe_event(self.fqdn, ADMINMODE_ATTR_NAME)
+        event_tracer.subscribe_event(self.fqdn, STATE_ATTR_NAME)
+        event_tracer.subscribe_event(self.fqdn, LRC_ATTR_NAME)
 
     def init_sys_param(self: ControllerClient, init_sys_param_str: str):
         """TODO"""

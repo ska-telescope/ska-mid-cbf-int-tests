@@ -15,8 +15,12 @@ include .make/k8s.mk
 # Include Python support
 include .make/python.mk
 
+PYTEST_MARKER ?=
+ALO_ASSERTING ?= 1 
+
 # Add verbosity and INFO logging to python-test
-PYTHON_VARS_AFTER_PYTEST = -v --log-cli-level=INFO
+PYTHON_VARS_AFTER_PYTEST = -v --log-cli-level=INFO --asserting $(ALO_ASSERTING)
+PYTHON_SWITCHES_FOR_PYLINT = --disable=redefined-outer-name,unused-argument
 
 # Quickly fix isort lint issues
 python-fix-isort:

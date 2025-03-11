@@ -4,16 +4,23 @@ from __future__ import annotations
 from typing import List
 
 from ska_control_model import ObsState
+from ska_tango_testing.integration import TangoEventTracer
 
+from constants.tango_constants import LRC_ATTR_NAME, OBSSTATE_ATTR_NAME
 from constants.timeout_constants import TIMEOUT_LONG, TIMEOUT_SHORT
 
 from .device_client import DeviceClient
 
-OBS_STATE_ATTR_NAME = "obsState"
-
 
 class SubarrayClient(DeviceClient):
     """TODO"""
+
+    def prep_event_tracer(
+        self: SubarrayClient, event_tracer: TangoEventTracer
+    ):
+        """TODO"""
+        event_tracer.subscribe_event(self.fqdn, OBSSTATE_ATTR_NAME)
+        event_tracer.subscribe_event(self.fqdn, LRC_ATTR_NAME)
 
     def add_receptors(self: SubarrayClient, receptors: List[str]):
         """TODO"""
@@ -28,7 +35,7 @@ class SubarrayClient(DeviceClient):
         )
 
         self.alobserver.observe_device_state_change(
-            self.fqdn, OBS_STATE_ATTR_NAME, ObsState.IDLE, TIMEOUT_SHORT
+            self.fqdn, OBSSTATE_ATTR_NAME, ObsState.IDLE, TIMEOUT_SHORT
         )
 
         self.alobserver.observe_lrc_result(
@@ -53,7 +60,7 @@ class SubarrayClient(DeviceClient):
 
         self.alobserver.observe_device_state_change(
             self.fqdn,
-            OBS_STATE_ATTR_NAME,
+            OBSSTATE_ATTR_NAME,
             ObsState.EMPTY if going_to_empty else ObsState.IDLE,
             TIMEOUT_SHORT,
         )
@@ -73,7 +80,7 @@ class SubarrayClient(DeviceClient):
         lrc_result = self.proxy.command_inout(remove_all_receptors_cmd_name)
 
         self.alobserver.observe_device_state_change(
-            self.fqdn, OBS_STATE_ATTR_NAME, ObsState.EMPTY, TIMEOUT_SHORT
+            self.fqdn, OBSSTATE_ATTR_NAME, ObsState.EMPTY, TIMEOUT_SHORT
         )
 
         self.alobserver.observe_lrc_result(
@@ -93,7 +100,7 @@ class SubarrayClient(DeviceClient):
         )
 
         self.alobserver.observe_device_state_change(
-            self.fqdn, OBS_STATE_ATTR_NAME, ObsState.READY, TIMEOUT_SHORT
+            self.fqdn, OBSSTATE_ATTR_NAME, ObsState.READY, TIMEOUT_SHORT
         )
 
         self.alobserver.observe_lrc_result(
@@ -110,7 +117,7 @@ class SubarrayClient(DeviceClient):
 
         self.alobserver.observe_device_state_change(
             self.fqdn,
-            OBS_STATE_ATTR_NAME,
+            OBSSTATE_ATTR_NAME,
             ObsState.SCANNING,
             TIMEOUT_SHORT,
         )
@@ -129,7 +136,7 @@ class SubarrayClient(DeviceClient):
 
         self.alobserver.observe_device_state_change(
             self.fqdn,
-            OBS_STATE_ATTR_NAME,
+            OBSSTATE_ATTR_NAME,
             ObsState.READY,
             TIMEOUT_SHORT,
         )
@@ -148,7 +155,7 @@ class SubarrayClient(DeviceClient):
 
         self.alobserver.observe_device_state_change(
             self.fqdn,
-            OBS_STATE_ATTR_NAME,
+            OBSSTATE_ATTR_NAME,
             ObsState.IDLE,
             TIMEOUT_SHORT,
         )
@@ -156,3 +163,11 @@ class SubarrayClient(DeviceClient):
         self.alobserver.observe_lrc_result(
             self.fqdn, lrc_result, go_to_idle_name, TIMEOUT_SHORT
         )
+
+    def send_to_empty(self: SubarrayClient):
+        """TODO"""
+        if self.proxy.read_attribute("ObsState") == ObsState.READY:
+            self.go_to_idle()
+
+        if self.proxy.read_attribute("ObsState") == ObsState.IDLE:
+            self.remove_all_receptors()
