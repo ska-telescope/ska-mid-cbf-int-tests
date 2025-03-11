@@ -29,22 +29,38 @@ class ControllerClient(DeviceClient):
 
     def simulation_mode_on(self: ControllerClient):
         """TODO"""
+        self.alobserver.logger.info(
+            self._log_wr_attr_msg(
+                SIMULATIONMODE_ATTR_NAME, SimulationMode.TRUE
+            )
+        )
         self.proxy.write_attribute(
             SIMULATIONMODE_ATTR_NAME, SimulationMode.TRUE
         )
 
     def simulation_mode_off(self: ControllerClient):
         """TODO"""
+        self.alobserver.logger.info(
+            self._log_wr_attr_msg(
+                SIMULATIONMODE_ATTR_NAME, SimulationMode.FALSE
+            )
+        )
         self.proxy.write_attribute(
             SIMULATIONMODE_ATTR_NAME, SimulationMode.FALSE
         )
 
     def admin_mode_online(self: ControllerClient):
         """TODO"""
+        self.alobserver.logger.info(
+            self._log_wr_attr_msg(ADMINMODE_ATTR_NAME, AdminMode.ONLINE)
+        )
         self.proxy.write_attribute(ADMINMODE_ATTR_NAME, AdminMode.ONLINE)
 
     def admin_mode_offline(self: ControllerClient):
         """TODO"""
+        self.alobserver.logger.info(
+            self._log_wr_attr_msg(ADMINMODE_ATTR_NAME, AdminMode.OFFLINE)
+        )
         self.proxy.write_attribute(ADMINMODE_ATTR_NAME, AdminMode.OFFLINE)
 
     def init_sys_param(self: ControllerClient, init_sys_param_str: str):

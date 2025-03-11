@@ -1,7 +1,6 @@
 """TODO"""
 LRC_ATTR_NAME = "longRunningCommandResult"
 
-
 CONTROLLER_FQDN = "mid_csp_cbf/sub_elt/controller"
 
 
