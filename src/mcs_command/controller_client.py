@@ -1,6 +1,7 @@
 """TODO"""
 from __future__ import annotations
 
+from ska_control_model import AdminMode, SimulationMode
 from ska_tango_testing.integration import TangoEventTracer
 from tango import DevState
 
@@ -26,8 +27,25 @@ class ControllerClient(DeviceClient):
         event_tracer.subscribe_event(self.fqdn, STATE_ATTR_NAME)
         event_tracer.subscribe_event(self.fqdn, LRC_ATTR_NAME)
 
-    def start_simulation_mode():
-        pass
+    def simulation_mode_on(self: ControllerClient):
+        """TODO"""
+        self.proxy.write_attribute(
+            SIMULATIONMODE_ATTR_NAME, SimulationMode.TRUE
+        )
+
+    def simulation_mode_off(self: ControllerClient):
+        """TODO"""
+        self.proxy.write_attribute(
+            SIMULATIONMODE_ATTR_NAME, SimulationMode.FALSE
+        )
+
+    def admin_mode_online(self: ControllerClient):
+        """TODO"""
+        self.proxy.write_attribute(ADMINMODE_ATTR_NAME, AdminMode.ONLINE)
+
+    def admin_mode_offline(self: ControllerClient):
+        """TODO"""
+        self.proxy.write_attribute(ADMINMODE_ATTR_NAME, AdminMode.OFFLINE)
 
     def init_sys_param(self: ControllerClient, init_sys_param_str: str):
         """TODO"""

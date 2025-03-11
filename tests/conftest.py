@@ -75,12 +75,24 @@ class DeviceClientPkg:
 
 
 @pytest.fixture(scope="session")
-def device_clients_pkg_sesh_setup(recording_pkg_sesh_setup) -> DeviceClientPkg:
+def device_clients_pkg_sesh_setup(
+    recording_pkg_sesh_setup,
+) -> Generator[DeviceClientPkg, None, None]:
     """TODO"""
-    return DeviceClientPkg(
+    # Setup
+
+    device_clients_pkg_obj = DeviceClientPkg(
         ControllerClient(CONTROLLER_FQDN, recording_pkg_sesh_setup.alobserver),
         set(),
     )
+    device_clients_pkg_obj.controller.admin_mode_online()
+    device_clients_pkg_obj.controller.simulation_mode_on()
+
+    yield device_clients_pkg_obj
+
+    # Teardown
+
+    device_clients_pkg_obj.controller.admin_mode_offline()
 
 
 @pytest.fixture()
