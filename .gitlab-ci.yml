@@ -48,7 +48,7 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/release.gitlab-ci.yml'
 
-# disable dev build job
+# disable dev hash build
 python-build-for-development:
   rules:
     - when: never
@@ -84,7 +84,7 @@ notebook-test:
   rules:
     - when: never
 
-# allow python-test failure temporarily (for CIP-3440) until understanding of
-# what python-test needs to do
 python-test:
   allow_failure: true
+  rules:
+    - when: manual
