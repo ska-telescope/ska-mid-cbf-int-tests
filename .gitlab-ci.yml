@@ -219,7 +219,7 @@ xray-publish:
   tags:
     - $RUNNER_TAG
   before_script:
-    - export MCS_IMAGE_VER=$(kubectl describe pod/ds-cbfcontroller-controller-0 -n $KUBE_NAMESPACE | grep ska-mid-cbf-tdc-mcs | grep 'Image:' | sed 's/.*\://')
+    - export MCS_IMAGE_VER=$(kubectl describe pod/ds-cbfcontroller-controller-0 -n $KUBE_NAMESPACE | grep ska-mid-cbf-mcs | grep 'Image:' | sed 's/.*\://')
     - export EC_IMAGE_VER=$(kubectl describe pod/ds-deployer-deployer-0 -n $KUBE_NAMESPACE | grep 'Image:' | sed 's/.*\://')
     - export SV_IMAGE_VER=$(kubectl describe pod/sv -n $KUBE_NAMESPACE | grep signal-verification | grep 'Image:' | sed 's/.*\://')
     - export CI_PYTHON_TEST_ID=$(cat "build/reports/python_test_id.txt")

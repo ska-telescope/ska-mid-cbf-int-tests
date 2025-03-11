@@ -53,7 +53,7 @@ ska-tango-util:
 # Note: Versions and repository links defined here do not necessarily reflect what will be
 # deployed to the namespace. These values can be overwritten by Makefile processing at runtime
 # based on USE_DEV_BUILD and <repo>_HASH_VERSION variables.
-ska-mid-cbf-tdc-mcs:
+ska-mid-cbf-mcs:
   # To use a version from CAR instead, update the signalVerificationVersion and replace the Gitlab svImageRegistry with the one below it 
   signalVerificationVersion: 0.2.24-dev.c57cfd28a
   svImageRegistry: "registry.gitlab.com/ska-telescope/ska-mid-cbf-signal-verification"
@@ -66,10 +66,10 @@ ska-mid-cbf-tdc-mcs:
     minikube: false
   midcbf:
     image:
-      registry: registry.gitlab.com/ska-telescope/ska-mid-cbf-tdc-mcs
+      registry: registry.gitlab.com/ska-telescope/ska-mid-cbf-mcs
       # To use a tagged version from CAR instead, replace the Gitlab registry above with the one below and update the tag below
       # registry: artefact.skao.int
-      image: ska-mid-cbf-tdc-mcs
+      image: ska-mid-cbf-mcs
       tag: 1.1.1
       pullPolicy: IfNotPresent
   # MCS timeout values in seconds
@@ -83,10 +83,10 @@ ska-mid-cbf-tdc-tmleafnode:
   enabled: true
   midcbf:
     image:
-      registry: registry.gitlab.com/ska-telescope/ska-mid-cbf-tdc-mcs
+      registry: registry.gitlab.com/ska-telescope/ska-mid-cbf-mcs
       # To use a tagged version from CAR instead, replace the Gitlab registry above with the one below and update the tag below
       # registry: artefact.skao.int
-      image: ska-mid-cbf-tdc-mcs
+      image: ska-mid-cbf-mcs
       tag: 0.15.2-dev.c9f9dcffa
       pullPolicy: IfNotPresent
 
