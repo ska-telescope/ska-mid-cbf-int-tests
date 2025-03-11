@@ -11,6 +11,7 @@ from assertive_logging_observer import (
 from ska_tango_testing.integration import TangoEventTracer
 from test_logging.format import LOG_FORMAT
 
+from constants.tango_constants import CONTROLLER_FQDN
 from mcs_command import ControllerClient, SubarrayClient
 
 
@@ -26,18 +27,20 @@ class RecordingPkg:
 @pytest.fixture(scope="session")
 def recording_pkg_sesh_setup(request) -> RecordingPkg:
     """TODO"""
-    asserting = bool(request.config.getoption("--asserting"))
-    if asserting:
-        assertion_mode = AssertiveLoggingObserverMode.ASSERTING
-    else:
-        assertion_mode = AssertiveLoggingObserverMode.REPORTING
+    asserting = bool(int(request.config.getoption("--alo-asserting")))
 
     logging.basicConfig(format=LOG_FORMAT, level=logging.INFO)
 
-    recording_pkg_obj = RecordingPkg()
+    recording_pkg_obj = RecordingPkg(
+        logging.getLogger(__name__), TangoEventTracer(), None
+    )
 
-    recording_pkg_obj.logger = logging.getLogger(__name__)
-    recording_pkg_obj.event_tracer = TangoEventTracer()
+    if asserting:
+        recording_pkg_obj.logger.info("ALO Mode: ASSERTING")
+        assertion_mode = AssertiveLoggingObserverMode.ASSERTING
+    else:
+        recording_pkg_obj.logger.info("ALO Mode: REPORTING")
+        assertion_mode = AssertiveLoggingObserverMode.REPORTING
 
     recording_pkg_obj.alobserver = AssertiveLoggingObserver(
         assertion_mode, recording_pkg_obj.logger
@@ -71,37 +74,33 @@ class DeviceClientPkg:
     subarray_set: Set[SubarrayClient] = dataclasses.field(default_factory=set)
 
 
-# @pytest.fixture(scope="session")
-# def device_clients_pkg_sesh_setup(alobserver) -> DeviceClientPkg:
-
-#     CONTROLLER_FQDN = "mid_csp_cbf/sub_elt/controller"
-
-#     return DeviceClientTuple(
-#         ControllerClient(CONTROLLER_FQDN, alobserver),
-#         set()
-#     )
-
-
-# @pytest.fixture()
-# def device_clients_pkg(
-#     device_clients_pkg_sesh_setup
-# ) -> Generator[DeviceClientPkg, None, None]:
-
-#     # Setup return device_clients_pkg_obj
-#     device_clients_pkg_obj = device_clients_pkg_sesh_setup
-
-#     yield device_clients_pkg_obj
-
-#     # Teardown clear subarray_set and return all to empty
-#     while len(device_clients_pkg_obj.subarray_set) != 0:
-#         subarray_client = device_clients_pkg_obj.subarray_set.pop()
-#         subarray_client.send_to_empty()
-
-
 @pytest.fixture(scope="session")
-def device_clients_pkg_sesh_setup(recording_pkg_sesh_setup):
+def device_clients_pkg_sesh_setup(recording_pkg_sesh_setup) -> DeviceClientPkg:
     """TODO"""
-    recording_pkg_sesh_setup.logger.info("Do Nothing")
+    return DeviceClientPkg(
+        ControllerClient(CONTROLLER_FQDN, recording_pkg_sesh_setup.alobserver),
+        set(),
+    )
+
+
+@pytest.fixture()
+def device_clients_pkg(
+    device_clients_pkg_sesh_setup,
+) -> Generator[DeviceClientPkg, None, None]:
+    """TODO"""
+    # Setup
+
+    # Return device_clients_pkg_obj
+    device_clients_pkg_obj = device_clients_pkg_sesh_setup
+
+    yield device_clients_pkg_obj
+
+    # Teardown
+
+    # Clear subarray_set and return all to empty
+    while len(device_clients_pkg_obj.subarray_set) != 0:
+        subarray_client = device_clients_pkg_obj.subarray_set.pop()
+        subarray_client.send_to_empty()
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -113,11 +112,15 @@ def session_setup_teardown(
 
 
 def pytest_addoption(parser):  # pylint: disable=C0116
+
+    # Determine ALO asserting
     parser.addoption(
-        "--asserting",
+        "--alo-asserting",
         action="store",
         help=(
             "Whether to use AssertiveLoggingObserver in ASSERTING (1) or "
             "REPORTING (0)"
         ),
+        choices=(0, 1),
+        type=int,
     )

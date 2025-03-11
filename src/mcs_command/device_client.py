@@ -22,7 +22,7 @@ class DeviceClient(abc.ABC):
         self.proxy = DeviceProxy(self.fqdn)
         self.alobserver = alobserver
 
-    def _log_msg(
+    def _log_cmd_msg(
         self: DeviceClient, subarray_cmd_name: str, cmd_param: Any = None
     ) -> str:
         """TODO"""

@@ -4,14 +4,14 @@ from __future__ import annotations
 from ska_tango_testing.integration import TangoEventTracer
 from tango import DevState
 
-from constants.tango_constants import (
-    ADMINMODE_ATTR_NAME,
-    LRC_ATTR_NAME,
-    STATE_ATTR_NAME,
-)
+from constants.tango_constants import LRC_ATTR_NAME
 from constants.timeout_constants import TIMEOUT_MEDIUM, TIMEOUT_SHORT
 
 from .device_client import DeviceClient
+
+ADMINMODE_ATTR_NAME = "adminMode"
+SIMULATIONMODE_ATTR_NAME = "simulationMode"
+STATE_ATTR_NAME = "state"
 
 
 class ControllerClient(DeviceClient):
@@ -22,15 +22,19 @@ class ControllerClient(DeviceClient):
     ):
         """TODO"""
         event_tracer.subscribe_event(self.fqdn, ADMINMODE_ATTR_NAME)
+        event_tracer.subscribe_event(self.fqdn, SIMULATIONMODE_ATTR_NAME)
         event_tracer.subscribe_event(self.fqdn, STATE_ATTR_NAME)
         event_tracer.subscribe_event(self.fqdn, LRC_ATTR_NAME)
+
+    def start_simulation_mode():
+        pass
 
     def init_sys_param(self: ControllerClient, init_sys_param_str: str):
         """TODO"""
         init_sys_param_cmd_name = "InitSysParam"
 
         self.alobserver.logger.info(
-            self._log_msg(init_sys_param_cmd_name, init_sys_param_str)
+            self._log_cmd_msg(init_sys_param_cmd_name, init_sys_param_str)
         )
 
         lrc_result = self.proxy.command_inout(
@@ -46,7 +50,7 @@ class ControllerClient(DeviceClient):
         # pylint: disable=invalid-name
         on_cmd_name = "On"
 
-        self.alobserver.logger.info(self._log_msg(on_cmd_name))
+        self.alobserver.logger.info(self._log_cmd_msg(on_cmd_name))
 
         lrc_result = self.proxy.command_inout(on_cmd_name)
 

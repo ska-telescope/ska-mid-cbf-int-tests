@@ -1,4 +1,4 @@
-"""LRC command timeouts."""
+"""TODO"""
 
 TIMEOUT_INSTANT = 1
 TIMEOUT_SHORT = 60

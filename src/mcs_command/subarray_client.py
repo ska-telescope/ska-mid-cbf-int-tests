@@ -6,10 +6,12 @@ from typing import List
 from ska_control_model import ObsState
 from ska_tango_testing.integration import TangoEventTracer
 
-from constants.tango_constants import LRC_ATTR_NAME, OBSSTATE_ATTR_NAME
+from constants.tango_constants import LRC_ATTR_NAME
 from constants.timeout_constants import TIMEOUT_LONG, TIMEOUT_SHORT
 
 from .device_client import DeviceClient
+
+OBSSTATE_ATTR_NAME = "obsstate"
 
 
 class SubarrayClient(DeviceClient):
@@ -27,7 +29,7 @@ class SubarrayClient(DeviceClient):
         add_receptors_cmd_name = "AddReceptors"
 
         self.alobserver.logger.info(
-            self._log_msg(add_receptors_cmd_name, receptors)
+            self._log_cmd_msg(add_receptors_cmd_name, receptors)
         )
 
         lrc_result = self.proxy.command_inout(
@@ -47,7 +49,7 @@ class SubarrayClient(DeviceClient):
         remove_receptors_cmd_name = "RemoveReceptors"
 
         self.alobserver.logger.info(
-            self._log_msg(remove_receptors_cmd_name, receptors)
+            self._log_cmd_msg(remove_receptors_cmd_name, receptors)
         )
 
         going_to_empty = set(receptors) == set(
@@ -74,7 +76,7 @@ class SubarrayClient(DeviceClient):
         remove_all_receptors_cmd_name = "RemoveAllReceptors"
 
         self.alobserver.logger.info(
-            self._log_msg(remove_all_receptors_cmd_name)
+            self._log_cmd_msg(remove_all_receptors_cmd_name)
         )
 
         lrc_result = self.proxy.command_inout(remove_all_receptors_cmd_name)
@@ -92,7 +94,7 @@ class SubarrayClient(DeviceClient):
         configure_scan_cmd_names = "ConfigureScan"
 
         self.alobserver.logger.info(
-            self._log_msg(configure_scan_cmd_names, configure_str)
+            self._log_cmd_msg(configure_scan_cmd_names, configure_str)
         )
 
         lrc_result = self.proxy.command_inout(
@@ -111,7 +113,7 @@ class SubarrayClient(DeviceClient):
         """TODO"""
         scan_cmd_name = "Scan"
 
-        self.alobserver.logger.info(self._log_msg(scan_cmd_name, scan_str))
+        self.alobserver.logger.info(self._log_cmd_msg(scan_cmd_name, scan_str))
 
         lrc_result = self.proxy.command_inout(scan_cmd_name, scan_str)
 
@@ -130,7 +132,7 @@ class SubarrayClient(DeviceClient):
         """TODO"""
         end_scan_cmd_name = "EndScan"
 
-        self.alobserver.logger.info(self._log_msg(end_scan_cmd_name))
+        self.alobserver.logger.info(self._log_cmd_msg(end_scan_cmd_name))
 
         lrc_result = self.proxy.command_inout(end_scan_cmd_name)
 
@@ -149,7 +151,7 @@ class SubarrayClient(DeviceClient):
         """TODO"""
         go_to_idle_name = "GoToIdle"
 
-        self.alobserver.logger.info(self._log_msg(go_to_idle_name))
+        self.alobserver.logger.info(self._log_cmd_msg(go_to_idle_name))
 
         lrc_result = self.proxy.command_inout(go_to_idle_name)
 
