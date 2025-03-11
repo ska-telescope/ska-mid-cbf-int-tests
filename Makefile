@@ -84,7 +84,7 @@ CLUSTER_DOMAIN ?= cluster.local## Domain used for naming Tango Device Servers
 #E203 is added for a whitespace error in tests/lib/utils/device_server_ping_test()
 PYTHON_SWITCHES_FOR_FLAKE8 = --ignore=E501,F407,W503,D100,D103,D400,DAR101,D104,D101,D107,D401,FS002,D200,DAR201,D202,D403,N802,DAR401,E203
 PYTHON_SWITCHES_FOR_PYLINT = --disable=W0613,C0116,C0114,R0801,W0621,W1203,C0301,F0010,R1721,R1732,C2801,C0115,R0903,W0102,W0201,C0103
-PYTHON_LINT_TARGET = ./
+# PYTHON_LINT_TARGET = ./
 
 ENGINEERING_CONSOLE_IMAGE_VER=$(shell kubectl describe pod/ds-deployer-deployer-0 -n $(KUBE_NAMESPACE) | grep 'Image:' | sed 's/.*\://')
 SIGNAL_VERIFICATION_IMAGE_VER=$(shell kubectl describe pod/sv -n $(KUBE_NAMESPACE) | grep ska-mid-cbf-signal-verification | grep 'Image:' | sed 's/.*\://')
