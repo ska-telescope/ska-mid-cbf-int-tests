@@ -131,7 +131,7 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set ska-sdp.ska-sdp-qa.zookeeper.clusterDomain=$(CLUSTER_DOMAIN) \
 	--set ska-sdp.ska-sdp-qa.kafka.clusterDomain=$(CLUSTER_DOMAIN) \
 	--set ska-sdp.ska-sdp-qa.redis.clusterDomain=$(CLUSTER_DOMAIN) \
-	--set ska-mid-cbf-tdc-mcs.hostInfo.clusterDomain=$(CLUSTER_DOMAIN) \
+	--set ska-mid-cbf-mcs.hostInfo.clusterDomain=$(CLUSTER_DOMAIN) \
 	--set global.labels.app=$(KUBE_APP) \
 	$(TARANTA_PARAMS)
 
@@ -141,15 +141,15 @@ endif
 
 USE_DEV_BUILD ?= true## Update the Chart.yaml and values.yaml for MCS, SV, and EC. If set to true, to use the latest tag versions from main branch on Gitlab
 
-DEV_BUILD_PARAMS =  --set ska-mid-cbf-tdc-mcs.signalVerificationVersion=$(SV_HASH_VERSION) \
-					--set ska-mid-cbf-tdc-mcs.midcbf.image.tag=$(MCS_HASH_VERSION) \
+DEV_BUILD_PARAMS =  --set ska-mid-cbf-mcs.signalVerificationVersion=$(SV_HASH_VERSION) \
+					--set ska-mid-cbf-mcs.midcbf.image.tag=$(MCS_HASH_VERSION) \
 					--set ska-mid-cbf-tdc-tmleafnode.midcbf.image.tag=$(MCS_HASH_VERSION) \
 					--set ska-mid-cbf-engineering-console.engineeringconsole.image.tag=$(EC_HASH_VERSION) \
 					
-TAG_BUILD_PARAMS =  --set ska-mid-cbf-tdc-mcs.signalVerificationVersion=$(SV_LATEST_TAG) \
-					--set ska-mid-cbf-tdc-mcs.svImageRegistry=$(CAR_REGISTRY) \
-					--set ska-mid-cbf-tdc-mcs.midcbf.image.tag=$(MCS_LATEST_TAG) \
-					--set ska-mid-cbf-tdc-mcs.midcbf.image.registry=$(CAR_REGISTRY) \
+TAG_BUILD_PARAMS =  --set ska-mid-cbf-mcs.signalVerificationVersion=$(SV_LATEST_TAG) \
+					--set ska-mid-cbf-mcs.svImageRegistry=$(CAR_REGISTRY) \
+					--set ska-mid-cbf-mcs.midcbf.image.tag=$(MCS_LATEST_TAG) \
+					--set ska-mid-cbf-mcs.midcbf.image.registry=$(CAR_REGISTRY) \
 					--set ska-mid-cbf-tdc-tmleafnode.midcbf.image.tag=$(MCS_LATEST_TAG) \
 					--set ska-mid-cbf-tdc-tmleafnode.midcbf.image.registry=$(CAR_REGISTRY) \
 					--set ska-mid-cbf-engineering-console.engineeringconsole.image.tag=$(EC_LATEST_TAG) \
@@ -210,22 +210,22 @@ update-internal-schema:
 
 update-chart:
 	@if [ "$(USE_DEV_BUILD)" == "false" ]; then \
-		echo "Updating Chart.yaml to change ska-mid-cbf-tdc-mcs and ska-mid-cbf-tdc-tmleafnode version to $(MCS_LATEST_TAG) and repository to $(HELM_INTERNAL_REPO)"; \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tdc-mcs").version) = "$(MCS_LATEST_TAG)"' $(CHART_FILE); \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tdc-mcs").repository) = "$(HELM_INTERNAL_REPO)"' $(CHART_FILE); \
+		echo "Updating Chart.yaml to change ska-mid-cbf-mcs and ska-mid-cbf-tdc-tmleafnode version to $(MCS_LATEST_TAG) and repository to $(HELM_INTERNAL_REPO)"; \
+		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-mcs").version) = "$(MCS_LATEST_TAG)"' $(CHART_FILE); \
+		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-mcs").repository) = "$(HELM_INTERNAL_REPO)"' $(CHART_FILE); \
 		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tdc-tmleafnode").version) = "$(MCS_LATEST_TAG)"' $(CHART_FILE); \
 		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tdc-tmleafnode").repository) = "$(HELM_INTERNAL_REPO)"' $(CHART_FILE); \
 		echo "Updating Chart.yaml to change ska-mid-cbf-engineering-console version to $(EC_LATEST_TAG) and repository to $(HELM_INTERNAL_REPO)"; \
 		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-engineering-console").version) = "$(EC_LATEST_TAG)"' $(CHART_FILE); \
 		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-engineering-console").repository) = "$(HELM_INTERNAL_REPO)"' $(CHART_FILE); \
 	else \
-		echo "Updating Chart.yaml to change ska-mid-cbf-tdc-mcs and ska-mid-cbf-tdc-tmleafnode version to $(MCS_HASH_VERSION) and repository to $(MCS_HELM_REPO)"; \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tdc-mcs").version) = "$(MCS_HASH_VERSION)"' $(CHART_FILE); \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tdc-mcs").repository) = "$(MCS_HELM_REPO)"' $(CHART_FILE); \
+		echo "Updating Chart.yaml to change ska-mid-cbf-mcs and ska-mid-cbf-tdc-tmleafnode version to $(MCS_HASH_VERSION) and repository to $(MCS_HELM_REPO)"; \
+		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-mcs").version) = "$(MCS_HASH_VERSION)"' $(CHART_FILE); \
+		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-mcs").repository) = "$(MCS_HELM_REPO)"' $(CHART_FILE); \
 		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tdc-tmleafnode").version) = "$(MCS_HASH_VERSION)"' $(CHART_FILE); \
 		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tdc-tmleafnode").repository) = "$(MCS_HELM_REPO)"' $(CHART_FILE); \
-		echo "Updating values.yaml to change ska-mid-cbf-tdc-mcs and ska-mid-cbf-tdc-tmleafnode LRC timeout values; controllerTimeout: $(CONTROLLER_TIMEOUT)"; \
-		yq eval -i '.ska-mid-cbf-tdc-mcs.controllerTimeout = $(CONTROLLER_TIMEOUT)' $(VALUES_FILE); \
+		echo "Updating values.yaml to change ska-mid-cbf-mcs and ska-mid-cbf-tdc-tmleafnode LRC timeout values; controllerTimeout: $(CONTROLLER_TIMEOUT)"; \
+		yq eval -i '.ska-mid-cbf-mcs.controllerTimeout = $(CONTROLLER_TIMEOUT)' $(VALUES_FILE); \
 		echo "Updating Chart.yaml to change ska-mid-cbf-engineering-console version to $(EC_HASH_VERSION) and repository to $(EC_HELM_REPO)"; \
 		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-engineering-console").version) = "$(EC_HASH_VERSION)"' $(CHART_FILE); \
 		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-engineering-console").repository) = "$(EC_HELM_REPO)"' $(CHART_FILE); \

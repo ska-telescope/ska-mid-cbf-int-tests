@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sender-data
+spec:
+  containers:
+  - image: artefact.skao.int/ska-sdp-realtime-receive-modules:3.8.1
+    name: sender-data-prep
+    command: [ "/bin/bash", "-c", "trap : TERM; sleep infinity & wait" ]
+    volumeMounts:
+    - mountPath: /mnt/data
+      name: data
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: testing
