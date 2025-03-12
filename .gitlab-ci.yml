@@ -25,10 +25,8 @@ stages:
   - on_demand_psi
   - on_demand_itf
   - test
-  - log-collector
   - join-reports
   - pages
-  - publish
   - scan
   - cleanup
 
@@ -54,9 +52,6 @@ include:
 
   # deploy steps to mid itf
   - local: "/.gitlab/ci/mid-itf.gitlab-ci.yml"
-    
-  - project: 'ska-telescope/templates-repository'
-    file: 'gitlab-ci/includes/xray-publish.gitlab-ci.yml'
 
   # Docs pages
   - project: 'ska-telescope/templates-repository'
@@ -187,69 +182,3 @@ python-test:
       - results/*/visibilities/*
     expire_in: 2 weeks
   allow_failure: true
-
-log-collector:
-  stage: log-collector
-  extends:
-    - .mid
-  tags:
-    - $RUNNER_TAG
-  before_script:
-    - apt update
-    - apt install -y bsdmainutils
-    - apt install -y util-linux
-  script:
-    - mkdir -p logs
-    - echo "$CI_JOB_ID">>logs/log_collector_id.txt
-    - POD_LIST=$(kubectl get pods -n $KUBE_NAMESPACE --no-headers -o custom-columns=":metadata.name")
-    - for pod in ${POD_LIST[@]}; do echo "kubectl logs $pod -n $KUBE_NAMESPACE --since=5h &> logs/${pod}.log" ; kubectl logs $pod -n $KUBE_NAMESPACE --since=5h &> logs/${pod}.log ; done
-    - ./log_utils/log_level_summary.sh
-  needs:
-    - job: python-test
-  artifacts:
-    paths:
-    - logs/*.log
-    - logs/log_level_summary.txt
-    - logs/log_collector_id.txt
-  allow_failure: true
-
-xray-publish:
-  extends:
-    - .mid
-  tags:
-    - $RUNNER_TAG
-  before_script:
-    - export MCS_IMAGE_VER=$(kubectl describe pod/ds-cbfcontroller-controller-0 -n $KUBE_NAMESPACE | grep ska-mid-cbf-mcs | grep 'Image:' | sed 's/.*\://')
-    - export EC_IMAGE_VER=$(kubectl describe pod/ds-deployer-deployer-0 -n $KUBE_NAMESPACE | grep 'Image:' | sed 's/.*\://')
-    - export SV_IMAGE_VER=$(kubectl describe pod/sv -n $KUBE_NAMESPACE | grep signal-verification | grep 'Image:' | sed 's/.*\://')
-    - export CI_PYTHON_TEST_ID=$(cat "build/reports/python_test_id.txt")
-    - export CI_LOG_COLLECTOR_ID=$(cat "logs/log_collector_id.txt")
-    - export PYTEST_MARKER=$(cat "build/reports/pytest_marker.txt")
-    - export REPORT_SUMMARY_URL="https://ska-telescope.gitlab.io/-/ska-mid-cbf-int-tests/-/jobs/$CI_PYTHON_TEST_ID/artifacts/results/reports/report_summary.html"
-    - export REPORTS_FOLDER_URL="https://gitlab.com/ska-telescope/ska-mid-cbf-int-tests/-/jobs/$CI_PYTHON_TEST_ID/artifacts/browse/results/reports/"
-    - export LOG_LEVEL_SUMMARY_URL="https://ska-telescope.gitlab.io/-/ska-mid-cbf-int-tests/-/jobs/$CI_LOG_COLLECTOR_ID/artifacts/logs/log_level_summary.txt"
-    - export TARGET_SITE=$TARGET_SITE
-    - export HW_CONFIG_USED=$HW_CONFIG_FILE
-    - export SLIM_FS_USED=$SLIM_FS_CONFIG_FILE
-    - export SLIM_VIS_CONFIG_USED=$SLIM_VIS_CONFIG_FILE
-    - export INTERNAL_SCHEMAS_VER=$(cat "build/reports/internal_schemas_version.txt" | awk '/version/ { print $3 }')
-    - export FPGA_BITSTREAMS_VER=$(kubectl exec -i -n $KUBE_NAMESPACE ds-deployer-deployer-0 -- bash -c "cat src/ska_mid_cbf_engineering_console/deployer/talondx_config/talondx_boardmap.json | python -c \"import sys, json; print(json.load(sys.stdin)['fpga_bitstreams'][0]['version'])\"")
-    - export VISIBILITIES_ARTIFACTS_PATH=$(cat "visibility_artifact_path.txt")
-  script:
-    - make xray-publish TALON_LIST=$TALON_LIST KUBE_NAMESPACE=$KUBE_NAMESPACE PYTEST_MARKER=$PYTEST_MARKER
-  dependencies:
-    - python-test
-    - log-collector
-  needs:
-    - job: python-test
-    - job: log-collector
-  rules:
-    - if: $CI_PIPELINE_SOURCE != 'schedule'
-      when: manual
-    - exists:
-       - build/reports/cucumber.json
-       - build/reports/report.json
-       - build/reports/internal_schemas_version.txt
-       - tests/xray-config.json
-       - visibility_artifact_path.txt
-      when: on_success
