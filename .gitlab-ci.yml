@@ -42,8 +42,8 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/changelog.gitlab-ci.yml'
 
-  # deploy steps to psi mid
-  - local: "/.gitlab/ci/psi-mid.gitlab-ci.yml"
+  # # deploy steps to psi mid
+  # - local: "/.gitlab/ci/psi-mid.gitlab-ci.yml"
 
   # Docs pages
   - project: 'ska-telescope/templates-repository'
