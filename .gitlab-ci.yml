@@ -30,6 +30,10 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/python.gitlab-ci.yml'
 
+  # Helm Charts
+  - project: 'ska-telescope/templates-repository'
+    file: 'gitlab-ci/includes/helm-chart.gitlab-ci.yml'
+
   # .post step finalisers eg: badges
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/finaliser.gitlab-ci.yml'
@@ -37,6 +41,9 @@ include:
   # changelog release page
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/changelog.gitlab-ci.yml'
+
+  # deploy steps to psi mid
+  - local: "/.gitlab/ci/psi-mid.gitlab-ci.yml"
 
   # Docs pages
   - project: 'ska-telescope/templates-repository'
