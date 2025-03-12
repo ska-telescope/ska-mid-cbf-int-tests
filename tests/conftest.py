@@ -76,7 +76,8 @@ def device_clients_pkg_sesh_setup_teardown(
         {},
     )
 
-    deployer_proxy = tango.DeviceProxy(DEPLOYER_FQDN, 250000)
+    # Temporary deployer
+    deployer_proxy = tango.DeviceProxy(DEPLOYER_FQDN, timeout=250)
     deployer_proxy.write_attribute("targetTalons", [1, 2, 3, 4])
     deployer_proxy.command_inout("generate_config_jsons")
 

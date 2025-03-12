@@ -3,11 +3,13 @@ from __future__ import annotations
 
 from typing import List
 
+from assertive_logging_observer import AssertiveLoggingObserver
 from ska_control_model import ObsState
 from ska_tango_testing.integration import TangoEventTracer
 
 from ska_mid_cbf_int_tests.constants.tango_constants import LRC_ATTR_NAME
 from ska_mid_cbf_int_tests.constants.timeout_constants import (
+    DEFAULT_DEVICE_TIMEOUT,
     TIMEOUT_LONG,
     TIMEOUT_SHORT,
 )
@@ -19,6 +21,13 @@ OBSSTATE_ATTR_NAME = "obsstate"
 
 class SubarrayClient(DeviceClient):
     """TODO"""
+
+    def __init__(
+        self: SubarrayClient,
+        device_fqdn: str,
+        alobserver: AssertiveLoggingObserver,
+    ):
+        super().__init__(device_fqdn, DEFAULT_DEVICE_TIMEOUT, alobserver)
 
     def prep_event_tracer(
         self: SubarrayClient, event_tracer: TangoEventTracer

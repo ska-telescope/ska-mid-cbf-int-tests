@@ -16,10 +16,11 @@ class DeviceClient(abc.ABC):
     def __init__(
         self: DeviceClient,
         device_fqdn: str,
+        device_timeout_sec: float,
         alobserver: AssertiveLoggingObserver,
     ):
         self.fqdn = device_fqdn
-        self.proxy = DeviceProxy(self.fqdn)
+        self.proxy = DeviceProxy(self.fqdn, timeout=device_timeout_sec)
         self.alobserver = alobserver
 
     def _log_wr_attr_msg(

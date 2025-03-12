@@ -1,12 +1,14 @@
 """TODO"""
 from __future__ import annotations
 
+from assertive_logging_observer import AssertiveLoggingObserver
 from ska_control_model import AdminMode, SimulationMode
 from ska_tango_testing.integration import TangoEventTracer
 from tango import DevState
 
 from ska_mid_cbf_int_tests.constants.tango_constants import LRC_ATTR_NAME
 from ska_mid_cbf_int_tests.constants.timeout_constants import (
+    DEFAULT_DEVICE_TIMEOUT,
     TIMEOUT_MEDIUM,
     TIMEOUT_SHORT,
 )
@@ -20,6 +22,13 @@ STATE_ATTR_NAME = "state"
 
 class ControllerClient(DeviceClient):
     """TODO"""
+
+    def __init__(
+        self: ControllerClient,
+        device_fqdn: str,
+        alobserver: AssertiveLoggingObserver,
+    ):
+        super().__init__(device_fqdn, DEFAULT_DEVICE_TIMEOUT, alobserver)
 
     def prep_event_tracer(
         self: ControllerClient, event_tracer: TangoEventTracer
