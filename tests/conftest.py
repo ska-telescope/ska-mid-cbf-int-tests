@@ -5,10 +5,14 @@ import os
 from typing import Generator
 
 import pytest
+import tango
 from assertive_logging_observer import AssertiveLoggingObserverMode
 from test_logging.format import LOG_FORMAT
 
-from ska_mid_cbf_int_tests.constants.tango_constants import CONTROLLER_FQDN
+from ska_mid_cbf_int_tests.constants.tango_constants import (
+    CONTROLLER_FQDN,
+    DEPLOYER_FQDN,
+)
 from ska_mid_cbf_int_tests.mcs_command import ControllerClient
 
 from .test_lib.test_packages import DeviceClientPkg, RecordingPkg
@@ -71,6 +75,10 @@ def device_clients_pkg_sesh_setup_teardown(
         ControllerClient(CONTROLLER_FQDN, recording_pkg_sesh_setup.alobserver),
         {},
     )
+
+    deployer_proxy = tango.DeviceProxy(DEPLOYER_FQDN, 250000)
+    deployer_proxy.write_attribute("targetTalons", [1, 2, 3, 4])
+    deployer_proxy.command_inout("generate_config_jsons")
 
     # CBF Controller On Sequence
     device_clients_pkg_obj.controller.admin_mode_online()

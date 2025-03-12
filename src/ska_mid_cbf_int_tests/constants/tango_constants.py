@@ -1,6 +1,7 @@
 """TODO"""
 LRC_ATTR_NAME = "longRunningCommandResult"
 
+DEPLOYER_FQDN = "mid_csp_cbf/ec/deployer"
 CONTROLLER_FQDN = "mid_csp_cbf/sub_elt/controller"
 
 
