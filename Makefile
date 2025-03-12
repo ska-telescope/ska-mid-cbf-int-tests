@@ -59,9 +59,6 @@ include .make/raw.mk
 # include core make support
 include .make/base.mk
 
-# include xray support
-include .make/xray.mk
-
 # include your own private variables for custom deployment configuration
 -include PrivateRules.mak
 
@@ -179,8 +176,6 @@ PYTEST_MARKER = speedrun1
 CONTROLLER_TIMEOUT?=100
 
 PYTHON_VARS_AFTER_PYTEST = -m $(PYTEST_MARKER) -s --cucumberjson=build/reports/cucumber.json --json-report --json-report-file=build/reports/report.json --namespace $(KUBE_NAMESPACE) --talon_list $(TALON_LIST) --target_site $(TARGET_SITE) --hw_config_file test_parameters/hw_config/$(HW_CONFIG_FILE) --slim_fs_config_file test_parameters/slim_config/$(SLIM_FS_CONFIG_FILE) --slim_vis_config_file test_parameters/slim_config/$(SLIM_VIS_CONFIG_FILE) --sys_param $(SYS_PARAM) --cluster_domain $(CLUSTER_DOMAIN) --tango_host $(TANGO_HOST) --test_id $(TEST_ID) --corr_bitstream_version $(CORR_BITSTREAM_VERSION) -v -rpfs
-
-XRAY_TEST_RESULT_FILE = build/reports/cucumber.json
 
 echo-charts:
 	@echo $(K8S_CHART_PARAMS)
