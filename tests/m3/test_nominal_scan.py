@@ -47,6 +47,7 @@ class TestNominalScan:
         )
 
         subarray_1 = device_client_pkg.subarray_dict[subarray_1_fqdn]
+        subarray_1.prep_event_tracer(recording_pkg.event_tracer)
 
         recording_pkg.logger.info("Starting LMC to MCS Subarray Scan Sequence")
 
@@ -73,13 +74,14 @@ class TestNominalScan:
             subarray_2_fqdn, recording_pkg.alobserver
         )
 
-        subarray_2_fqdn = device_client_pkg.subarray_dict[subarray_2_fqdn]
+        subarray_2 = device_client_pkg.subarray_dict[subarray_2_fqdn]
+        subarray_2.prep_event_tracer(recording_pkg.event_tracer)
 
         recording_pkg.logger.info("Starting LMC to MCS Subarray Scan Sequence")
 
-        subarray_2_fqdn.add_receptors(["SKA001", "SKA036", "SKA063", "SKA100"])
-        subarray_2_fqdn.configure_scan(self.conf_scan_str)
-        subarray_2_fqdn.scan(self.scan_str)
-        subarray_2_fqdn.end_scan()
-        subarray_2_fqdn.go_to_idle()
-        subarray_2_fqdn.remove_all_receptors()
+        subarray_2.add_receptors(["SKA001", "SKA036", "SKA063", "SKA100"])
+        subarray_2.configure_scan(self.conf_scan_str)
+        subarray_2.scan(self.scan_str)
+        subarray_2.end_scan()
+        subarray_2.go_to_idle()
+        subarray_2.remove_all_receptors()

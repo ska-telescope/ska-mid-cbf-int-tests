@@ -5,11 +5,7 @@ import os
 from typing import Generator
 
 import pytest
-from assertive_logging_observer import (
-    AssertiveLoggingObserver,
-    AssertiveLoggingObserverMode,
-)
-from ska_tango_testing.integration import TangoEventTracer
+from assertive_logging_observer import AssertiveLoggingObserverMode
 from test_logging.format import LOG_FORMAT
 
 from ska_mid_cbf_int_tests.constants.tango_constants import CONTROLLER_FQDN
@@ -21,31 +17,21 @@ TEST_DATA_DIR = "data"
 
 
 @pytest.fixture(scope="session")
-def recording_pkg_sesh_setup(request) -> RecordingPkg:
+def recording_pkg_sesh_setup(request: pytest.FixtureRequest) -> RecordingPkg:
     """TODO"""
     asserting = bool(int(request.config.getoption("--alo-asserting")))
 
     logging.basicConfig(format=LOG_FORMAT, level=logging.INFO)
-
-    recording_pkg_obj = RecordingPkg(
-        logging.getLogger(__name__), TangoEventTracer(), None
-    )
+    test_logger = logging.getLogger(__name__)
 
     if asserting:
-        recording_pkg_obj.logger.info("ALO Mode: ASSERTING")
-        assertion_mode = AssertiveLoggingObserverMode.ASSERTING
+        test_logger.logger.info("ALO Mode: ASSERTING")
+        asserting_mode = AssertiveLoggingObserverMode.ASSERTING
     else:
-        recording_pkg_obj.logger.info("ALO Mode: REPORTING")
-        assertion_mode = AssertiveLoggingObserverMode.REPORTING
+        test_logger.logger.info("ALO Mode: REPORTING")
+        asserting_mode = AssertiveLoggingObserverMode.REPORTING
 
-    recording_pkg_obj.alobserver = AssertiveLoggingObserver(
-        assertion_mode, recording_pkg_obj.logger
-    )
-    recording_pkg_obj.alobserver.set_event_tracer(
-        recording_pkg_obj.event_tracer
-    )
-
-    return recording_pkg_obj
+    return RecordingPkg(test_logger, asserting_mode)
 
 
 @pytest.fixture()
@@ -61,15 +47,13 @@ def recording_pkg(
 
     # Teardown
 
-    # Clear event_tracer of subscriptions and events
-    recording_pkg_obj.event_tracer.unsubscribe_all()
-    recording_pkg_obj.event_tracer.clear_events()
+    recording_pkg_obj.reset_tracer()
 
 
 @pytest.fixture(scope="session")
 def device_clients_pkg_sesh_setup_teardown(
-    request,
-    recording_pkg_sesh_setup,
+    request: pytest.FixtureRequest,
+    recording_pkg_sesh_setup: RecordingPkg,
 ) -> Generator[DeviceClientPkg, None, None]:
     """TODO"""
     # Setup
@@ -88,9 +72,9 @@ def device_clients_pkg_sesh_setup_teardown(
         {},
     )
 
+    # CBF Controller On Sequence
     device_clients_pkg_obj.controller.admin_mode_online()
     device_clients_pkg_obj.controller.simulation_mode_on()
-
     with open(
         os.path.join(TEST_DATA_DIR, "dummy_init_sys_param.json"),
         "r",
@@ -99,7 +83,6 @@ def device_clients_pkg_sesh_setup_teardown(
         device_clients_pkg_obj.controller.init_sys_param(
             json.dumps(json.load(file_in)).replace("\n", "")
         )
-
     device_clients_pkg_obj.controller.on()
 
     yield device_clients_pkg_obj
@@ -112,13 +95,17 @@ def device_clients_pkg_sesh_setup_teardown(
 
 @pytest.fixture()
 def device_clients_pkg(
-    device_clients_pkg_sesh_setup_teardown,
+    device_clients_pkg_sesh_setup_teardown: DeviceClientPkg,
+    recording_pkg: RecordingPkg,
 ) -> Generator[DeviceClientPkg, None, None]:
     """TODO"""
     # Setup
 
     # Return device_clients_pkg_obj
     device_clients_pkg_obj = device_clients_pkg_sesh_setup_teardown
+
+    # Ensure event_tracer is listening to relevant device clients
+    device_clients_pkg_obj.prep_event_tracer(recording_pkg.event_tracer)
 
     yield device_clients_pkg_obj
 
