@@ -74,7 +74,6 @@ def device_clients_pkg_sesh_setup_teardown(
 
     # CBF Controller On Sequence
     device_clients_pkg_obj.controller.admin_mode_online()
-    device_clients_pkg_obj.controller.simulation_mode_on()
     with open(
         os.path.join(TEST_DATA_DIR, "dummy_init_sys_param.json"),
         "r",
