@@ -3,18 +3,7 @@ image: $SKA_K8S_TOOLS_BUILD_DEPLOY
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
   MINIKUBE: "false"
-  TALON_LIST: "001" # A comma separated list of talon target IDs (e.g., "001,002,003"). See test_parameters/hw_config files for configurable mapping to talon IPs and physical hardware
-  TARGET_SITE: psi
-  RUNNER_TAG: k8srunner-psi-mid #Choose between k8srunner-psi-mid and ska-k8srunner-za-itf
-  HW_CONFIG_FILE: hw_config_psi.yaml #Choose between hw_config_psi.yaml, hw_config_swap_psi.yaml for Talons > 4, and hw_config_itf.yaml
-  SLIM_FS_CONFIG_FILE: fs_slim_disable_all.yaml
-  SLIM_VIS_CONFIG_FILE: vis_slim_disable_all.yaml
-  SYS_PARAM: 4_boards
   TANGO_HOST: databaseds-tango-base:10000
-  CLUSTER_DOMAIN: "cluster.local" #Choose between cluster.local and miditf.internal.skao.int
-  K8S_TIMEOUT: 800s
-  USE_DEV_BUILD: "true"
-  CONTAINER_SCANNING_DISABLED: 'true' # to disable the container scanning
 
 workflow:
   name: '$CI_PIPELINE_NAME'
@@ -23,13 +12,6 @@ stages:
   - lint
   - build
   - on_demand_psi
-  - on_demand_itf
-  - test
-  - log-collector
-  - join-reports
-  - pages
-  - publish
-  - scan
   - cleanup
 
 include:
@@ -41,10 +23,6 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/helm-chart.gitlab-ci.yml'
 
-  # .post step finalisers eg: badges
-  - project: 'ska-telescope/templates-repository'
-    file: 'gitlab-ci/includes/finaliser.gitlab-ci.yml'
-
   # changelog release page
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/changelog.gitlab-ci.yml'
@@ -52,23 +30,9 @@ include:
   # deploy steps to psi mid
   - local: "/.gitlab/ci/psi-mid.gitlab-ci.yml"
 
-  # deploy steps to mid itf
-  - local: "/.gitlab/ci/mid-itf.gitlab-ci.yml"
-    
-  - project: 'ska-telescope/templates-repository'
-    file: 'gitlab-ci/includes/xray-publish.gitlab-ci.yml'
-
   # Docs pages
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/docs.gitlab-ci.yml'
-
-  # .post step finalisers eg: badges
-  - project: 'ska-telescope/templates-repository'
-    file: 'gitlab-ci/includes/finaliser.gitlab-ci.yml'
-
-  # Jupyter notebook linting and testing
-  - project: 'ska-telescope/templates-repository'
-    file: 'gitlab-ci/includes/notebook.gitlab-ci.yml'
 
   # OCI image
   - project: 'ska-telescope/templates-repository'
@@ -114,142 +78,7 @@ oci-image-publish:
   rules:
     - when: never
 
-notebook-test:
-  rules:
-    - when: never
-
 python-build-for-development:
   rules:
     - when: never
 
-python-publish-to-gitlab:
-  rules:
-    - when: never
-
-pages:
-  rules:
-    - when: never
-
-python-test:
-  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
-  extends:
-    - .mid
-  rules:
-    - if: $TARGET_SITE == "psi" && $CI_PIPELINE_SOURCE == "schedule"
-      needs:
-        - job: psi-mid-on-demand-deploy
-    - if: $TARGET_SITE == "itf" && $CI_PIPELINE_SOURCE == "schedule"
-      needs:
-        - job: mid-itf-on-demand-deploy
-    - if: $TARGET_SITE == "psi" && $CI_PIPELINE_SOURCE != "schedule"
-      when: manual
-      needs:
-        - job: psi-mid-on-demand-deploy
-    - if: $TARGET_SITE == "itf" && $CI_PIPELINE_SOURCE != "schedule"
-      when: manual
-      needs:
-        - job: mid-itf-on-demand-deploy
-    - when: never #Ensure the tests will only run if the target_site is set and the corresponding deployment job is executed
-  variables:
-    PYTEST_MARKER: speedrun1
-    SLIM_CONFIG_FILE: fs_slim_disable_all.yaml
-    SLIM_FS_CONFIG_FILE: fs_slim_disable_all.yaml
-    SLIM_VIS_CONFIG_FILE: vis_slim_disable_all.yaml
-    SYS_PARAM: 4_boards
-    CORR_BITSTREAM_VERSION: default
-  tags:
-    - $RUNNER_TAG
-  before_script:
-    - apt update
-    - apt install -y iputils-ping
-    - sleep 10
-    - poetry config virtualenvs.create false
-    - poetry install
-    - mkdir -p build/reports
-    - echo "$CI_JOB_ID">>build/reports/python_test_id.txt
-    - echo "$PYTEST_MARKER">>build/reports/pytest_marker.txt
-  script:
-    - make python-test KUBE_NAMESPACE=$KUBE_NAMESPACE TALON_LIST=$TALON_LIST PYTEST_MARKER=$PYTEST_MARKER HW_CONFIG_FILE=$HW_CONFIG_FILE SLIM_FS_CONFIG_FILE=$SLIM_FS_CONFIG_FILE SLIM_VIS_CONFIG_FILE=$SLIM_VIS_CONFIG_FILE SYS_PARAM=$SYS_PARAM TANGO_HOST=$TANGO_HOST CLUSTER_DOMAIN=$CLUSTER_DOMAIN TARGET_SITE=$TARGET_SITE CORR_BITSTREAM_VERSION=$CORR_BITSTREAM_VERSION 2>&1 | tee >(tail --bytes 20971520 > python-test.log)
-  after_script:
-    - ./scripts/redirect_visibilities_to_pvc.sh ./results $CI_PIPELINE_ID $CI_JOB_ID $CI_JOB_STARTED_AT $CI_PIPELINE_CREATED_AT $CI_JOB_URL $CI_PIPELINE_URL
-  artifacts:
-    paths:
-      - build/reports/cucumber.json
-      - build/reports/report.json
-      - build/reports/python_test_id.txt
-      - build/reports/pytest_marker.txt
-      - build/reports/internal_schemas_version.txt
-      - results/*
-      - python-test.log
-      - visibility_artifact_path.txt
-    exclude:
-      - results/*/visibilities/
-      - results/*/visibilities/*
-    expire_in: 2 weeks
-  allow_failure: true
-
-log-collector:
-  stage: log-collector
-  extends:
-    - .mid
-  tags:
-    - $RUNNER_TAG
-  before_script:
-    - apt update
-    - apt install -y bsdmainutils
-    - apt install -y util-linux
-  script:
-    - mkdir -p logs
-    - echo "$CI_JOB_ID">>logs/log_collector_id.txt
-    - POD_LIST=$(kubectl get pods -n $KUBE_NAMESPACE --no-headers -o custom-columns=":metadata.name")
-    - for pod in ${POD_LIST[@]}; do echo "kubectl logs $pod -n $KUBE_NAMESPACE --since=5h &> logs/${pod}.log" ; kubectl logs $pod -n $KUBE_NAMESPACE --since=5h &> logs/${pod}.log ; done
-    - ./log_utils/log_level_summary.sh
-  needs:
-    - job: python-test
-  artifacts:
-    paths:
-    - logs/*.log
-    - logs/log_level_summary.txt
-    - logs/log_collector_id.txt
-  allow_failure: true
-
-xray-publish:
-  extends:
-    - .mid
-  tags:
-    - $RUNNER_TAG
-  before_script:
-    - export MCS_IMAGE_VER=$(kubectl describe pod/ds-cbfcontroller-controller-0 -n $KUBE_NAMESPACE | grep ska-mid-cbf-mcs | grep 'Image:' | sed 's/.*\://')
-    - export EC_IMAGE_VER=$(kubectl describe pod/ds-deployer-deployer-0 -n $KUBE_NAMESPACE | grep 'Image:' | sed 's/.*\://')
-    - export SV_IMAGE_VER=$(kubectl describe pod/sv -n $KUBE_NAMESPACE | grep signal-verification | grep 'Image:' | sed 's/.*\://')
-    - export CI_PYTHON_TEST_ID=$(cat "build/reports/python_test_id.txt")
-    - export CI_LOG_COLLECTOR_ID=$(cat "logs/log_collector_id.txt")
-    - export PYTEST_MARKER=$(cat "build/reports/pytest_marker.txt")
-    - export REPORT_SUMMARY_URL="https://ska-telescope.gitlab.io/-/ska-mid-cbf-int-tests/-/jobs/$CI_PYTHON_TEST_ID/artifacts/results/reports/report_summary.html"
-    - export REPORTS_FOLDER_URL="https://gitlab.com/ska-telescope/ska-mid-cbf-int-tests/-/jobs/$CI_PYTHON_TEST_ID/artifacts/browse/results/reports/"
-    - export LOG_LEVEL_SUMMARY_URL="https://ska-telescope.gitlab.io/-/ska-mid-cbf-int-tests/-/jobs/$CI_LOG_COLLECTOR_ID/artifacts/logs/log_level_summary.txt"
-    - export TARGET_SITE=$TARGET_SITE
-    - export HW_CONFIG_USED=$HW_CONFIG_FILE
-    - export SLIM_FS_USED=$SLIM_FS_CONFIG_FILE
-    - export SLIM_VIS_CONFIG_USED=$SLIM_VIS_CONFIG_FILE
-    - export INTERNAL_SCHEMAS_VER=$(cat "build/reports/internal_schemas_version.txt" | awk '/version/ { print $3 }')
-    - export FPGA_BITSTREAMS_VER=$(kubectl exec -i -n $KUBE_NAMESPACE ds-deployer-deployer-0 -- bash -c "cat src/ska_mid_cbf_engineering_console/deployer/talondx_config/talondx_boardmap.json | python -c \"import sys, json; print(json.load(sys.stdin)['fpga_bitstreams'][0]['version'])\"")
-    - export VISIBILITIES_ARTIFACTS_PATH=$(cat "visibility_artifact_path.txt")
-  script:
-    - make xray-publish TALON_LIST=$TALON_LIST KUBE_NAMESPACE=$KUBE_NAMESPACE PYTEST_MARKER=$PYTEST_MARKER
-  dependencies:
-    - python-test
-    - log-collector
-  needs:
-    - job: python-test
-    - job: log-collector
-  rules:
-    - if: $CI_PIPELINE_SOURCE != 'schedule'
-      when: manual
-    - exists:
-       - build/reports/cucumber.json
-       - build/reports/report.json
-       - build/reports/internal_schemas_version.txt
-       - tests/xray-config.json
-       - visibility_artifact_path.txt
-      when: on_success
