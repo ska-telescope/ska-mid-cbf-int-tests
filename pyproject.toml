@@ -14,8 +14,7 @@ license = "BSD License"
 readme = "README.md"
 
 packages = [
-    { include = "constants", from = "src" },
-    { include = "mcs_command", from = "src" }
+    { include = "ska_mid_cbf_int_tests", from = "src" },
 ]
 
 [tool.poetry.dependencies]

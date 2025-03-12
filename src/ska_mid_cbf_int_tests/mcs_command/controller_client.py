@@ -5,9 +5,10 @@ from ska_control_model import AdminMode, SimulationMode
 from ska_tango_testing.integration import TangoEventTracer
 from tango import DevState
 
-from constants.tango_constants import LRC_ATTR_NAME
-from constants.timeout_constants import TIMEOUT_MEDIUM, TIMEOUT_SHORT
-
+from ska_mid_cbf_int_tests.constants.tango_constants import LRC_ATTR_NAME
+from ska_mid_cbf_int_tests.constants.timeout_constants import (
+    TIMEOUT_MEDIUM, TIMEOUT_SHORT
+)
 from .device_client import DeviceClient
 
 ADMINMODE_ATTR_NAME = "adminMode"

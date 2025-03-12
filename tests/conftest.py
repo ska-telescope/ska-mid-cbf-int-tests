@@ -1,8 +1,9 @@
 """TODO"""
 import dataclasses
 import logging
+import json
 import os
-from typing import Generator, Set
+from typing import Dict, Generator
 
 import pytest
 from assertive_logging_observer import (
@@ -12,8 +13,10 @@ from assertive_logging_observer import (
 from ska_tango_testing.integration import TangoEventTracer
 from test_logging.format import LOG_FORMAT
 
-from constants.tango_constants import CONTROLLER_FQDN
-from mcs_command import ControllerClient, SubarrayClient
+from ska_mid_cbf_int_tests.constants.tango_constants import CONTROLLER_FQDN
+from ska_mid_cbf_int_tests.mcs_command import ControllerClient, SubarrayClient
+
+TEST_DATA_DIR = "data"
 
 
 @dataclasses.dataclass
@@ -76,7 +79,9 @@ class DeviceClientPkg:
     """TODO"""
 
     controller: ControllerClient = None
-    subarray_set: Set[SubarrayClient] = dataclasses.field(default_factory=set)
+    subarray_dict: Dict[str, SubarrayClient] = dataclasses.field(
+        default_factory=dict
+    )
 
 
 @pytest.fixture(scope="session")
@@ -98,10 +103,17 @@ def device_clients_pkg_sesh_setup_teardown(
 
     device_clients_pkg_obj = DeviceClientPkg(
         ControllerClient(CONTROLLER_FQDN, recording_pkg_sesh_setup.alobserver),
-        set(),
+        {},
     )
     device_clients_pkg_obj.controller.admin_mode_online()
     device_clients_pkg_obj.controller.simulation_mode_on()
+
+    with open(
+        os.path.join(TEST_DATA_DIR, "dummy_init_sys_param.json"), "r"
+    ) as f:
+        device_clients_pkg_obj.controller.init_sys_param(
+            json.dumps(json.load(f)).replace("\n", "")
+        )
 
     yield device_clients_pkg_obj
 
@@ -124,9 +136,11 @@ def device_clients_pkg(
 
     # Teardown
 
-    # Clear subarray_set and return all to empty
-    while len(device_clients_pkg_obj.subarray_set) != 0:
-        subarray_client = device_clients_pkg_obj.subarray_set.pop()
+    # Clear subarray_dict returning all to empty
+    for subarray_key in device_clients_pkg_obj.subarray_dict.keys():
+        subarray_client = device_clients_pkg_obj.subarray_dict.pop(
+            subarray_key
+        )
         subarray_client.send_to_empty()
 
 
