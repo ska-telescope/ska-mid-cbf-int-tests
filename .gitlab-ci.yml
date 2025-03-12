@@ -19,11 +19,11 @@ stages:
   - lint
   - build
   - on_demand_psi
-  - on_demand_itf
   - pages
   - test
   - scan
   - publish
+  - cleanup
 
 include:
 
@@ -45,9 +45,6 @@ include:
 
   # deploy steps to psi mid
   - local: "/.gitlab/ci/psi-mid.gitlab-ci.yml"
-  
-  # deploy steps to mid itf
-  - local: "/.gitlab/ci/mid-itf.gitlab-ci.yml"
 
   # Docs pages
   - project: 'ska-telescope/templates-repository'
