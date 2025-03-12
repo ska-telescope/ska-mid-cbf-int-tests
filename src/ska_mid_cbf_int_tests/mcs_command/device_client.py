@@ -27,7 +27,7 @@ class DeviceClient(abc.ABC):
         self: DeviceClient, attr_name: str, attr_val: Any
     ) -> str:
         """TODO"""
-        return f"{self.fqdn} {attr_val} (write: {attr_val})"
+        return f"{self.fqdn} {attr_name} (write: {attr_val})"
 
     def _log_cmd_msg(
         self: DeviceClient, cmd_name: str, cmd_param: Any = None
