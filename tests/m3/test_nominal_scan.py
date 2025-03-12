@@ -9,42 +9,77 @@ import os
 from ska_mid_cbf_int_tests.constants.tango_constants import gen_subarray_fqdn
 from ska_mid_cbf_int_tests.mcs_command import SubarrayClient
 
+from ..test_lib.test_packages import DeviceClientPkg, RecordingPkg
+
 M3_DATA_DIR = "m3/data"
 
 
 class TestNominalScan:
+    """TODO"""
 
     @classmethod
     def setup(cls: TestNominalScan):
+        """TODO"""
+        with open(
+            os.path.join(M3_DATA_DIR, "dummy_configure_scan.json"),
+            "r",
+            encoding="utf_8",
+        ) as file_in:
+            cls.conf_scan_str = json.dumps(json.load(file_in)).replace(
+                "\n", ""
+            )
 
         with open(
-            os.path.join(M3_DATA_DIR, "dummy_configure_scan.json"), "r"
-        ) as f:
-            cls.conf_scan_str = json.dumps(json.load(f)).replace("\n", "")
-
-        with open(
-            os.path.join(M3_DATA_DIR, "dummy_init_sys_param.json"), "r"
-        ) as f:
-            cls.init_sys_str = json.dumps(json.load(f)).replace("\n", "")
-
-        with open(
-            os.path.join(M3_DATA_DIR, "dummy_scan.json"), "r"
-        ) as f:
-            cls.scan_str = json.dumps(json.load(f)).replace("\n", "")
+            os.path.join(M3_DATA_DIR, "dummy_scan.json"), "r", encoding="utf_8"
+        ) as file_in:
+            cls.scan_str = json.dumps(json.load(file_in)).replace("\n", "")
 
     def test_scan(
         self: TestNominalScan,
-        # device_client_pkg: DeviceClientPkg,
-        recording_pkg: RecordingPkg
+        device_client_pkg: DeviceClientPkg,
+        recording_pkg: RecordingPkg,
     ):
         """Test nominal scan sequence."""
-        # subarray_1_fqdn = gen_subarray_fqdn(1)
-        # device_client_pkg.subarray_dict[subarray_1_fqdn] = SubarrayClient(
-        #     subarray_1_fqdn
-        # )
+        # Create subarray proxy and add to subarray_dict for potential cleanup
+        subarray_1_fqdn = gen_subarray_fqdn(1)
+        device_client_pkg.subarray_dict[subarray_1_fqdn] = SubarrayClient(
+            subarray_1_fqdn, recording_pkg.alobserver
+        )
 
-        # device_client_pkg.subarray_dict[subarray_1_fqdn].
+        subarray_1 = device_client_pkg.subarray_dict[subarray_1_fqdn]
 
-    def test_scan_2(recording_pkg):
+        recording_pkg.logger.info("Starting LMC to MCS Subarray Scan Sequence")
+
+        subarray_1.add_receptors(["SKA001", "SKA036", "SKA063", "SKA100"])
+        subarray_1.configure_scan(self.conf_scan_str)
+        subarray_1.scan(self.scan_str)
+        subarray_1.end_scan()
+        subarray_1.go_to_idle()
+        subarray_1.remove_all_receptors()
+
+    def test_scan_2(
+        self: TestNominalScan,
+        device_client_pkg: DeviceClientPkg,
+        recording_pkg: RecordingPkg,
+    ):
         """Test nominal scan sequence 2."""
-        recording_pkg.alobserver.observe_true(False)
+        # Create subarray proxy and add to subarray_dict for potential cleanup
+        subarray_1_fqdn = gen_subarray_fqdn(1)
+        device_client_pkg.subarray_dict[subarray_1_fqdn] = SubarrayClient(
+            subarray_1_fqdn, recording_pkg.alobserver
+        )
+        subarray_2_fqdn = gen_subarray_fqdn(2)
+        device_client_pkg.subarray_dict[subarray_2_fqdn] = SubarrayClient(
+            subarray_2_fqdn, recording_pkg.alobserver
+        )
+
+        subarray_2_fqdn = device_client_pkg.subarray_dict[subarray_2_fqdn]
+
+        recording_pkg.logger.info("Starting LMC to MCS Subarray Scan Sequence")
+
+        subarray_2_fqdn.add_receptors(["SKA001", "SKA036", "SKA063", "SKA100"])
+        subarray_2_fqdn.configure_scan(self.conf_scan_str)
+        subarray_2_fqdn.scan(self.scan_str)
+        subarray_2_fqdn.end_scan()
+        subarray_2_fqdn.go_to_idle()
+        subarray_2_fqdn.remove_all_receptors()

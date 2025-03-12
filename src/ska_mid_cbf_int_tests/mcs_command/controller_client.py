@@ -7,8 +7,10 @@ from tango import DevState
 
 from ska_mid_cbf_int_tests.constants.tango_constants import LRC_ATTR_NAME
 from ska_mid_cbf_int_tests.constants.timeout_constants import (
-    TIMEOUT_MEDIUM, TIMEOUT_SHORT
+    TIMEOUT_MEDIUM,
+    TIMEOUT_SHORT,
 )
+
 from .device_client import DeviceClient
 
 ADMINMODE_ATTR_NAME = "adminMode"

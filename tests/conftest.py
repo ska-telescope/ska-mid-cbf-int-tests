@@ -1,9 +1,8 @@
 """TODO"""
-import dataclasses
-import logging
 import json
+import logging
 import os
-from typing import Dict, Generator
+from typing import Generator
 
 import pytest
 from assertive_logging_observer import (
@@ -14,18 +13,11 @@ from ska_tango_testing.integration import TangoEventTracer
 from test_logging.format import LOG_FORMAT
 
 from ska_mid_cbf_int_tests.constants.tango_constants import CONTROLLER_FQDN
-from ska_mid_cbf_int_tests.mcs_command import ControllerClient, SubarrayClient
+from ska_mid_cbf_int_tests.mcs_command import ControllerClient
+
+from .test_lib.test_packages import DeviceClientPkg, RecordingPkg
 
 TEST_DATA_DIR = "data"
-
-
-@dataclasses.dataclass
-class RecordingPkg:
-    """TODO"""
-
-    logger: logging.Logger = None
-    event_tracer: TangoEventTracer = None
-    alobserver: AssertiveLoggingObserver = None
 
 
 @pytest.fixture(scope="session")
@@ -74,16 +66,6 @@ def recording_pkg(
     recording_pkg_obj.event_tracer.clear_events()
 
 
-@dataclasses.dataclass
-class DeviceClientPkg:
-    """TODO"""
-
-    controller: ControllerClient = None
-    subarray_dict: Dict[str, SubarrayClient] = dataclasses.field(
-        default_factory=dict
-    )
-
-
 @pytest.fixture(scope="session")
 def device_clients_pkg_sesh_setup_teardown(
     request,
@@ -105,20 +87,26 @@ def device_clients_pkg_sesh_setup_teardown(
         ControllerClient(CONTROLLER_FQDN, recording_pkg_sesh_setup.alobserver),
         {},
     )
+
     device_clients_pkg_obj.controller.admin_mode_online()
     device_clients_pkg_obj.controller.simulation_mode_on()
 
     with open(
-        os.path.join(TEST_DATA_DIR, "dummy_init_sys_param.json"), "r"
-    ) as f:
+        os.path.join(TEST_DATA_DIR, "dummy_init_sys_param.json"),
+        "r",
+        encoding="utf_8",
+    ) as file_in:
         device_clients_pkg_obj.controller.init_sys_param(
-            json.dumps(json.load(f)).replace("\n", "")
+            json.dumps(json.load(file_in)).replace("\n", "")
         )
+
+    device_clients_pkg_obj.controller.on()
 
     yield device_clients_pkg_obj
 
     # Teardown
 
+    device_clients_pkg_obj.controller.off()
     device_clients_pkg_obj.controller.admin_mode_offline()
 
 
@@ -150,9 +138,7 @@ def session_setup_teardown(
 ):
     """TODO"""
     # Setup
-
     yield
-
     # Teardown
 
 

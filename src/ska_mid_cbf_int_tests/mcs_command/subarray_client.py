@@ -8,7 +8,8 @@ from ska_tango_testing.integration import TangoEventTracer
 
 from ska_mid_cbf_int_tests.constants.tango_constants import LRC_ATTR_NAME
 from ska_mid_cbf_int_tests.constants.timeout_constants import (
-    TIMEOUT_LONG, TIMEOUT_SHORT
+    TIMEOUT_LONG,
+    TIMEOUT_SHORT,
 )
 
 from .device_client import DeviceClient
