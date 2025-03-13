@@ -11,8 +11,6 @@ PROJECT = ska-mid-cbf-int-tests
 KUBE_NAMESPACE ?= ska-mid-cbf-int-tests
 KUBE_NAMESPACE_SDP ?= $(KUBE_NAMESPACE)-sdp
 
-HELM_CHART ?= ska-mid-cbf-int-tests
-
 KUBE_APP ?= ska-mid-cbf-int-tests
 
 TARANTA ?= true## Enable Taranta
@@ -30,10 +28,6 @@ endif
 EXPOSE_All_DS ?= true## Expose All Tango Services to the external network (enable Loadbalancer service)
 SKA_TANGO_OPERATOR ?= true
 SKA_TANGO_ARCHIVER ?= false## Set to true to deploy EDA
-
-# Chart for testing
-K8S_CHART ?= $(HELM_CHART)
-K8S_CHARTS ?= $(K8S_CHART)
 
 TARGET_SITE ?= psi
 
@@ -82,16 +76,6 @@ PYTHON_SWITCHES_FOR_PYLINT = --disable=W0613,C0116,C0114,R0801,W0621,W1203,C0301
 ENGINEERING_CONSOLE_IMAGE_VER=$(shell kubectl describe pod/ds-deployer-deployer-0 -n $(KUBE_NAMESPACE) | grep 'Image:' | sed 's/.*\://')
 SIGNAL_VERIFICATION_IMAGE_VER=$(shell kubectl describe pod/sv -n $(KUBE_NAMESPACE) | grep ska-mid-cbf-signal-verification | grep 'Image:' | sed 's/.*\://')
 
-CHART_FILE=charts/ska-mid-cbf-int-tests/Chart.yaml
-VALUES_FILE=charts/ska-mid-cbf-int-tests/values.yaml
-CAR_REGISTRY=artefact.skao.int
-HELM_INTERNAL_REPO=https://${CAR_REGISTRY}/repository/helm-internal
-MCS_HELM_REPO=https://gitlab.com/api/v4/projects/12488466/packages/helm/dev
-SV_REGISTRY_REPO=registry.gitlab.com/ska-telescope/ska-mid-cbf-signal-verification
-SV_CAR_REGISTRY=${CAR_REGISTRY}/ska-mid-cbf-signal-verification-visibility-capture
-EC_HELM_REPO=https://gitlab.com/api/v4/projects/29657133/packages/helm/dev
-EC_REGISTRY_REPO=registry.gitlab.com/ska-telescope/ska-mid-cbf-engineering-console
-EC_CAR_REGISTRY=${CAR_REGISTRY}/ska-mid-cbf-engineering-console
 
 K8S_EXTRA_PARAMS ?=
 K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
@@ -153,7 +137,6 @@ update-internal-schema:
 k8s-pre-install-chart:
 	@echo "k8s-pre-install-chart: creating the SDP namespace $(KUBE_NAMESPACE_SDP)"
 	@make k8s-namespace KUBE_NAMESPACE=$(KUBE_NAMESPACE_SDP)
-	make update-chart MCS_HASH_VERSION=$(MCS_HASH_VERSION) EC_HASH_VERSION=$(EC_HASH_VERSION)
 
 k8s-pre-install-chart-car:
 	@echo "k8s-pre-install-chart-car: creating the SDP namespace $(KUBE_NAMESPACE_SDP)"
