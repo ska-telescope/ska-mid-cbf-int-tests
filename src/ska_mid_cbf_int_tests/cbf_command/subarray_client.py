@@ -1,6 +1,7 @@
 """TODO"""
 from __future__ import annotations
 
+import time
 from typing import List
 
 from assertive_logging_observer import AssertiveLoggingObserver
@@ -28,6 +29,49 @@ class SubarrayClient(DeviceClient):
         alobserver: AssertiveLoggingObserver,
     ):
         super().__init__(device_fqdn, DEFAULT_DEVICE_TIMEOUT, alobserver)
+
+    def _wait_to_exit_obs_states(
+        self: SubarrayClient,
+        obs_states_to_exit: List[str],
+        max_wait_time_sec: float,
+        delay_between_read_sec: float = 1,
+    ) -> bool:
+        """
+        Checks if the subarray is in states obs_states_to_exit and waits
+        max_wait_time_sec for subarray to exit states, waiting
+        delay_between_read_sec in between exit checks.
+
+        Args:
+        :param obs_state_to_exit: list of observing states to exit
+        :param max_wait_time_sec: max time to wait for the subarray to exit
+            the specified states (seconds)
+        :param delay_between_read_sec: how long to wait between checks
+            (seconds)
+        :rtype bool: boolean indicating if the subarray exited states
+            successfully
+        """
+        end_time = time.time() + max_wait_time_sec
+        while time.time() < end_time:
+            if (
+                self.proxy.read_attribute(OBSSTATE_ATTR_NAME).value
+                not in obs_states_to_exit
+            ):
+                return True
+            time.sleep(delay_between_read_sec)
+        if (
+            self.proxy.read_attribute(OBSSTATE_ATTR_NAME).value
+            not in obs_states_to_exit
+        ):
+            return True
+        self.alobserver.logger.error(
+            f"{self.fqdn}: Timeout waiting to exit one of states: "
+            f"{obs_states_to_exit}"
+        )
+        self.alobserver.logger.error(
+            f"{self.fqdn}: Final state was: "
+            f"{self.fqdn.read_attribute('ObsState')}"
+        )
+        return False
 
     def prep_event_tracer(
         self: SubarrayClient, event_tracer: TangoEventTracer
@@ -161,29 +205,88 @@ class SubarrayClient(DeviceClient):
 
     def go_to_idle(self: SubarrayClient):
         """TODO"""
-        go_to_idle_name = "GoToIdle"
+        go_to_idle_cmd_name = "GoToIdle"
 
-        self.alobserver.logger.info(self._log_cmd_msg(go_to_idle_name))
+        self.alobserver.logger.info(self._log_cmd_msg(go_to_idle_cmd_name))
 
-        lrc_result = self.proxy.command_inout(go_to_idle_name)
+        lrc_result = self.proxy.command_inout(go_to_idle_cmd_name)
 
         self.alobserver.observe_device_state_change(
-            self.fqdn,
-            OBSSTATE_ATTR_NAME,
-            ObsState.IDLE,
-            TIMEOUT_SHORT,
+            self.fqdn, OBSSTATE_ATTR_NAME, ObsState.IDLE, TIMEOUT_SHORT
         )
 
         self.alobserver.observe_lrc_result(
-            self.fqdn, lrc_result, go_to_idle_name, TIMEOUT_SHORT
+            self.fqdn, lrc_result, go_to_idle_cmd_name, TIMEOUT_SHORT
+        )
+
+    def abort(self: SubarrayClient):
+        """TODO"""
+        abort_cmd_name = "Abort"
+
+        self.alobserver.logger.info(self._log_cmd_msg(abort_cmd_name))
+
+        lrc_result = self.proxy.command_inout(abort_cmd_name)
+
+        self.alobserver.observe_device_state_change(
+            self.fqdn, OBSSTATE_ATTR_NAME, ObsState.ABORTED, TIMEOUT_SHORT
+        )
+
+        self.alobserver.observe_lrc_result(
+            self.fqdn, lrc_result, abort_cmd_name, TIMEOUT_SHORT
+        )
+
+    def reset(self: SubarrayClient):
+        """TODO"""
+        reset_cmd_name = "Reset"
+
+        self.alobserver.logger.info(self._log_cmd_msg(reset_cmd_name))
+
+        lrc_result = self.proxy.command_inout(reset_cmd_name)
+
+        self.alobserver.observe_device_state_change(
+            self.fqdn, OBSSTATE_ATTR_NAME, ObsState.EMPTY, TIMEOUT_SHORT
+        )
+
+        self.alobserver.observe_lrc_result(
+            self.fqdn, lrc_result, reset_cmd_name, TIMEOUT_SHORT
         )
 
     def send_to_empty(self: SubarrayClient):
         """TODO"""
+        exiting_wait_time_sec = 3
         if self.proxy.read_attribute(OBSSTATE_ATTR_NAME) == ObsState.READY:
             self.go_to_idle()
 
         if self.proxy.read_attribute(OBSSTATE_ATTR_NAME) == ObsState.IDLE:
             self.remove_all_receptors()
-        
-        if self.proxy.
+
+        if self.proxy.read_attribute(OBSSTATE_ATTR_NAME) in [
+            ObsState.RESOURCING,
+            ObsState.RESTARTING,
+        ]:
+            self._wait_to_exit_obs_states(
+                [ObsState.RESOURCING, ObsState.RESTARTING],
+                exiting_wait_time_sec,
+            )
+
+        # Take abort reset path if not in EMPTY yet
+        if self.proxy.read_attribute(OBSSTATE_ATTR_NAME) != ObsState.EMPTY:
+
+            # Ensure not in erroring transition state
+            if self.proxy.read_attribute(OBSSTATE_ATTR_NAME) in [
+                ObsState.ABORTING,
+                ObsState.RESETTING,
+            ]:
+                self._wait_to_exit_obs_states(
+                    [ObsState.ABORTING, ObsState.RESETTING],
+                    exiting_wait_time_sec,
+                )
+
+            # Ensure in resettable state
+            if self.proxy.read_attribute(OBSSTATE_ATTR_NAME) in [
+                ObsState.FAULT,
+                ObsState.ABORTED,
+            ]:
+                self.abort()
+
+            self.reset()

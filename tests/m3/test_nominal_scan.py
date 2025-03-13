@@ -6,8 +6,8 @@ from __future__ import annotations
 import json
 import os
 
+from ska_mid_cbf_int_tests.cbf_command import SubarrayClient
 from ska_mid_cbf_int_tests.constants.tango_constants import gen_subarray_fqdn
-from ska_mid_cbf_int_tests.mcs_command import SubarrayClient
 
 from ..test_lib.test_packages import DeviceClientPkg, RecordingPkg
 
@@ -79,7 +79,7 @@ class TestNominalScan:
             f"{subarray_1.proxy.read_attribute('simulationMode')}"
         )
 
-        # recording_pkg.logger.info("Starting LMC to MCS Subarray Scan Sequence")
+        recording_pkg.logger.info("Starting LMC to MCS Subarray Scan Sequence")
 
         # subarray_1.add_receptors(["SKA001", "SKA036", "SKA063", "SKA100"])
         # subarray_1.configure_scan(self.conf_scan_str)

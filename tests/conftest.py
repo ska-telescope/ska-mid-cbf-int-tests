@@ -9,11 +9,11 @@ import tango
 from assertive_logging_observer import AssertiveLoggingObserverMode
 from test_logging.format import LOG_FORMAT
 
+from ska_mid_cbf_int_tests.cbf_command import ControllerClient
 from ska_mid_cbf_int_tests.constants.tango_constants import (
     CONTROLLER_FQDN,
     DEPLOYER_FQDN,
 )
-from ska_mid_cbf_int_tests.mcs_command import ControllerClient
 
 from .test_lib.test_packages import DeviceClientPkg, RecordingPkg
 
@@ -114,6 +114,7 @@ def device_clients_pkg_sesh_setup_teardown(
         device_clients_pkg_obj.controller.admin_mode_offline()
         raise exception
 
+
 @pytest.fixture()
 def device_clients_pkg(
     device_clients_pkg_sesh_setup_teardown: DeviceClientPkg,
@@ -139,7 +140,7 @@ def device_clients_pkg(
             subarray_key
         )
         subarray_client.send_to_empty()
-    
+
     # Explicitly unsubscribe event_tracer (will hang if not done correctly)
     recording_pkg.reset_tracer()
 

@@ -11,7 +11,7 @@ from assertive_logging_observer import (
 )
 from ska_tango_testing.integration import TangoEventTracer
 
-from ska_mid_cbf_int_tests.mcs_command import ControllerClient, SubarrayClient
+from ska_mid_cbf_int_tests.cbf_command import ControllerClient, SubarrayClient
 
 
 @dataclasses.dataclass
