@@ -20,7 +20,8 @@ class DeviceClient(abc.ABC):
         alobserver: AssertiveLoggingObserver,
     ):
         self.fqdn = device_fqdn
-        self.proxy = DeviceProxy(self.fqdn, timeout=device_timeout_sec)
+        self.proxy = DeviceProxy(self.fqdn)
+        self.proxy.set_timeout_millis(int(device_timeout_sec*1000))
         self.alobserver = alobserver
 
     def _log_wr_attr_msg(

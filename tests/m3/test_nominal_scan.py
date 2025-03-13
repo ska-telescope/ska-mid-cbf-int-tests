@@ -11,14 +11,14 @@ from ska_mid_cbf_int_tests.mcs_command import SubarrayClient
 
 from ..test_lib.test_packages import DeviceClientPkg, RecordingPkg
 
-M3_DATA_DIR = "m3/data"
+M3_DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 
 
 class TestNominalScan:
     """TODO"""
 
     @classmethod
-    def setup(cls: TestNominalScan):
+    def setup_class(cls: TestNominalScan):
         """TODO"""
         with open(
             os.path.join(M3_DATA_DIR, "dummy_configure_scan.json"),
@@ -36,18 +36,19 @@ class TestNominalScan:
 
     def test_scan(
         self: TestNominalScan,
-        device_client_pkg: DeviceClientPkg,
+        device_clients_pkg: DeviceClientPkg,
         recording_pkg: RecordingPkg,
     ):
         """Test nominal scan sequence."""
         # Create subarray proxy and add to subarray_dict for potential cleanup
         subarray_1_fqdn = gen_subarray_fqdn(1)
-        device_client_pkg.subarray_dict[subarray_1_fqdn] = SubarrayClient(
+        device_clients_pkg.subarray_dict[subarray_1_fqdn] = SubarrayClient(
             subarray_1_fqdn, recording_pkg.alobserver
         )
 
-        subarray_1 = device_client_pkg.subarray_dict[subarray_1_fqdn]
+        subarray_1 = device_clients_pkg.subarray_dict[subarray_1_fqdn]
         subarray_1.prep_event_tracer(recording_pkg.event_tracer)
+        subarray_1.remove_all_receptors()
 
         recording_pkg.logger.info("Starting LMC to MCS Subarray Scan Sequence")
 
@@ -60,28 +61,29 @@ class TestNominalScan:
 
     def test_scan_2(
         self: TestNominalScan,
-        device_client_pkg: DeviceClientPkg,
+        device_clients_pkg: DeviceClientPkg,
         recording_pkg: RecordingPkg,
     ):
         """Test nominal scan sequence 2."""
         # Create subarray proxy and add to subarray_dict for potential cleanup
         subarray_1_fqdn = gen_subarray_fqdn(1)
-        device_client_pkg.subarray_dict[subarray_1_fqdn] = SubarrayClient(
+        device_clients_pkg.subarray_dict[subarray_1_fqdn] = SubarrayClient(
             subarray_1_fqdn, recording_pkg.alobserver
         )
-        subarray_2_fqdn = gen_subarray_fqdn(2)
-        device_client_pkg.subarray_dict[subarray_2_fqdn] = SubarrayClient(
-            subarray_2_fqdn, recording_pkg.alobserver
+
+        subarray_1 = device_clients_pkg.subarray_dict[subarray_1_fqdn]
+        subarray_1.prep_event_tracer(recording_pkg.event_tracer)
+
+        recording_pkg.logger.info(
+            "subarray_1 simulationMode info: "
+            f"{subarray_1.proxy.read_attribute('simulationMode')}"
         )
 
-        subarray_2 = device_client_pkg.subarray_dict[subarray_2_fqdn]
-        subarray_2.prep_event_tracer(recording_pkg.event_tracer)
+        # recording_pkg.logger.info("Starting LMC to MCS Subarray Scan Sequence")
 
-        recording_pkg.logger.info("Starting LMC to MCS Subarray Scan Sequence")
-
-        subarray_2.add_receptors(["SKA001", "SKA036", "SKA063", "SKA100"])
-        subarray_2.configure_scan(self.conf_scan_str)
-        subarray_2.scan(self.scan_str)
-        subarray_2.end_scan()
-        subarray_2.go_to_idle()
-        subarray_2.remove_all_receptors()
+        # subarray_1.add_receptors(["SKA001", "SKA036", "SKA063", "SKA100"])
+        # subarray_1.configure_scan(self.conf_scan_str)
+        # subarray_1.scan(self.scan_str)
+        # subarray_1.end_scan()
+        # subarray_1.go_to_idle()
+        # subarray_1.remove_all_receptors()

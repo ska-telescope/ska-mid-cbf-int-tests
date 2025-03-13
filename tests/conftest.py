@@ -17,7 +17,7 @@ from ska_mid_cbf_int_tests.mcs_command import ControllerClient
 
 from .test_lib.test_packages import DeviceClientPkg, RecordingPkg
 
-TEST_DATA_DIR = "data"
+TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 
 
 @pytest.fixture(scope="session")
@@ -29,13 +29,15 @@ def recording_pkg_sesh_setup(request: pytest.FixtureRequest) -> RecordingPkg:
     test_logger = logging.getLogger(__name__)
 
     if asserting:
-        test_logger.logger.info("ALO Mode: ASSERTING")
+        test_logger.info("ALO Mode: ASSERTING")
         asserting_mode = AssertiveLoggingObserverMode.ASSERTING
     else:
-        test_logger.logger.info("ALO Mode: REPORTING")
+        test_logger.info("ALO Mode: REPORTING")
         asserting_mode = AssertiveLoggingObserverMode.REPORTING
 
-    return RecordingPkg(test_logger, asserting_mode)
+    recording_pkg = RecordingPkg(test_logger, asserting_mode)
+
+    return recording_pkg
 
 
 @pytest.fixture()
@@ -51,6 +53,7 @@ def recording_pkg(
 
     # Teardown
 
+    # Explicitly unsubscribe event_tracer (will hang if not done correctly)
     recording_pkg_obj.reset_tracer()
 
 
@@ -71,35 +74,45 @@ def device_clients_pkg_sesh_setup_teardown(
         "TANGO_HOST"
     ] = f"{tango_hostname}.{namespace}.svc.{cluster_domain}:{tango_port}"
 
+    # Temporary deployer
+    deployer_proxy = tango.DeviceProxy(DEPLOYER_FQDN)
+    deployer_proxy.set_timeout_millis(250000)
+    deployer_proxy.write_attribute("targetTalons", [1, 2, 3, 4, 5, 6, 7, 8])
+    deployer_proxy.command_inout("generate_config_jsons")
+
     device_clients_pkg_obj = DeviceClientPkg(
         ControllerClient(CONTROLLER_FQDN, recording_pkg_sesh_setup.alobserver),
         {},
     )
-
-    # Temporary deployer
-    deployer_proxy = tango.DeviceProxy(DEPLOYER_FQDN, timeout=250)
-    deployer_proxy.write_attribute("targetTalons", [1, 2, 3, 4])
-    deployer_proxy.command_inout("generate_config_jsons")
+    device_clients_pkg_obj.prep_event_tracer(
+        recording_pkg_sesh_setup.event_tracer
+    )
 
     # CBF Controller On Sequence
     device_clients_pkg_obj.controller.admin_mode_online()
-    with open(
-        os.path.join(TEST_DATA_DIR, "dummy_init_sys_param.json"),
-        "r",
-        encoding="utf_8",
-    ) as file_in:
-        device_clients_pkg_obj.controller.init_sys_param(
-            json.dumps(json.load(file_in)).replace("\n", "")
-        )
-    device_clients_pkg_obj.controller.on()
 
-    yield device_clients_pkg_obj
+    # If anything goes wrong with session in scope of controller
+    # turn on ensure admin is off after
+    try:
+        with open(
+            os.path.join(TEST_DATA_DIR, "dummy_init_sys_param.json"),
+            "r",
+            encoding="utf_8",
+        ) as file_in:
+            device_clients_pkg_obj.controller.init_sys_param(
+                json.dumps(json.load(file_in)).replace("\n", "")
+            )
+        device_clients_pkg_obj.controller.on()
 
-    # Teardown
+        yield device_clients_pkg_obj
 
-    device_clients_pkg_obj.controller.off()
-    device_clients_pkg_obj.controller.admin_mode_offline()
+        # Teardown
 
+        device_clients_pkg_obj.controller.admin_mode_offline()
+
+    except Exception as exception:
+        device_clients_pkg_obj.controller.admin_mode_offline()
+        raise exception
 
 @pytest.fixture()
 def device_clients_pkg(
@@ -119,12 +132,16 @@ def device_clients_pkg(
 
     # Teardown
 
-    # Clear subarray_dict returning all to empty
-    for subarray_key in device_clients_pkg_obj.subarray_dict.keys():
+    # Clear subarray_dict returning all to empty, list to ensure soft copy
+    # of keys to avoid dictionary changed size during iteration error
+    for subarray_key in list(device_clients_pkg_obj.subarray_dict.keys()):
         subarray_client = device_clients_pkg_obj.subarray_dict.pop(
             subarray_key
         )
         subarray_client.send_to_empty()
+    
+    # Explicitly unsubscribe event_tracer (will hang if not done correctly)
+    recording_pkg.reset_tracer()
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -133,8 +150,10 @@ def session_setup_teardown(
 ):
     """TODO"""
     # Setup
+    print("YHit!!!!!")
     yield
-    # Teardown
+
+    print("Hit!!!!!")
 
 
 def pytest_addoption(parser):  # pylint: disable=C0116

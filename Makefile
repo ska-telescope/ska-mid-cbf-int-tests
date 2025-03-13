@@ -18,12 +18,13 @@ include .make/python.mk
 PYTEST_MARKER ?=
 ALO_ASSERTING ?= 1
 
-KUBE_NAMESPACE ?=
-TANGO_HOST ?=
+KUBE_NAMESPACE = ci-ska-mid-cbf-system-tests-1713695081-bremedios
+TANGO_HOST ?=  databaseds-tango-base:10000
+# 192.168.128.236:10000
 CLUSTER_DOMAIN = cluster.local
 
 # Add verbosity and INFO logging to python-test
-PYTHON_VARS_AFTER_PYTEST = -v --log-cli-level=INFO --alo-asserting $(ALO_ASSERTING) --namespace $(KUBE_NAMESPACE) --cluster-domain $(CLUSTER_DOMAIN) --tango-host $(TANGO_HOST)
+PYTHON_VARS_AFTER_PYTEST = -v --capture=no --log-cli-level=INFO --alo-asserting $(ALO_ASSERTING) --namespace $(KUBE_NAMESPACE) --cluster-domain $(CLUSTER_DOMAIN) --tango-host $(TANGO_HOST)
 
 # justification: redefined-outer-name must be disabled for pytest fixtures
 # justification: unused-argument must be disabled for pytest fixtures
