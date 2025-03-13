@@ -87,7 +87,7 @@ ska-mid-cbf-tmleafnode:
       # To use a tagged version from CAR instead, replace the Gitlab registry above with the one below and update the tag below
       registry: artefact.skao.int
       image: ska-mid-cbf-mcs
-      tag: 0.15.2-dev.c9f9dcffa
+      tag: 1.1.1
       pullPolicy: IfNotPresent
 
 ska-mid-cbf-engineering-console:
@@ -98,7 +98,7 @@ ska-mid-cbf-engineering-console:
       # To use a tagged version from CAR instead, replace the Gitlab registry above with the one below and update the tag below
       registry: artefact.skao.int
       image: ska-mid-cbf-engineering-console
-      tag: 0.10.9-dev.c39f00159
+      tag: 1.1.1
       pullPolicy: IfNotPresent
 
 # EDA
