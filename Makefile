@@ -11,12 +11,7 @@ PROJECT = ska-mid-cbf-int-tests
 KUBE_NAMESPACE ?= ska-mid-cbf-int-tests
 KUBE_NAMESPACE_SDP ?= $(KUBE_NAMESPACE)-sdp
 
-# UMBRELLA_CHART_PATH Path of the umbrella chart to work with
 HELM_CHART ?= ska-mid-cbf-int-tests
-UMBRELLA_CHART_PATH ?= charts/$(HELM_CHART)/
-
-# RELEASE_NAME is the release that all Kubernetes resources will be labelled with
-RELEASE_NAME = $(HELM_CHART)
 
 KUBE_APP ?= ska-mid-cbf-int-tests
 
@@ -98,27 +93,6 @@ EC_HELM_REPO=https://gitlab.com/api/v4/projects/29657133/packages/helm/dev
 EC_REGISTRY_REPO=registry.gitlab.com/ska-telescope/ska-mid-cbf-engineering-console
 EC_CAR_REGISTRY=${CAR_REGISTRY}/ska-mid-cbf-engineering-console
 
-FIND_MAIN_TAG_SCRIPT := $(abspath $(dir $(firstword $(MAKEFILE_LIST))))/scripts/find_latest_main_tag.sh
-
-# Use Gitlab API to extract latest tags and builds from the main branch for MCS, to extract the hash versions
-MCS_LATEST_COMMIT:=$(shell curl -s https://gitlab.com/api/v4/projects/12488466/repository/branches/main | jq -r '.commit.short_id')
-MCS_LATEST_TAG:=$(shell $(FIND_MAIN_TAG_SCRIPT) 12488466)
-MCS_HASH_VERSION?=$(MCS_LATEST_TAG)-dev.c$(MCS_LATEST_COMMIT)
-# Use Gitlab API to extract latest tags and builds from the main branch for SV, to extract the hash versions
-SV_LATEST_COMMIT:=$(shell curl -s https://gitlab.com/api/v4/projects/39434878/repository/branches/main | jq -r '.commit.short_id')
-SV_LATEST_TAG:=$(shell $(FIND_MAIN_TAG_SCRIPT) 39434878)
-SV_HASH_VERSION?=$(SV_LATEST_TAG)-dev.c$(SV_LATEST_COMMIT)
-# Use Gitlab API to extract latest tags and builds from the main branch for EC, to extract the hash versions
-EC_LATEST_COMMIT:=$(shell curl -s https://gitlab.com/api/v4/projects/29657133/repository/branches/main | jq -r '.commit.short_id')
-EC_LATEST_TAG:=$(shell $(FIND_MAIN_TAG_SCRIPT) 29657133)
-EC_HASH_VERSION?=$(EC_LATEST_TAG)-dev.c$(EC_LATEST_COMMIT)
-# Use Gitlab API to extract latest tags and builds from the main branch for internal-schemas, to extract the hash versions
-INTERNAL_SCHEMA_LATEST_COMMIT:=$(shell curl -s https://gitlab.com/api/v4/projects/47018613/repository/branches/main | jq -r .commit.short_id)
-INTERNAL_SCHEMA_LATEST_TAG:=$(shell $(FIND_MAIN_TAG_SCRIPT) 47018613)
-INTERNAL_SCHEMA_HASH_VERSION?=$(INTERNAL_SCHEMA_LATEST_TAG)+dev.c$(INTERNAL_SCHEMA_LATEST_COMMIT)
-CURR_INTERNAL_SCHEMA_VERSION:=$(shell grep ska-mid-cbf-internal-schemas pyproject.toml | awk -F '"' '{print $$2}')
-
-
 K8S_EXTRA_PARAMS ?=
 K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set global.exposeAllDS=$(EXPOSE_All_DS) \
@@ -136,22 +110,6 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 ifeq ($(SKA_TANGO_ARCHIVER),true)
 	K8S_CHART_PARAMS += $(SKA_TANGO_ARCHIVER_PARAMS)
 endif
-
-USE_DEV_BUILD ?= true## Update the Chart.yaml and values.yaml for MCS, SV, and EC. If set to true, to use the latest tag versions from main branch on Gitlab
-
-DEV_BUILD_PARAMS =  --set ska-mid-cbf-mcs.signalVerificationVersion=$(SV_HASH_VERSION) \
-					--set ska-mid-cbf-mcs.midcbf.image.tag=$(MCS_HASH_VERSION) \
-					--set ska-mid-cbf-tmleafnode.midcbf.image.tag=$(MCS_HASH_VERSION) \
-					--set ska-mid-cbf-engineering-console.engineeringconsole.image.tag=$(EC_HASH_VERSION) \
-					
-TAG_BUILD_PARAMS =  --set ska-mid-cbf-mcs.signalVerificationVersion=$(SV_LATEST_TAG) \
-					--set ska-mid-cbf-mcs.svImageRegistry=$(CAR_REGISTRY) \
-					--set ska-mid-cbf-mcs.midcbf.image.tag=$(MCS_LATEST_TAG) \
-					--set ska-mid-cbf-mcs.midcbf.image.registry=$(CAR_REGISTRY) \
-					--set ska-mid-cbf-tmleafnode.midcbf.image.tag=$(MCS_LATEST_TAG) \
-					--set ska-mid-cbf-tmleafnode.midcbf.image.registry=$(CAR_REGISTRY) \
-					--set ska-mid-cbf-engineering-console.engineeringconsole.image.tag=$(EC_LATEST_TAG) \
-					--set ska-mid-cbf-engineering-console.engineeringconsole.image.registry=$(CAR_REGISTRY) \
 
 ifeq ($(USE_DEV_BUILD),true)
 	K8S_CHART_PARAMS += $(DEV_BUILD_PARAMS)
@@ -192,31 +150,6 @@ update-internal-schema:
 		echo "No changes needed to pyproject.toml for ska-mid-cbf-internal-schemas"; \
 	fi
 
-update-chart:
-	@if [ "$(USE_DEV_BUILD)" == "false" ]; then \
-		echo "Updating Chart.yaml to change ska-mid-cbf-mcs and ska-mid-cbf-tmleafnode version to $(MCS_LATEST_TAG) and repository to $(HELM_INTERNAL_REPO)"; \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-mcs").version) = "$(MCS_LATEST_TAG)"' $(CHART_FILE); \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-mcs").repository) = "$(HELM_INTERNAL_REPO)"' $(CHART_FILE); \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tmleafnode").version) = "$(MCS_LATEST_TAG)"' $(CHART_FILE); \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tmleafnode").repository) = "$(HELM_INTERNAL_REPO)"' $(CHART_FILE); \
-		echo "Updating Chart.yaml to change ska-mid-cbf-engineering-console version to $(EC_LATEST_TAG) and repository to $(HELM_INTERNAL_REPO)"; \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-engineering-console").version) = "$(EC_LATEST_TAG)"' $(CHART_FILE); \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-engineering-console").repository) = "$(HELM_INTERNAL_REPO)"' $(CHART_FILE); \
-	else \
-		echo "Updating Chart.yaml to change ska-mid-cbf-mcs and ska-mid-cbf-tmleafnode version to $(MCS_HASH_VERSION) and repository to $(MCS_HELM_REPO)"; \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-mcs").version) = "$(MCS_HASH_VERSION)"' $(CHART_FILE); \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-mcs").repository) = "$(MCS_HELM_REPO)"' $(CHART_FILE); \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tmleafnode").version) = "$(MCS_HASH_VERSION)"' $(CHART_FILE); \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tmleafnode").repository) = "$(MCS_HELM_REPO)"' $(CHART_FILE); \
-		echo "Updating values.yaml to change ska-mid-cbf-mcs and ska-mid-cbf-tmleafnode LRC timeout values; controllerTimeout: $(CONTROLLER_TIMEOUT)"; \
-		yq eval -i '.ska-mid-cbf-mcs.controllerTimeout = $(CONTROLLER_TIMEOUT)' $(VALUES_FILE); \
-		echo "Updating Chart.yaml to change ska-mid-cbf-engineering-console version to $(EC_HASH_VERSION) and repository to $(EC_HELM_REPO)"; \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-engineering-console").version) = "$(EC_HASH_VERSION)"' $(CHART_FILE); \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-engineering-console").repository) = "$(EC_HELM_REPO)"' $(CHART_FILE); \
-	fi
-	cat $(CHART_FILE)
-	cat $(VALUES_FILE)
-
 k8s-pre-install-chart:
 	@echo "k8s-pre-install-chart: creating the SDP namespace $(KUBE_NAMESPACE_SDP)"
 	@make k8s-namespace KUBE_NAMESPACE=$(KUBE_NAMESPACE_SDP)
@@ -230,33 +163,9 @@ k8s-pre-uninstall-chart:
 	@echo "k8s-post-uninstall-chart: deleting the SDP namespace $(KUBE_NAMESPACE_SDP)"
 	@if [ "$(KEEP_NAMESPACE)" != "true" ]; then make k8s-delete-namespace KUBE_NAMESPACE=$(KUBE_NAMESPACE_SDP); fi
 
-python-pre-test:
-	@echo "Update dish_packet_capture_$(TARGET_SITE).yaml using ENGINEERING_CONSOLE_IMAGE_VER set to $(ENGINEERING_CONSOLE_IMAGE_VER)"
-	@if [ "$(USE_DEV_BUILD)" == "false" ]; then \
-		echo "and image set to $(EC_CAR_REGISTRY)"; \
-		cat charts/ska-mid-cbf-int-tests/resources/dish_packet_capture_$(TARGET_SITE).yaml | sed -e "s|${EC_REGISTRY_REPO}/ska-mid-cbf-engineering-console|${EC_CAR_REGISTRY}|" -e "s|ENGINEERING_CONSOLE_IMAGE_VER|${ENGINEERING_CONSOLE_IMAGE_VER}|" > dish_packet_capture_temp.yaml; \
-	else \
-		cat charts/ska-mid-cbf-int-tests/resources/dish_packet_capture_$(TARGET_SITE).yaml | sed -e "s|ENGINEERING_CONSOLE_IMAGE_VER|${ENGINEERING_CONSOLE_IMAGE_VER}|" > dish_packet_capture_temp.yaml; \
-	fi
-	cat dish_packet_capture_temp.yaml
-	@echo "Update visibilities_pod_$(TARGET_SITE).yaml using SIGNAL_VERIFICATION_IMAGE_VER set to $(SIGNAL_VERIFICATION_IMAGE_VER)"
-	@if [ "$(USE_DEV_BUILD)" == "false" ]; then \
-		echo "and image set to $(SV_CAR_REGISTRY)"; \
-		cat charts/ska-mid-cbf-int-tests/resources/visibilities_pod_$(TARGET_SITE).yaml | sed -e "s|${SV_REGISTRY_REPO}/ska-mid-cbf-signal-verification-visibility-capture|${SV_CAR_REGISTRY}|" -e "s|SIGNAL_VERIFICATION_IMAGE_VER|${SIGNAL_VERIFICATION_IMAGE_VER}|" > visibilities_pod_temp.yaml; \
-	else \
-		cat charts/ska-mid-cbf-int-tests/resources/visibilities_pod_$(TARGET_SITE).yaml | sed -e "s|SIGNAL_VERIFICATION_IMAGE_VER|${SIGNAL_VERIFICATION_IMAGE_VER}|" > visibilities_pod_temp.yaml; \
-	fi
-	cat visibilities_pod_temp.yaml
-	make update-internal-schema
-	poetry show ska-mid-cbf-internal-schemas > build/reports/internal_schemas_version.txt
-	cat build/reports/internal_schemas_version.txt | grep version
-
-python-post-test:
-	rm dish_packet_capture_temp.yaml
-	rm visibilities_pod_temp.yaml
-
-run-pylint:
-	pylint --output-format=parseable notebooks/ tests/ test_parameters/ | tee build/code_analysis.stdout
+# TODO: the target for pylint should be specified when the repo is more developed
+# run-pylint:
+# 	pylint --output-format=parseable notebooks/ tests/ test_parameters/ | tee build/code_analysis.stdout
 
 vars:
 	$(info ##### Mid deploy vars)
