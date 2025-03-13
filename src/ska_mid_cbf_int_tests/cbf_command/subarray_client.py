@@ -180,8 +180,10 @@ class SubarrayClient(DeviceClient):
 
     def send_to_empty(self: SubarrayClient):
         """TODO"""
-        if self.proxy.read_attribute("ObsState") == ObsState.READY:
+        if self.proxy.read_attribute(OBSSTATE_ATTR_NAME) == ObsState.READY:
             self.go_to_idle()
 
-        if self.proxy.read_attribute("ObsState") == ObsState.IDLE:
+        if self.proxy.read_attribute(OBSSTATE_ATTR_NAME) == ObsState.IDLE:
             self.remove_all_receptors()
+        
+        if self.proxy.
