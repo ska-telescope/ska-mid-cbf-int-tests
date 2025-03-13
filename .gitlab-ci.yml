@@ -2,6 +2,7 @@ image: $SKA_K8S_TOOLS_BUILD_DEPLOY
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
+  RUNNER_TAG: k8srunner-psi-mid
 
 workflow:
   name: '$CI_PIPELINE_NAME'
@@ -86,5 +87,7 @@ notebook-test:
 
 python-test:
   allow_failure: true
+  tags:
+    - $RUNNER_TAG
   rules:
     - when: manual
