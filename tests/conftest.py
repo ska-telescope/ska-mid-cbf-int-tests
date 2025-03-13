@@ -77,7 +77,7 @@ def device_clients_pkg_sesh_setup_teardown(
     # Temporary deployer
     deployer_proxy = tango.DeviceProxy(DEPLOYER_FQDN)
     deployer_proxy.set_timeout_millis(250000)
-    deployer_proxy.write_attribute("targetTalons", [1, 2, 3, 4, 5, 6, 7, 8])
+    deployer_proxy.write_attribute("targetTalons", [1, 2, 3, 4])
     deployer_proxy.command_inout("generate_config_jsons")
 
     device_clients_pkg_obj = DeviceClientPkg(
@@ -151,10 +151,8 @@ def session_setup_teardown(
 ):
     """TODO"""
     # Setup
-    print("YHit!!!!!")
     yield
-
-    print("Hit!!!!!")
+    # Teardown
 
 
 def pytest_addoption(parser):  # pylint: disable=C0116

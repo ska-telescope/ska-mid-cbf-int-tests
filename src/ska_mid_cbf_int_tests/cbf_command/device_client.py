@@ -35,8 +35,12 @@ class DeviceClient(abc.ABC):
     ) -> str:
         """TODO"""
         log_str = f"{self.fqdn} {cmd_name}"
-        if input is not None:
-            log_str += f" (cmd_param: {cmd_param})"
+        if cmd_param is not None:
+            max_cmd_param_msg_len = 500
+            cmd_param_str = str(cmd_param)
+            if len(cmd_param_str) > max_cmd_param_msg_len:
+                cmd_param_str = cmd_param_str[:max_cmd_param_msg_len] + " ..."
+            log_str += f" (cmd_param: {cmd_param_str})"
         return log_str
 
     @abc.abstractmethod

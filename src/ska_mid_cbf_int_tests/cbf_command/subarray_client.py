@@ -69,7 +69,7 @@ class SubarrayClient(DeviceClient):
         )
         self.alobserver.logger.error(
             f"{self.fqdn}: Final state was: "
-            f"{self.fqdn.read_attribute('ObsState')}"
+            f"{self.proxy.read_attribute(OBSSTATE_ATTR_NAME).value}"
         )
         return False
 
@@ -253,14 +253,21 @@ class SubarrayClient(DeviceClient):
 
     def send_to_empty(self: SubarrayClient):
         """TODO"""
-        exiting_wait_time_sec = 3
-        if self.proxy.read_attribute(OBSSTATE_ATTR_NAME) == ObsState.READY:
+        exiting_wait_time_sec = TIMEOUT_SHORT
+
+        if (
+            self.proxy.read_attribute(OBSSTATE_ATTR_NAME).value
+            == ObsState.READY
+        ):
             self.go_to_idle()
 
-        if self.proxy.read_attribute(OBSSTATE_ATTR_NAME) == ObsState.IDLE:
+        if (
+            self.proxy.read_attribute(OBSSTATE_ATTR_NAME).value
+            == ObsState.IDLE
+        ):
             self.remove_all_receptors()
 
-        if self.proxy.read_attribute(OBSSTATE_ATTR_NAME) in [
+        if self.proxy.read_attribute(OBSSTATE_ATTR_NAME).value in [
             ObsState.RESOURCING,
             ObsState.RESTARTING,
         ]:
@@ -270,10 +277,13 @@ class SubarrayClient(DeviceClient):
             )
 
         # Take abort reset path if not in EMPTY yet
-        if self.proxy.read_attribute(OBSSTATE_ATTR_NAME) != ObsState.EMPTY:
+        if (
+            self.proxy.read_attribute(OBSSTATE_ATTR_NAME).value
+            != ObsState.EMPTY
+        ):
 
             # Ensure not in erroring transition state
-            if self.proxy.read_attribute(OBSSTATE_ATTR_NAME) in [
+            if self.proxy.read_attribute(OBSSTATE_ATTR_NAME).value in [
                 ObsState.ABORTING,
                 ObsState.RESETTING,
             ]:
@@ -283,7 +293,7 @@ class SubarrayClient(DeviceClient):
                 )
 
             # Ensure in resettable state
-            if self.proxy.read_attribute(OBSSTATE_ATTR_NAME) in [
+            if self.proxy.read_attribute(OBSSTATE_ATTR_NAME).value in [
                 ObsState.FAULT,
                 ObsState.ABORTED,
             ]:
