@@ -5,7 +5,6 @@ import os
 from typing import Generator
 
 import pytest
-import tango
 from ska_mid_cbf_common_test_infrastructure.assertive_logging_observer import (
     AssertiveLoggingObserverMode,
 )
@@ -13,10 +12,7 @@ from ska_mid_cbf_common_test_infrastructure.test_logging.format import (
     LOG_FORMAT,
 )
 
-from ska_mid_cbf_int_tests.cbf_command import (
-    ControllerClient,
-    DeployerClient
-)
+from ska_mid_cbf_int_tests.cbf_command import ControllerClient, DeployerClient
 from ska_mid_cbf_int_tests.constants.tango_constants import (
     CONTROLLER_FQDN,
     DEPLOYER_FQDN,
