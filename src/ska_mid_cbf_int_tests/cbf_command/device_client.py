@@ -4,8 +4,9 @@ from __future__ import annotations
 import abc
 from typing import Any
 
-from assertive_logging_observer import AssertiveLoggingObserver
-from ska_tango_testing.integration import TangoEventTracer
+from ska_mid_cbf_common_test_infrastructure.assertive_logging_observer import (
+    AssertiveLoggingObserver,
+)
 from tango import DeviceProxy
 
 
@@ -42,7 +43,3 @@ class DeviceClient(abc.ABC):
                 cmd_param_str = cmd_param_str[:max_cmd_param_msg_len] + " ..."
             log_str += f" (cmd_param: {cmd_param_str})"
         return log_str
-
-    @abc.abstractmethod
-    def prep_event_tracer(self: DeviceClient, event_tracer: TangoEventTracer):
-        """TODO"""

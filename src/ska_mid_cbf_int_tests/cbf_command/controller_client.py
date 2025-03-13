@@ -1,9 +1,10 @@
 """TODO"""
 from __future__ import annotations
 
-from assertive_logging_observer import AssertiveLoggingObserver
 from ska_control_model import AdminMode, SimulationMode
-from ska_tango_testing.integration import TangoEventTracer
+from ska_mid_cbf_common_test_infrastructure.assertive_logging_observer import (
+    AssertiveLoggingObserver,
+)
 from tango import DevState
 
 from ska_mid_cbf_int_tests.constants.tango_constants import LRC_ATTR_NAME
@@ -29,15 +30,12 @@ class ControllerClient(DeviceClient):
         alobserver: AssertiveLoggingObserver,
     ):
         super().__init__(device_fqdn, DEFAULT_DEVICE_TIMEOUT, alobserver)
-
-    def prep_event_tracer(
-        self: ControllerClient, event_tracer: TangoEventTracer
-    ):
-        """TODO"""
-        event_tracer.subscribe_event(self.fqdn, ADMINMODE_ATTR_NAME)
-        event_tracer.subscribe_event(self.fqdn, SIMULATIONMODE_ATTR_NAME)
-        event_tracer.subscribe_event(self.fqdn, STATE_ATTR_NAME)
-        event_tracer.subscribe_event(self.fqdn, LRC_ATTR_NAME)
+        self.alobserver.subscribe_event_tracer(self.fqdn, ADMINMODE_ATTR_NAME)
+        self.alobserver.subscribe_event_tracer(
+            self.fqdn, SIMULATIONMODE_ATTR_NAME
+        )
+        self.alobserver.subscribe_event_tracer(self.fqdn, STATE_ATTR_NAME)
+        self.alobserver.subscribe_event_tracer(self.fqdn, LRC_ATTR_NAME)
 
     def simulation_mode_on(self: ControllerClient):
         """TODO"""
@@ -87,7 +85,7 @@ class ControllerClient(DeviceClient):
             init_sys_param_cmd_name, init_sys_param_str
         )
 
-        self.alobserver.observe_lrc_result(
+        self.alobserver.observe_lrc_ok(
             self.fqdn, lrc_result, init_sys_param_cmd_name, TIMEOUT_SHORT
         )
 
@@ -100,11 +98,11 @@ class ControllerClient(DeviceClient):
 
         lrc_result = self.proxy.command_inout(on_cmd_name)
 
-        self.alobserver.observe_device_state_change(
+        self.alobserver.observe_device_attr_change(
             self.fqdn, STATE_ATTR_NAME, DevState.ON, TIMEOUT_MEDIUM
         )
 
-        self.alobserver.observe_lrc_result(
+        self.alobserver.observe_lrc_ok(
             self.fqdn, lrc_result, on_cmd_name, TIMEOUT_MEDIUM
         )
 
@@ -114,10 +112,10 @@ class ControllerClient(DeviceClient):
 
         lrc_result = self.proxy.command_inout(off_cmd_name)
 
-        self.alobserver.observe_device_state_change(
+        self.alobserver.observe_device_attr_change(
             self.fqdn, STATE_ATTR_NAME, DevState.OFF, TIMEOUT_MEDIUM
         )
 
-        self.alobserver.observe_lrc_result(
+        self.alobserver.observe_lrc_ok(
             self.fqdn, lrc_result, off_cmd_name, TIMEOUT_MEDIUM
         )

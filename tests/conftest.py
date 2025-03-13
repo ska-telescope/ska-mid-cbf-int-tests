@@ -6,8 +6,12 @@ from typing import Generator
 
 import pytest
 import tango
-from assertive_logging_observer import AssertiveLoggingObserverMode
-from test_logging.format import LOG_FORMAT
+from ska_mid_cbf_common_test_infrastructure.assertive_logging_observer import (
+    AssertiveLoggingObserverMode,
+)
+from ska_mid_cbf_common_test_infrastructure.test_logging.format import (
+    LOG_FORMAT,
+)
 
 from ska_mid_cbf_int_tests.cbf_command import ControllerClient
 from ska_mid_cbf_int_tests.constants.tango_constants import (
@@ -29,10 +33,8 @@ def recording_pkg_sesh_setup(request: pytest.FixtureRequest) -> RecordingPkg:
     test_logger = logging.getLogger(__name__)
 
     if asserting:
-        test_logger.info("ALO Mode: ASSERTING")
         asserting_mode = AssertiveLoggingObserverMode.ASSERTING
     else:
-        test_logger.info("ALO Mode: REPORTING")
         asserting_mode = AssertiveLoggingObserverMode.REPORTING
 
     recording_pkg = RecordingPkg(test_logger, asserting_mode)
@@ -52,9 +54,6 @@ def recording_pkg(
     yield recording_pkg_obj
 
     # Teardown
-
-    # Explicitly unsubscribe event_tracer (will hang if not done correctly)
-    recording_pkg_obj.reset_tracer()
 
 
 @pytest.fixture(scope="session")
@@ -83,9 +82,6 @@ def device_clients_pkg_sesh_setup_teardown(
     device_clients_pkg_obj = DeviceClientPkg(
         ControllerClient(CONTROLLER_FQDN, recording_pkg_sesh_setup.alobserver),
         {},
-    )
-    device_clients_pkg_obj.prep_event_tracer(
-        recording_pkg_sesh_setup.event_tracer
     )
 
     # CBF Controller On Sequence
@@ -126,9 +122,6 @@ def device_clients_pkg(
     # Return device_clients_pkg_obj
     device_clients_pkg_obj = device_clients_pkg_sesh_setup_teardown
 
-    # Ensure event_tracer is listening to relevant device clients
-    device_clients_pkg_obj.prep_event_tracer(recording_pkg.event_tracer)
-
     yield device_clients_pkg_obj
 
     # Teardown
@@ -140,9 +133,6 @@ def device_clients_pkg(
             subarray_key
         )
         subarray_client.send_to_empty()
-
-    # Explicitly unsubscribe event_tracer (will hang if not done correctly)
-    recording_pkg.reset_tracer()
 
 
 @pytest.fixture(scope="session", autouse=True)

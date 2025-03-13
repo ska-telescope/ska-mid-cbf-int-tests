@@ -31,7 +31,7 @@ pylint = "^2.17.4"
 pylint-junit = "^0.3.2"
 pytest-json = "^0.4.0"
 pylance = "^0.5.9"
-ska-mid-cbf-common-test-infrastructure = { version = "0.0.0+dev.c10e017ee", source = "gitlab-pkg-registry-common-test-infrastructure"}
+ska-mid-cbf-common-test-infrastructure = { version = "0.0.0+dev.c4d2ea95e", source = "gitlab-pkg-registry-common-test-infrastructure"}
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "^7.4.7"

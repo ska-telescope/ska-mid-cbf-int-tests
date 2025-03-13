@@ -4,9 +4,10 @@ from __future__ import annotations
 import time
 from typing import List
 
-from assertive_logging_observer import AssertiveLoggingObserver
 from ska_control_model import ObsState
-from ska_tango_testing.integration import TangoEventTracer
+from ska_mid_cbf_common_test_infrastructure.assertive_logging_observer import (
+    AssertiveLoggingObserver,
+)
 
 from ska_mid_cbf_int_tests.constants.tango_constants import LRC_ATTR_NAME
 from ska_mid_cbf_int_tests.constants.timeout_constants import (
@@ -29,6 +30,8 @@ class SubarrayClient(DeviceClient):
         alobserver: AssertiveLoggingObserver,
     ):
         super().__init__(device_fqdn, DEFAULT_DEVICE_TIMEOUT, alobserver)
+        self.alobserver.subscribe_event_tracer(self.fqdn, OBSSTATE_ATTR_NAME)
+        self.alobserver.subscribe_event_tracer(self.fqdn, LRC_ATTR_NAME)
 
     def _wait_to_exit_obs_states(
         self: SubarrayClient,
@@ -73,13 +76,6 @@ class SubarrayClient(DeviceClient):
         )
         return False
 
-    def prep_event_tracer(
-        self: SubarrayClient, event_tracer: TangoEventTracer
-    ):
-        """TODO"""
-        event_tracer.subscribe_event(self.fqdn, OBSSTATE_ATTR_NAME)
-        event_tracer.subscribe_event(self.fqdn, LRC_ATTR_NAME)
-
     def add_receptors(self: SubarrayClient, receptors: List[str]):
         """TODO"""
         add_receptors_cmd_name = "AddReceptors"
@@ -92,11 +88,11 @@ class SubarrayClient(DeviceClient):
             add_receptors_cmd_name, receptors
         )
 
-        self.alobserver.observe_device_state_change(
+        self.alobserver.observe_device_attr_change(
             self.fqdn, OBSSTATE_ATTR_NAME, ObsState.IDLE, TIMEOUT_SHORT
         )
 
-        self.alobserver.observe_lrc_result(
+        self.alobserver.observe_lrc_ok(
             self.fqdn, lrc_result, add_receptors_cmd_name, TIMEOUT_LONG
         )
 
@@ -116,14 +112,14 @@ class SubarrayClient(DeviceClient):
             remove_receptors_cmd_name, receptors
         )
 
-        self.alobserver.observe_device_state_change(
+        self.alobserver.observe_device_attr_change(
             self.fqdn,
             OBSSTATE_ATTR_NAME,
             ObsState.EMPTY if going_to_empty else ObsState.IDLE,
             TIMEOUT_SHORT,
         )
 
-        self.alobserver.observe_lrc_result(
+        self.alobserver.observe_lrc_ok(
             self.fqdn, lrc_result, remove_receptors_cmd_name, TIMEOUT_LONG
         )
 
@@ -137,11 +133,11 @@ class SubarrayClient(DeviceClient):
 
         lrc_result = self.proxy.command_inout(remove_all_receptors_cmd_name)
 
-        self.alobserver.observe_device_state_change(
+        self.alobserver.observe_device_attr_change(
             self.fqdn, OBSSTATE_ATTR_NAME, ObsState.EMPTY, TIMEOUT_SHORT
         )
 
-        self.alobserver.observe_lrc_result(
+        self.alobserver.observe_lrc_ok(
             self.fqdn, lrc_result, remove_all_receptors_cmd_name, TIMEOUT_LONG
         )
 
@@ -157,11 +153,11 @@ class SubarrayClient(DeviceClient):
             configure_scan_cmd_names, configure_str
         )
 
-        self.alobserver.observe_device_state_change(
+        self.alobserver.observe_device_attr_change(
             self.fqdn, OBSSTATE_ATTR_NAME, ObsState.READY, TIMEOUT_SHORT
         )
 
-        self.alobserver.observe_lrc_result(
+        self.alobserver.observe_lrc_ok(
             self.fqdn, lrc_result, configure_scan_cmd_names, TIMEOUT_SHORT
         )
 
@@ -173,14 +169,14 @@ class SubarrayClient(DeviceClient):
 
         lrc_result = self.proxy.command_inout(scan_cmd_name, scan_str)
 
-        self.alobserver.observe_device_state_change(
+        self.alobserver.observe_device_attr_change(
             self.fqdn,
             OBSSTATE_ATTR_NAME,
             ObsState.SCANNING,
             TIMEOUT_SHORT,
         )
 
-        self.alobserver.observe_lrc_result(
+        self.alobserver.observe_lrc_ok(
             self.fqdn, lrc_result, scan_cmd_name, TIMEOUT_SHORT
         )
 
@@ -192,14 +188,14 @@ class SubarrayClient(DeviceClient):
 
         lrc_result = self.proxy.command_inout(end_scan_cmd_name)
 
-        self.alobserver.observe_device_state_change(
+        self.alobserver.observe_device_attr_change(
             self.fqdn,
             OBSSTATE_ATTR_NAME,
             ObsState.READY,
             TIMEOUT_SHORT,
         )
 
-        self.alobserver.observe_lrc_result(
+        self.alobserver.observe_lrc_ok(
             self.fqdn, lrc_result, end_scan_cmd_name, TIMEOUT_SHORT
         )
 
@@ -211,11 +207,11 @@ class SubarrayClient(DeviceClient):
 
         lrc_result = self.proxy.command_inout(go_to_idle_cmd_name)
 
-        self.alobserver.observe_device_state_change(
+        self.alobserver.observe_device_attr_change(
             self.fqdn, OBSSTATE_ATTR_NAME, ObsState.IDLE, TIMEOUT_SHORT
         )
 
-        self.alobserver.observe_lrc_result(
+        self.alobserver.observe_lrc_ok(
             self.fqdn, lrc_result, go_to_idle_cmd_name, TIMEOUT_SHORT
         )
 
@@ -227,11 +223,11 @@ class SubarrayClient(DeviceClient):
 
         lrc_result = self.proxy.command_inout(abort_cmd_name)
 
-        self.alobserver.observe_device_state_change(
+        self.alobserver.observe_device_attr_change(
             self.fqdn, OBSSTATE_ATTR_NAME, ObsState.ABORTED, TIMEOUT_SHORT
         )
 
-        self.alobserver.observe_lrc_result(
+        self.alobserver.observe_lrc_ok(
             self.fqdn, lrc_result, abort_cmd_name, TIMEOUT_SHORT
         )
 
@@ -243,11 +239,11 @@ class SubarrayClient(DeviceClient):
 
         lrc_result = self.proxy.command_inout(reset_cmd_name)
 
-        self.alobserver.observe_device_state_change(
+        self.alobserver.observe_device_attr_change(
             self.fqdn, OBSSTATE_ATTR_NAME, ObsState.EMPTY, TIMEOUT_SHORT
         )
 
-        self.alobserver.observe_lrc_result(
+        self.alobserver.observe_lrc_ok(
             self.fqdn, lrc_result, reset_cmd_name, TIMEOUT_SHORT
         )
 

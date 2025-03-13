@@ -47,7 +47,6 @@ class TestNominalScan:
         )
 
         subarray_1 = device_clients_pkg.subarray_dict[subarray_1_fqdn]
-        subarray_1.prep_event_tracer(recording_pkg.event_tracer)
         subarray_1.send_to_empty()
 
         recording_pkg.logger.info("Starting LMC to MCS Subarray Scan Sequence")
@@ -72,7 +71,6 @@ class TestNominalScan:
         )
 
         subarray_1 = device_clients_pkg.subarray_dict[subarray_1_fqdn]
-        subarray_1.prep_event_tracer(recording_pkg.event_tracer)
         subarray_1.send_to_empty()
 
         recording_pkg.logger.info("Starting LMC to MCS Subarray Scan Sequence")
