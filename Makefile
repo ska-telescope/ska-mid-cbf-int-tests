@@ -129,7 +129,7 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set ska-sdp.ska-sdp-qa.zookeeper.clusterDomain=$(CLUSTER_DOMAIN) \
 	--set ska-sdp.ska-sdp-qa.kafka.clusterDomain=$(CLUSTER_DOMAIN) \
 	--set ska-sdp.ska-sdp-qa.redis.clusterDomain=$(CLUSTER_DOMAIN) \
-	--set ska-mid-cbf-tdc-mcs.hostInfo.clusterDomain=$(CLUSTER_DOMAIN) \
+	--set ska-mid-cbf-mcs.hostInfo.clusterDomain=$(CLUSTER_DOMAIN) \
 	--set global.labels.app=$(KUBE_APP) \
 	$(TARANTA_PARAMS)
 
@@ -209,7 +209,7 @@ update-chart:
 		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tmleafnode").version) = "$(MCS_HASH_VERSION)"' $(CHART_FILE); \
 		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tmleafnode").repository) = "$(MCS_HELM_REPO)"' $(CHART_FILE); \
 		echo "Updating values.yaml to change ska-mid-cbf-mcs and ska-mid-cbf-tmleafnode LRC timeout values; controllerTimeout: $(CONTROLLER_TIMEOUT)"; \
-		yq eval -i '.ska-mid-cbf-tdc-mcs.controllerTimeout = $(CONTROLLER_TIMEOUT)' $(VALUES_FILE); \
+		yq eval -i '.ska-mid-cbf-mcs.controllerTimeout = $(CONTROLLER_TIMEOUT)' $(VALUES_FILE); \
 		echo "Updating Chart.yaml to change ska-mid-cbf-engineering-console version to $(EC_HASH_VERSION) and repository to $(EC_HELM_REPO)"; \
 		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-engineering-console").version) = "$(EC_HASH_VERSION)"' $(CHART_FILE); \
 		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-engineering-console").repository) = "$(EC_HELM_REPO)"' $(CHART_FILE); \
