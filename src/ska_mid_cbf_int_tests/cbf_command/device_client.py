@@ -1,7 +1,6 @@
 """TODO"""
 from __future__ import annotations
 
-import abc
 from typing import Any
 
 from ska_mid_cbf_common_test_infrastructure.assertive_logging_observer import (
@@ -10,7 +9,7 @@ from ska_mid_cbf_common_test_infrastructure.assertive_logging_observer import (
 from tango import DeviceProxy
 
 
-class DeviceClient(abc.ABC):
+class DeviceClient:
     """TODO"""
 
     # pylint: disable=too-few-public-methods

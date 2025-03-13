@@ -13,7 +13,10 @@ from ska_mid_cbf_common_test_infrastructure.test_logging.format import (
     LOG_FORMAT,
 )
 
-from ska_mid_cbf_int_tests.cbf_command import ControllerClient
+from ska_mid_cbf_int_tests.cbf_command import (
+    ControllerClient,
+    DeployerClient
+)
 from ska_mid_cbf_int_tests.constants.tango_constants import (
     CONTROLLER_FQDN,
     DEPLOYER_FQDN,
@@ -73,16 +76,22 @@ def device_clients_pkg_sesh_setup_teardown(
         "TANGO_HOST"
     ] = f"{tango_hostname}.{namespace}.svc.{cluster_domain}:{tango_port}"
 
-    # Temporary deployer
-    deployer_proxy = tango.DeviceProxy(DEPLOYER_FQDN)
-    deployer_proxy.set_timeout_millis(250000)
-    deployer_proxy.write_attribute("targetTalons", [1, 2, 3, 4])
-    deployer_proxy.command_inout("generate_config_jsons")
+    # TEMP: Use deployer to write target talons and generate config json for
+    # controller
+    deployer_client = DeployerClient(DEPLOYER_FQDN, 250)
+    deployer_client.wr_target_talons([1, 2, 3, 4])
+    deployer_client.generate_config_jsons()
 
     device_clients_pkg_obj = DeviceClientPkg(
         ControllerClient(CONTROLLER_FQDN, recording_pkg_sesh_setup.alobserver),
         {},
     )
+
+    # TEMP: Set to simulation mode off, use until MCS-FHS connection is ready
+    # Note: will break if simulationMode is added to deployment as is planned
+    #       so remove if that happens, just here to explicitly remind us that
+    #       simulation mode is TRUE
+    device_clients_pkg_obj.controller.simulation_mode_on()
 
     # CBF Controller On Sequence
     device_clients_pkg_obj.controller.admin_mode_online()
