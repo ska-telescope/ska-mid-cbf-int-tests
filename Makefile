@@ -60,14 +60,8 @@ include .make/raw.mk
 # include core make support
 include .make/base.mk
 
-# include xray support
-include .make/xray.mk
-
 # include your own private variables for custom deployment configuration
 -include PrivateRules.mak
-
-# ska-tango-archiver params for EDA deployment
-include archiver/archiver.mk 
 
 TARANTA_PARAMS = --set ska-taranta.enabled=$(TARANTA) \
 				 --set global.taranta_auth_enabled=$(TARANTA_AUTH) \
@@ -85,10 +79,10 @@ CI_JOB_ID ?= local##pipeline job id
 TANGO_HOST ?= databaseds-tango-base:10000## TANGO_HOST connection to the Tango DS
 CLUSTER_DOMAIN ?= cluster.local## Domain used for naming Tango Device Servers
 
-#E203 is added for a whitespace error in tests/lib/utils/device_server_ping_test()
+# TODO: the python lint target and error codes that are disabled/ignored should be updated as the repo evolves  
 PYTHON_SWITCHES_FOR_FLAKE8 = --ignore=E501,F407,W503,D100,D103,D400,DAR101,D104,D101,D107,D401,FS002,D200,DAR201,D202,D403,N802,DAR401,E203
 PYTHON_SWITCHES_FOR_PYLINT = --disable=W0613,C0116,C0114,R0801,W0621,W1203,C0301,F0010,R1721,R1732,C2801,C0115,R0903,W0102,W0201,C0103
-PYTHON_LINT_TARGET = notebooks/ tests/ test_parameters/
+# PYTHON_LINT_TARGET = ./
 
 ENGINEERING_CONSOLE_IMAGE_VER=$(shell kubectl describe pod/ds-deployer-deployer-0 -n $(KUBE_NAMESPACE) | grep 'Image:' | sed 's/.*\://')
 SIGNAL_VERIFICATION_IMAGE_VER=$(shell kubectl describe pod/sv -n $(KUBE_NAMESPACE) | grep ska-mid-cbf-signal-verification | grep 'Image:' | sed 's/.*\://')
@@ -97,7 +91,7 @@ CHART_FILE=charts/ska-mid-cbf-int-tests/Chart.yaml
 VALUES_FILE=charts/ska-mid-cbf-int-tests/values.yaml
 CAR_REGISTRY=artefact.skao.int
 HELM_INTERNAL_REPO=https://${CAR_REGISTRY}/repository/helm-internal
-MCS_HELM_REPO=https://gitlab.com/api/v4/projects/65335629/packages/helm/dev
+MCS_HELM_REPO=https://gitlab.com/api/v4/projects/12488466/packages/helm/dev
 SV_REGISTRY_REPO=registry.gitlab.com/ska-telescope/ska-mid-cbf-signal-verification
 SV_CAR_REGISTRY=${CAR_REGISTRY}/ska-mid-cbf-signal-verification-visibility-capture
 EC_HELM_REPO=https://gitlab.com/api/v4/projects/29657133/packages/helm/dev
@@ -107,8 +101,8 @@ EC_CAR_REGISTRY=${CAR_REGISTRY}/ska-mid-cbf-engineering-console
 FIND_MAIN_TAG_SCRIPT := $(abspath $(dir $(firstword $(MAKEFILE_LIST))))/scripts/find_latest_main_tag.sh
 
 # Use Gitlab API to extract latest tags and builds from the main branch for MCS, to extract the hash versions
-MCS_LATEST_COMMIT:=$(shell curl -s https://gitlab.com/api/v4/projects/65335629/repository/branches/main | jq -r '.commit.short_id')
-MCS_LATEST_TAG:=$(shell $(FIND_MAIN_TAG_SCRIPT) 65335629)
+MCS_LATEST_COMMIT:=$(shell curl -s https://gitlab.com/api/v4/projects/12488466/repository/branches/main | jq -r '.commit.short_id')
+MCS_LATEST_TAG:=$(shell $(FIND_MAIN_TAG_SCRIPT) 12488466)
 MCS_HASH_VERSION?=$(MCS_LATEST_TAG)-dev.c$(MCS_LATEST_COMMIT)
 # Use Gitlab API to extract latest tags and builds from the main branch for SV, to extract the hash versions
 SV_LATEST_COMMIT:=$(shell curl -s https://gitlab.com/api/v4/projects/39434878/repository/branches/main | jq -r '.commit.short_id')
@@ -145,17 +139,17 @@ endif
 
 USE_DEV_BUILD ?= true## Update the Chart.yaml and values.yaml for MCS, SV, and EC. If set to true, to use the latest tag versions from main branch on Gitlab
 
-DEV_BUILD_PARAMS =  --set ska-mid-cbf-tdc-mcs.signalVerificationVersion=$(SV_HASH_VERSION) \
-					--set ska-mid-cbf-tdc-mcs.midcbf.image.tag=$(MCS_HASH_VERSION) \
-					--set ska-mid-cbf-tdc-tmleafnode.midcbf.image.tag=$(MCS_HASH_VERSION) \
+DEV_BUILD_PARAMS =  --set ska-mid-cbf-mcs.signalVerificationVersion=$(SV_HASH_VERSION) \
+					--set ska-mid-cbf-mcs.midcbf.image.tag=$(MCS_HASH_VERSION) \
+					--set ska-mid-cbf-tmleafnode.midcbf.image.tag=$(MCS_HASH_VERSION) \
 					--set ska-mid-cbf-engineering-console.engineeringconsole.image.tag=$(EC_HASH_VERSION) \
 					
-TAG_BUILD_PARAMS =  --set ska-mid-cbf-tdc-mcs.signalVerificationVersion=$(SV_LATEST_TAG) \
-					--set ska-mid-cbf-tdc-mcs.svImageRegistry=$(CAR_REGISTRY) \
-					--set ska-mid-cbf-tdc-mcs.midcbf.image.tag=$(MCS_LATEST_TAG) \
-					--set ska-mid-cbf-tdc-mcs.midcbf.image.registry=$(CAR_REGISTRY) \
-					--set ska-mid-cbf-tdc-tmleafnode.midcbf.image.tag=$(MCS_LATEST_TAG) \
-					--set ska-mid-cbf-tdc-tmleafnode.midcbf.image.registry=$(CAR_REGISTRY) \
+TAG_BUILD_PARAMS =  --set ska-mid-cbf-mcs.signalVerificationVersion=$(SV_LATEST_TAG) \
+					--set ska-mid-cbf-mcs.svImageRegistry=$(CAR_REGISTRY) \
+					--set ska-mid-cbf-mcs.midcbf.image.tag=$(MCS_LATEST_TAG) \
+					--set ska-mid-cbf-mcs.midcbf.image.registry=$(CAR_REGISTRY) \
+					--set ska-mid-cbf-tmleafnode.midcbf.image.tag=$(MCS_LATEST_TAG) \
+					--set ska-mid-cbf-tmleafnode.midcbf.image.registry=$(CAR_REGISTRY) \
 					--set ska-mid-cbf-engineering-console.engineeringconsole.image.tag=$(EC_LATEST_TAG) \
 					--set ska-mid-cbf-engineering-console.engineeringconsole.image.registry=$(CAR_REGISTRY) \
 
@@ -169,22 +163,8 @@ ifneq (,$(wildcard $(VALUES)))
 	K8S_CHART_PARAMS += $(foreach f,$(wildcard $(VALUES)),--values $(f))
 endif
 
-TALON_LIST = 001
-HW_CONFIG_FILE = hw_config_$(TARGET_SITE).yaml
-SLIM_FS_CONFIG_FILE = fs_slim_disable_all.yaml
-SLIM_VIS_CONFIG_FILE = vis_slim_disable_all.yaml
-SYS_PARAM?=4_boards
-CORR_BITSTREAM_VERSION?=default
-TEST_ID = Test_1
-
-PYTEST_MARKER = speedrun1
-
 # MCS timeout values in seconds
 CONTROLLER_TIMEOUT?=100
-
-PYTHON_VARS_AFTER_PYTEST = -m $(PYTEST_MARKER) -s --cucumberjson=build/reports/cucumber.json --json-report --json-report-file=build/reports/report.json --namespace $(KUBE_NAMESPACE) --talon_list $(TALON_LIST) --target_site $(TARGET_SITE) --hw_config_file test_parameters/hw_config/$(HW_CONFIG_FILE) --slim_fs_config_file test_parameters/slim_config/$(SLIM_FS_CONFIG_FILE) --slim_vis_config_file test_parameters/slim_config/$(SLIM_VIS_CONFIG_FILE) --sys_param $(SYS_PARAM) --cluster_domain $(CLUSTER_DOMAIN) --tango_host $(TANGO_HOST) --test_id $(TEST_ID) --corr_bitstream_version $(CORR_BITSTREAM_VERSION) -v -rpfs
-
-XRAY_TEST_RESULT_FILE = build/reports/cucumber.json
 
 echo-charts:
 	@echo $(K8S_CHART_PARAMS)
@@ -214,21 +194,21 @@ update-internal-schema:
 
 update-chart:
 	@if [ "$(USE_DEV_BUILD)" == "false" ]; then \
-		echo "Updating Chart.yaml to change ska-mid-cbf-tdc-mcs and ska-mid-cbf-tdc-tmleafnode version to $(MCS_LATEST_TAG) and repository to $(HELM_INTERNAL_REPO)"; \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tdc-mcs").version) = "$(MCS_LATEST_TAG)"' $(CHART_FILE); \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tdc-mcs").repository) = "$(HELM_INTERNAL_REPO)"' $(CHART_FILE); \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tdc-tmleafnode").version) = "$(MCS_LATEST_TAG)"' $(CHART_FILE); \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tdc-tmleafnode").repository) = "$(HELM_INTERNAL_REPO)"' $(CHART_FILE); \
+		echo "Updating Chart.yaml to change ska-mid-cbf-mcs and ska-mid-cbf-tmleafnode version to $(MCS_LATEST_TAG) and repository to $(HELM_INTERNAL_REPO)"; \
+		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-mcs").version) = "$(MCS_LATEST_TAG)"' $(CHART_FILE); \
+		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-mcs").repository) = "$(HELM_INTERNAL_REPO)"' $(CHART_FILE); \
+		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tmleafnode").version) = "$(MCS_LATEST_TAG)"' $(CHART_FILE); \
+		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tmleafnode").repository) = "$(HELM_INTERNAL_REPO)"' $(CHART_FILE); \
 		echo "Updating Chart.yaml to change ska-mid-cbf-engineering-console version to $(EC_LATEST_TAG) and repository to $(HELM_INTERNAL_REPO)"; \
 		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-engineering-console").version) = "$(EC_LATEST_TAG)"' $(CHART_FILE); \
 		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-engineering-console").repository) = "$(HELM_INTERNAL_REPO)"' $(CHART_FILE); \
 	else \
-		echo "Updating Chart.yaml to change ska-mid-cbf-tdc-mcs and ska-mid-cbf-tdc-tmleafnode version to $(MCS_HASH_VERSION) and repository to $(MCS_HELM_REPO)"; \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tdc-mcs").version) = "$(MCS_HASH_VERSION)"' $(CHART_FILE); \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tdc-mcs").repository) = "$(MCS_HELM_REPO)"' $(CHART_FILE); \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tdc-tmleafnode").version) = "$(MCS_HASH_VERSION)"' $(CHART_FILE); \
-		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tdc-tmleafnode").repository) = "$(MCS_HELM_REPO)"' $(CHART_FILE); \
-		echo "Updating values.yaml to change ska-mid-cbf-tdc-mcs and ska-mid-cbf-tdc-tmleafnode LRC timeout values; controllerTimeout: $(CONTROLLER_TIMEOUT)"; \
+		echo "Updating Chart.yaml to change ska-mid-cbf-mcs and ska-mid-cbf-tmleafnode version to $(MCS_HASH_VERSION) and repository to $(MCS_HELM_REPO)"; \
+		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-mcs").version) = "$(MCS_HASH_VERSION)"' $(CHART_FILE); \
+		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-mcs").repository) = "$(MCS_HELM_REPO)"' $(CHART_FILE); \
+		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tmleafnode").version) = "$(MCS_HASH_VERSION)"' $(CHART_FILE); \
+		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-tmleafnode").repository) = "$(MCS_HELM_REPO)"' $(CHART_FILE); \
+		echo "Updating values.yaml to change ska-mid-cbf-mcs and ska-mid-cbf-tmleafnode LRC timeout values; controllerTimeout: $(CONTROLLER_TIMEOUT)"; \
 		yq eval -i '.ska-mid-cbf-tdc-mcs.controllerTimeout = $(CONTROLLER_TIMEOUT)' $(VALUES_FILE); \
 		echo "Updating Chart.yaml to change ska-mid-cbf-engineering-console version to $(EC_HASH_VERSION) and repository to $(EC_HELM_REPO)"; \
 		yq eval -i '(.dependencies[] | select(.name == "ska-mid-cbf-engineering-console").version) = "$(EC_HASH_VERSION)"' $(CHART_FILE); \
