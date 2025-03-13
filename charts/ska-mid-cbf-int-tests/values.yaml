@@ -56,8 +56,8 @@ ska-tango-util:
 ska-mid-cbf-mcs:
   # To use a version from CAR instead, update the signalVerificationVersion and replace the Gitlab svImageRegistry with the one below it 
   signalVerificationVersion: 0.2.24-dev.c57cfd28a
-  # svImageRegistry: "registry.gitlab.com/ska-telescope/ska-mid-cbf-signal-verification"
-  svImageRegistry: "artefact.skao.int"
+  svImageRegistry: "registry.gitlab.com/ska-telescope/ska-mid-cbf-signal-verification"
+  # svImageRegistry: "artefact.skao.int"
   hostInfo:
     environment: "mid-psi"
     clusterDomain: "cluster.local"
