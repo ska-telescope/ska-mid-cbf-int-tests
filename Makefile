@@ -45,8 +45,6 @@ include .make/base.mk
 TARANTA_PARAMS = --set ska-taranta.enabled=$(TARANTA) \
 				 --set global.taranta_auth_enabled=$(TARANTA_AUTH) \
 				 --set global.taranta_dashboard_enabled=$(TARANTA)
-endif
-endif
 
 CI_JOB_ID ?= local##pipeline job id
 TANGO_HOST ?= databaseds-tango-base:10000## TANGO_HOST connection to the Tango DS
