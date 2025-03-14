@@ -31,12 +31,23 @@ pylint = "^2.17.4"
 pylint-junit = "^0.3.2"
 pytest-json = "^0.4.0"
 pylance = "^0.5.9"
+pytango = "9.5.0"
+ska-tango-base = "1.0.0"
+ska-tango-testing = "0.7.2"
+# Ensure that ska-mid-cbf-common-test-infrastructure dependency is synced with docs
 ska-mid-cbf-common-test-infrastructure = { version = "0.0.0+dev.c4d2ea95e", source = "gitlab-pkg-registry-common-test-infrastructure"}
+
+[tool.poetry.group.docs]
+optional = true
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "^7.4.7"
 sphinx-rtd-theme = "^3.0.0"
 myst-parser = "^4.0.1"
+ska-tango-base = "1.0.0"
+ska-tango-testing = "0.7.2"
+# Ensure that ska-mid-cbf-common-test-infrastructure dependency is synced with project depedencies
+ska-mid-cbf-common-test-infrastructure = { version = "0.0.0+dev.c4d2ea95e", source = "gitlab-pkg-registry-common-test-infrastructure"}
 
 [[tool.poetry.source]]
 name = "gitlab-pkg-registry-common-test-infrastructure"
@@ -51,5 +62,5 @@ name = "PyPI-public"
 url = "https://pypi.org/simple"
 
 [build-system]
-requires = ["poetry-core>=1.8.0"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
