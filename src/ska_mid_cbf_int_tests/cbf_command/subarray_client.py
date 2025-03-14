@@ -1,4 +1,4 @@
-"""TODO"""
+"""Module for SubarrayClient code."""
 from __future__ import annotations
 
 import time

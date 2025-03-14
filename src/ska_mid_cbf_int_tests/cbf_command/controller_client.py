@@ -1,4 +1,4 @@
-"""TODO"""
+"""Module for ControllerClient code."""
 from __future__ import annotations
 
 from ska_control_model import AdminMode, SimulationMode
@@ -22,7 +22,7 @@ STATE_ATTR_NAME = "state"
 
 
 class ControllerClient(DeviceClient):
-    """ASDNALSKNDLKAJSNDKLJN"""
+    """API Client for controlling the MCS CBF Controller"""
 
     def __init__(
         self: ControllerClient,
@@ -38,7 +38,12 @@ class ControllerClient(DeviceClient):
         self.alobserver.subscribe_event_tracer(self.fqdn, LRC_ATTR_NAME)
 
     def simulation_mode_on(self: ControllerClient):
-        """TODO"""
+        """
+        Set simulation mode as SimulationMode.TRUE for the controller.
+
+        REQUIRES: admin mode should be offline for a simulation mode change
+        to correctly occur.
+        """
         self.alobserver.logger.info(
             self._log_wr_attr_msg(
                 SIMULATIONMODE_ATTR_NAME, SimulationMode.TRUE
@@ -49,7 +54,12 @@ class ControllerClient(DeviceClient):
         )
 
     def simulation_mode_off(self: ControllerClient):
-        """TODO"""
+        """
+        Set simulation mode as SimulationMode.FALSE for the controller.
+
+        REQUIRES: admin mode should be offline for a simulation mode change
+        to correctly occur.
+        """
         self.alobserver.logger.info(
             self._log_wr_attr_msg(
                 SIMULATIONMODE_ATTR_NAME, SimulationMode.FALSE
@@ -60,21 +70,33 @@ class ControllerClient(DeviceClient):
         )
 
     def admin_mode_online(self: ControllerClient):
-        """TODO"""
+        """
+        Set admin mode as AdminMode.ONLINE for the controller.
+        """
         self.alobserver.logger.info(
             self._log_wr_attr_msg(ADMINMODE_ATTR_NAME, AdminMode.ONLINE)
         )
         self.proxy.write_attribute(ADMINMODE_ATTR_NAME, AdminMode.ONLINE)
 
     def admin_mode_offline(self: ControllerClient):
-        """TODO"""
+        """
+        Set admin mode as AdminMode.OFFLINE for the controller.
+        """
         self.alobserver.logger.info(
             self._log_wr_attr_msg(ADMINMODE_ATTR_NAME, AdminMode.OFFLINE)
         )
         self.proxy.write_attribute(ADMINMODE_ATTR_NAME, AdminMode.OFFLINE)
 
     def init_sys_param(self: ControllerClient, init_sys_param_str: str):
-        """TODO"""
+        """
+        Send given init_sys_param_str to the controller.
+
+        :param init_sys_param_str: json string containing information
+            controller initial system parameters according to schema:
+            https://developer.skao.int/projects/ska-telmodel/en/latest/schemas/midcbf/initsysparam/index.html
+        :raises AssertionError: error if alobserver is ASSERTING and LRC
+            ok message is not received
+        """
         init_sys_param_cmd_name = "InitSysParam"
 
         self.alobserver.logger.info(
@@ -90,7 +112,13 @@ class ControllerClient(DeviceClient):
         )
 
     def on(self: ControllerClient):
-        """TODO"""
+        """
+        Turn controller on.
+
+        :raises AssertionError: error if alobserver is ASSERTING and (LRC
+            ok message is not received or controller state does not change to
+            DevState.ON)
+        """
         # pylint: disable=invalid-name
         on_cmd_name = "On"
 
@@ -107,7 +135,13 @@ class ControllerClient(DeviceClient):
         )
 
     def off(self: ControllerClient):
-        """TODO"""
+        """
+        Turn controller off.
+
+        :raises AssertionError: raises if alobserver is ASSERTING and (LRC
+            ok message is not received or controller state does not change to
+            DevState.OFF)
+        """
         off_cmd_name = "Off"
 
         lrc_result = self.proxy.command_inout(off_cmd_name)
