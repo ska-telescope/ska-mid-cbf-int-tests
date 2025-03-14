@@ -6,14 +6,13 @@ PROJECT = ska-mid-cbf-int-tests
 # depending on dev environment, specifically regarding trailing whitespace. Do
 # not include trailing whitespace for any variables set as true or false. 
 
-# KUBE_NAMESPACE defines the Kubernetes Namespace that will be deployed to
-# using Helm.  If this does not already exist it will be created
-KUBE_NAMESPACE ?= ska-mid-cbf-int-tests
+KUBE_NAMESPACE ?=
 
 KUBE_APP ?= ska-mid-cbf-int-tests
 
-TARANTA ?= true## Enable Taranta
-TARANTA_AUTH ?= false## Enable Taranta
+# Enable Taranta
+TARANTA ?= true
+TARANTA_AUTH ?= false
 
 EXPOSE_All_DS ?= true## Expose All Tango Services to the external network (enable Loadbalancer service)
 SKA_TANGO_OPERATOR ?= true
@@ -46,7 +45,6 @@ PYTEST_MARKER ?=
 ALO_ASSERTING ?= 1
 
 CI_JOB_ID ?= local##pipeline job id
-KUBE_NAMESPACE ?=
 TANGO_HOST ?= databaseds-tango-base:10000## TANGO_HOST connection to the Tango DS
 CLUSTER_DOMAIN ?= cluster.local## Domain used for naming Tango Device Servers
 
@@ -71,7 +69,13 @@ endif
 CONTROLLER_TIMEOUT?=100
 
 # Add verbosity and INFO logging to python-test
-PYTHON_VARS_AFTER_PYTEST = -v --capture=no --log-cli-level=INFO --alo-asserting $(ALO_ASSERTING) --namespace $(KUBE_NAMESPACE) --cluster-domain $(CLUSTER_DOMAIN) --tango-host $(TANGO_HOST)
+PYTHON_VARS_AFTER_PYTEST = -v \
+    --capture=no \
+	--log-cli-level=INFO \
+	--alo-asserting $(ALO_ASSERTING) \
+	--namespace $(KUBE_NAMESPACE) \
+	--cluster-domain $(CLUSTER_DOMAIN) \
+	--tango-host $(TANGO_HOST)
 
 # lint exception justification: redefined-outer-name must be disabled for pytest fixtures
 # lint exception justification: unused-argument must be disabled for pytest fixtures

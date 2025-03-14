@@ -99,7 +99,8 @@ notebook-test:
     - when: never
 
 python-test:
-  allow_failure: true
+  extends:
+    - .mid
   tags:
     - $RUNNER_TAG
   rules:
@@ -110,3 +111,4 @@ python-test:
       when: manual
       needs:
         - job: psi-mid-on-demand-deploy
+  allow_failure: true
