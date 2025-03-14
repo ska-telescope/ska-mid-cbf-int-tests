@@ -114,7 +114,7 @@ def device_clients_pkg_sesh_setup_teardown(
             encoding="utf_8",
         ) as file_in:
             device_clients_pkg_obj.controller.init_sys_param(
-                json.dumps(json.load(file_in)).replace("\n", "")
+                json.dumps(json.load(file_in))
             )
         device_clients_pkg_obj.controller.on()
 

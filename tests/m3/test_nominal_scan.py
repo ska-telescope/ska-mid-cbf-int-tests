@@ -25,14 +25,12 @@ class TestNominalScan:
             "r",
             encoding="utf_8",
         ) as file_in:
-            cls.conf_scan_str = json.dumps(json.load(file_in)).replace(
-                "\n", ""
-            )
+            cls.conf_scan_str = json.dumps(json.load(file_in))
 
         with open(
             os.path.join(M3_DATA_DIR, "dummy_scan.json"), "r", encoding="utf_8"
         ) as file_in:
-            cls.scan_str = json.dumps(json.load(file_in)).replace("\n", "")
+            cls.scan_str = json.dumps(json.load(file_in))
 
     def test_scan(
         self: TestNominalScan,
