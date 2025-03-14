@@ -22,7 +22,7 @@ STATE_ATTR_NAME = "state"
 
 
 class ControllerClient(DeviceClient):
-    """TODO"""
+    """ASDNALSKNDLKAJSNDKLJN"""
 
     def __init__(
         self: ControllerClient,

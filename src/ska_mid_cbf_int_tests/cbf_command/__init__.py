@@ -1,4 +1,4 @@
-"""Exposes clients at mcs_command module level."""
+"""Exposes clients at cbf_command module level."""
 
 from .controller_client import ControllerClient  # noqa: F401
 from .deployer_client import DeployerClient  # noqa: F401
