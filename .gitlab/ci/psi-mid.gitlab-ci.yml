@@ -30,6 +30,8 @@ psi-mid-on-demand-info:
   extends:
     - .info
     - .psi_mid_on_demand
+  rules:
+    - when: manual
   allow_failure: true
 
 psi-mid-on-demand-destroy:
@@ -54,6 +56,8 @@ psi-mid-on-demand-redeploy:
   extends:
     - .redeploy
     - .psi_mid_on_demand
+  rules:
+    - when: manual
   allow_failure: true
   environment:
     name: psi-mid/ska-$CI_COMMIT_REF_NAME

@@ -6,6 +6,7 @@
 
 .deploy:
   variables:
+    K8S_AUTH_NAMESPACES: "$KUBE_NAMESPACE"
     K8S_AUTH_SERVICE_ACCOUNT: "ci-svc-int-tests-$CI_PIPELINE_ID"
     SKA_TANGO_ARCHIVER: "false"
     VALUES: values.yaml
