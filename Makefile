@@ -14,15 +14,6 @@ KUBE_APP ?= ska-mid-cbf-int-tests
 
 TARANTA ?= true## Enable Taranta
 TARANTA_AUTH ?= false## Enable Taranta
-MINIKUBE ?= false## Minikube or not
-
-LOADBALANCER_IP ?= 142.73.34.170## psi mid head node
-INGRESS_PROTOCOL ?= https
-ifeq ($(strip $(MINIKUBE)),true)
-LOADBALANCER_IP ?= $(shell minikube ip)
-INGRESS_HOST ?= $(LOADBALANCER_IP)
-INGRESS_PROTOCOL ?= http
-endif
 
 EXPOSE_All_DS ?= true## Expose All Tango Services to the external network (enable Loadbalancer service)
 SKA_TANGO_OPERATOR ?= true
@@ -54,12 +45,6 @@ include .make/base.mk
 TARANTA_PARAMS = --set ska-taranta.enabled=$(TARANTA) \
 				 --set global.taranta_auth_enabled=$(TARANTA_AUTH) \
 				 --set global.taranta_dashboard_enabled=$(TARANTA)
-
-ifneq ($(MINIKUBE),)
-ifneq ($(MINIKUBE),true)
-TARANTA_PARAMS = --set ska-taranta.enabled=$(TARANTA) \
-				 --set global.taranta_auth_enabled=$(TARANTA_AUTH) \
-				 --set global.taranta_dashboard_enabled=$(TARANTA)
 endif
 endif
 
@@ -72,8 +57,7 @@ SIGNAL_VERIFICATION_IMAGE_VER=$(shell kubectl describe pod/sv -n $(KUBE_NAMESPAC
 
 
 K8S_EXTRA_PARAMS ?=
-K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
-	--set global.exposeAllDS=$(EXPOSE_All_DS) \
+K8S_CHART_PARAMS = --set global.exposeAllDS=$(EXPOSE_All_DS) \
 	--set global.tango_host=$(TANGO_HOST) \
 	--set global.cluster_domain=$(CLUSTER_DOMAIN) \
 	--set global.operator=$(SKA_TANGO_OPERATOR) \

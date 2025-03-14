@@ -41,6 +41,7 @@ psi-mid-on-demand-destroy:
     - .psi_mid_on_demand
   needs:
     - job: python-test
+    - when: manual #to be changed when tests are implemented
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: delayed
