@@ -57,27 +57,3 @@ class TestNominalScan:
         subarray_1.end_scan()
         subarray_1.go_to_idle()
         subarray_1.remove_all_receptors()
-
-    def test_scan_2(
-        self: TestNominalScan,
-        device_clients_pkg: DeviceClientPkg,
-        recording_pkg: RecordingPkg,
-    ):
-        """Test nominal scan sequence 2."""
-        # Create subarray proxy and add to subarray_dict for potential cleanup
-        subarray_1_fqdn = gen_subarray_fqdn(1)
-        device_clients_pkg.subarray_dict[subarray_1_fqdn] = SubarrayClient(
-            subarray_1_fqdn, recording_pkg.alobserver
-        )
-
-        subarray_1 = device_clients_pkg.subarray_dict[subarray_1_fqdn]
-        subarray_1.send_to_empty()
-
-        recording_pkg.logger.info("Starting LMC to MCS Subarray Scan Sequence")
-
-        subarray_1.add_receptors(["SKA001", "SKA036", "SKA063", "SKA100"])
-        subarray_1.configure_scan(self.conf_scan_str)
-        subarray_1.scan(self.scan_str)
-        subarray_1.end_scan()
-        subarray_1.go_to_idle()
-        subarray_1.remove_all_receptors()
