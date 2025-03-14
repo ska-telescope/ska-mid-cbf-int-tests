@@ -1,4 +1,7 @@
-"""TODO"""
+"""
+Module containing general pytest configuration for ska-mid-cbf-int-tests
+milestone tests.
+"""
 import json
 import logging
 import os
@@ -24,13 +27,18 @@ TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 
 
 @pytest.fixture(scope="session")
-def recording_pkg_sesh_setup(request: pytest.FixtureRequest) -> RecordingPkg:
-    """TODO"""
-    asserting = bool(int(request.config.getoption("--alo-asserting")))
+def recording_pkg(request: pytest.FixtureRequest) -> RecordingPkg:
+    """
+    Pytest Fixture for the main RecordingPkg class instance of the pytest
+    session. Aside from basic instantiation sets up AssertiveLoggingObserver
+    (ALO) of RecordingPkg in given mode of --alo-asserting.
 
+    :return: pytest session's RecordingPkg instance
+    """
     logging.basicConfig(format=LOG_FORMAT, level=logging.INFO)
     test_logger = logging.getLogger(__name__)
 
+    asserting = bool(int(request.config.getoption("--alo-asserting")))
     if asserting:
         asserting_mode = AssertiveLoggingObserverMode.ASSERTING
     else:
@@ -41,26 +49,31 @@ def recording_pkg_sesh_setup(request: pytest.FixtureRequest) -> RecordingPkg:
     return recording_pkg
 
 
-@pytest.fixture()
-def recording_pkg(
-    recording_pkg_sesh_setup: RecordingPkg,
-) -> Generator[RecordingPkg, None, None]:
-    """TODO"""
-    # Setup
-
-    recording_pkg_obj = recording_pkg_sesh_setup
-
-    yield recording_pkg_obj
-
-    # Teardown
-
-
 @pytest.fixture(scope="session")
 def device_clients_pkg_sesh_setup_teardown(
     request: pytest.FixtureRequest,
-    recording_pkg_sesh_setup: RecordingPkg,
+    recording_pkg: RecordingPkg,
 ) -> Generator[DeviceClientPkg, None, None]:
-    """TODO"""
+    """
+    Pytest Fixture setting up and tearing down the main DeviceClientPkg class
+    instance of the pytest session. Turns CBF on instantiating ControllerClient
+    and using current sequence with its context descibed in "Notes". Ensures
+    admin mode is online and in event of error fatal to session that admin mode
+    is set to offline before propagating the error.
+
+    Notes:
+    - TEMP: Uses EC deployer interacting with TDC attributes and commands,
+    will be used until replaced or changed in AA2+
+    - TEMP: Sets to simulation mode on until bitstream + FHS + MCS connection
+    is defined and completed
+    - TEMP: Turns CBF on using similar sequence to minimal controller
+    integration tests of https://gitlab.com/ska-telescope/ska-mid-cbf-mcs will
+    change sequence once MCS is changed for AA2+
+
+    :param recording_pkg: Fixture of RecordingPkg for pytest session, used to
+        associate alobserver to instantiated device client instances
+    :return: pytest session's DeviceClientPkg instance
+    """
     # Setup
 
     # Connect to TANGO_HOST
@@ -79,7 +92,7 @@ def device_clients_pkg_sesh_setup_teardown(
     deployer_client.generate_config_jsons()
 
     device_clients_pkg_obj = DeviceClientPkg(
-        ControllerClient(CONTROLLER_FQDN, recording_pkg_sesh_setup.alobserver),
+        ControllerClient(CONTROLLER_FQDN, recording_pkg.alobserver),
         {},
     )
 
@@ -89,11 +102,11 @@ def device_clients_pkg_sesh_setup_teardown(
     #       simulation mode is TRUE
     device_clients_pkg_obj.controller.simulation_mode_on()
 
-    # CBF Controller On Sequence
-    device_clients_pkg_obj.controller.admin_mode_online()
+    # CBF Controller On Sequence Start
 
-    # If anything goes wrong with session in scope of controller
-    # turn on ensure admin is off after
+    # If anything goes wrong with session in scope of admin mode online ensure
+    # admin mode is set to offline after
+    device_clients_pkg_obj.controller.admin_mode_online()
     try:
         with open(
             os.path.join(TEST_DATA_DIR, "dummy_init_sys_param.json"),
@@ -119,9 +132,16 @@ def device_clients_pkg_sesh_setup_teardown(
 @pytest.fixture()
 def device_clients_pkg(
     device_clients_pkg_sesh_setup_teardown: DeviceClientPkg,
-    recording_pkg: RecordingPkg,
 ) -> Generator[DeviceClientPkg, None, None]:
-    """TODO"""
+    """
+    Wrapper class used to retrieve Pytest Fixture for the main DeviceClientPkg
+    class instance of the pytest session. On each call ensures teardown of any
+    subarrays added to main DeviceClientPkg's subarray_dict.
+
+    :param device_clients_pkg_sesh_setup_teardown: Resulting DeviceClientPkg
+        for pytest session from setup
+    :return: pytest session's RecordingPkg instance
+    """
     # Setup
 
     # Return device_clients_pkg_obj
@@ -142,9 +162,12 @@ def device_clients_pkg(
 
 @pytest.fixture(scope="session", autouse=True)
 def session_setup_teardown(
-    recording_pkg_sesh_setup, device_clients_pkg_sesh_setup_teardown
+    recording_pkg, device_clients_pkg_sesh_setup_teardown
 ):
-    """TODO"""
+    """
+    General pytest session setup and teardown, used to ensure pytest
+    session's RecordingPkg and DeviceClientPkg are instantiated.
+    """
     # Setup
     yield
     # Teardown

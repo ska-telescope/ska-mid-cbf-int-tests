@@ -79,8 +79,7 @@ PYTHON_VARS_AFTER_PYTEST = -v \
 
 # lint exception justification: redefined-outer-name must be disabled for pytest fixtures
 # lint exception justification: unused-argument must be disabled for pytest fixtures
-# lint exception justification: --ignore-long-lines ignores specifically urls which can not be split up
-PYTHON_SWITCHES_FOR_PYLINT = --disable=redefined-outer-name,unused-argument --ignore-long-lines
+PYTHON_SWITCHES_FOR_PYLINT = --disable=redefined-outer-name,unused-argument
 
 # Quickly fix isort lint issues
 python-fix-isort:

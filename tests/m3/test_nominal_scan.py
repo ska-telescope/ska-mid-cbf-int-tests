@@ -1,5 +1,5 @@
 """
-Nominal scan sequence.
+M3 milestone nominal scan sequence testing.
 """
 from __future__ import annotations
 
@@ -15,11 +15,11 @@ M3_DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 
 
 class TestNominalScan:
-    """TODO"""
+    """Tests related to testing nominal scan sequence."""
 
     @classmethod
     def setup_class(cls: TestNominalScan):
-        """TODO"""
+        """Read in dummy_configure_scan str and dummy_scan str."""
         with open(
             os.path.join(M3_DATA_DIR, "dummy_configure_scan.json"),
             "r",
@@ -39,7 +39,10 @@ class TestNominalScan:
         device_clients_pkg: DeviceClientPkg,
         recording_pkg: RecordingPkg,
     ):
-        """Test nominal scan sequence."""
+        """
+        Test nominal scan sequence as defined in
+        https://developer.skao.int/projects/ska-mid-cbf-mcs/en/latest/guide/interfaces/lmc_mcs_interface.html
+        """
         # Create subarray proxy and add to subarray_dict for potential cleanup
         subarray_1_fqdn = gen_subarray_fqdn(1)
         device_clients_pkg.subarray_dict[subarray_1_fqdn] = SubarrayClient(

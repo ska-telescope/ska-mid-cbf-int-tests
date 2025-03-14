@@ -1,4 +1,7 @@
-"""TODO"""
+"""
+Module containing test relevant class instance packages to reduce the number of
+fixtures necessary for testing and improve organization/readability.
+"""
 from __future__ import annotations
 
 import dataclasses
@@ -15,7 +18,9 @@ from ska_mid_cbf_int_tests.cbf_command import ControllerClient, SubarrayClient
 
 @dataclasses.dataclass
 class RecordingPkg:
-    """TODO"""
+    """
+    Package for testing grouping class instances relevant to recording.
+    """
 
     logger: logging.Logger
     alobserver: AssertiveLoggingObserver
@@ -31,7 +36,9 @@ class RecordingPkg:
 
 @dataclasses.dataclass
 class DeviceClientPkg:
-    """TODO"""
+    """
+    Package for testing grouping class instances of relevant device clients.
+    """
 
     controller: ControllerClient
     subarray_dict: Dict[str, SubarrayClient] = dataclasses.field(
