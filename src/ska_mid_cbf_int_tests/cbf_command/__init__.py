@@ -1,4 +1,4 @@
-"""Exposes clients at cbf_command module level."""
+"""Module containing client code for interactations with CBF devices."""
 
 from .controller_client import ControllerClient  # noqa: F401
 from .deployer_client import DeployerClient  # noqa: F401
