@@ -3,12 +3,10 @@
     CONFIG: mid
     HELM_RELEASE: "test-$CI_PIPELINE_ID"
     KUBE_NAMESPACE: "ci-$CI_PROJECT_NAME-$CI_PIPELINE_ID-$GITLAB_USER_LOGIN"
-    KUBE_NAMESPACE_SDP: "$KUBE_NAMESPACE-sdp"
 
 .deploy:
   variables:
-    K8S_AUTH_NAMESPACES: "$KUBE_NAMESPACE $KUBE_NAMESPACE_SDP"
-    K8S_AUTH_SERVICE_ACCOUNT: "ci-svc-sys-tests-$CI_PIPELINE_ID"
+    K8S_AUTH_SERVICE_ACCOUNT: "ci-svc-int-tests-$CI_PIPELINE_ID"
     SKA_TANGO_ARCHIVER: "false"
     VALUES: values.yaml
     CHART_FILE: "charts/ska-mid-cbf-int-tests/Chart.yaml"
@@ -17,7 +15,6 @@
     - echo "Make config dump"
     - make vars
     - make k8s-namespace KUBE_NAMESPACE=$KUBE_NAMESPACE
-    - make k8s-namespace KUBE_NAMESPACE=$KUBE_NAMESPACE_SDP
     - make k8s-namespace-credentials
     - |
       if [ "$K8S_INSTALL_FROM_CAR" != "true" ]; then
@@ -38,10 +35,7 @@
   script:
     - echo "Get namespace resources"
     - make k8s-get
-    - echo "Get SDP namespace resources"
-    - make k8s-get KUBE_NAMESPACE=${KUBE_NAMESPACE}-sdp
     - make k8s-info
-    - make k8s-info KUBE_NAMESPACE=${KUBE_NAMESPACE}-sdp
 
 .cleanup:
   stage: cleanup

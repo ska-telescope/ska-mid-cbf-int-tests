@@ -7,18 +7,17 @@ include:
   stage: on_demand_psi
   extends:
     - .mid
+  allow_failure: true
   variables:
     VALUES: "values.yml"
     INGRESS_HOST: "INGRESS.IP.ADDRESS"
-    SERVICE_ACCOUNT: "ci-svc-sys-tests-$CI_PIPELINE_ID"
+    SERVICE_ACCOUNT: "ci-svc-int-tests-$CI_PIPELINE_ID"
 
 psi-mid-on-demand-deploy:
   extends:
     - .deploy
     - .psi_mid_on_demand
   rules:
-    - if: $TARGET_SITE == "itf"
-      when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: always
     - if: $CI_PIPELINE_SOURCE != "schedule"
@@ -31,10 +30,6 @@ psi-mid-on-demand-info:
   extends:
     - .info
     - .psi_mid_on_demand
-  rules:
-    - if: $TARGET_SITE == "itf"
-      when: never
-    - when: manual
   allow_failure: true
 
 psi-mid-on-demand-destroy:
@@ -45,8 +40,6 @@ psi-mid-on-demand-destroy:
   needs:
     - job: python-test
   rules:
-    - if: $TARGET_SITE == "itf"
-      when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: delayed
       start_in: 10 mins
@@ -61,10 +54,6 @@ psi-mid-on-demand-redeploy:
   extends:
     - .redeploy
     - .psi_mid_on_demand
-  rules:
-    - if: $TARGET_SITE == "itf"
-      when: never
-    - when: manual
   allow_failure: true
   environment:
     name: psi-mid/ska-$CI_COMMIT_REF_NAME

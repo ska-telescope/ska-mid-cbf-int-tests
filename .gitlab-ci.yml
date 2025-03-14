@@ -4,13 +4,10 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
   MINIKUBE: "false"
   TARGET_SITE: psi
-  RUNNER_TAG: k8srunner-psi-mid #Choose between k8srunner-psi-mid and ska-k8srunner-za-itf
+  RUNNER_TAG: k8srunner-psi-mid 
   TANGO_HOST: databaseds-tango-base:10000
-  CLUSTER_DOMAIN: "cluster.local" #Choose between cluster.local and miditf.internal.skao.int
+  CLUSTER_DOMAIN: "cluster.local"
   K8S_TIMEOUT: 800s
-  USE_DEV_BUILD: "true"
-  CONTAINER_SCANNING_DISABLED: 'true' # to disable the container scanning
-
 
 workflow:
   name: '$CI_PIPELINE_NAME'
