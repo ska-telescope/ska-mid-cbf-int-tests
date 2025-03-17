@@ -87,7 +87,7 @@ def device_clients_pkg_sesh_setup_teardown(
 
     # TEMP: Use deployer to write target talons and generate config json for
     # controller
-    deployer_client = DeployerClient(DEPLOYER_FQDN, 250)
+    deployer_client = DeployerClient(DEPLOYER_FQDN)
     deployer_client.wr_target_talons([1, 2, 3, 4])
     deployer_client.generate_config_jsons()
 

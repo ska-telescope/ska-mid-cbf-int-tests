@@ -29,7 +29,17 @@ class ControllerClient(DeviceClient):
         device_fqdn: str,
         alobserver: AssertiveLoggingObserver,
     ):
+        """
+        Create instance of ControllerClient.
+
+        :param device_fqdn: FQDN of controller tango device
+        :param alobserver: AssertiveLoggingObserver to log to and associate
+            events with
+        """
         super().__init__(device_fqdn, DEFAULT_DEVICE_TIMEOUT, alobserver)
+
+    def _prep_alobserver_tracer(self: ControllerClient):
+        """Subscribe to necessary events for commands of ControllerClient."""
         self.alobserver.subscribe_event_tracer(self.fqdn, ADMINMODE_ATTR_NAME)
         self.alobserver.subscribe_event_tracer(
             self.fqdn, SIMULATIONMODE_ATTR_NAME

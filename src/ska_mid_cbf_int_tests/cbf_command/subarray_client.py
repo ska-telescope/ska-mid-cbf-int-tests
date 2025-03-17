@@ -29,7 +29,17 @@ class SubarrayClient(DeviceClient):
         device_fqdn: str,
         alobserver: AssertiveLoggingObserver,
     ):
+        """
+        Create instance of SubarrayClient.
+
+        :param device_fqdn: FQDN of subarray tango device
+        :param alobserver: AssertiveLoggingObserver to log to and associate
+            events with
+        """
         super().__init__(device_fqdn, DEFAULT_DEVICE_TIMEOUT, alobserver)
+
+    def _prep_alobserver_tracer(self: SubarrayClient):
+        """Subscribe to necessary events for commands of SubarrayClient."""
         self.alobserver.subscribe_event_tracer(self.fqdn, OBSSTATE_ATTR_NAME)
         self.alobserver.subscribe_event_tracer(self.fqdn, LRC_ATTR_NAME)
 

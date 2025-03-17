@@ -3,6 +3,10 @@ from __future__ import annotations
 
 from typing import List
 
+from ska_mid_cbf_int_tests.constants.timeout_constants import (
+    DEFAULT_DEVICE_TIMEOUT,
+)
+
 from .device_client import DeviceClient
 
 
@@ -13,12 +17,16 @@ class DeployerClient(DeviceClient):
     Note: Likely will be deleted for AA2+ as TDC is left behind.
     """
 
-    def __init__(
-        self: DeployerClient,
-        device_fqdn: str,
-        device_timeout_sec: float,
-    ):
-        super().__init__(device_fqdn, device_timeout_sec, None)
+    def __init__(self: DeployerClient, device_fqdn: str):
+        """
+        Create instance of DeployerClient
+
+        :param device_fqdn: FQDN of deployer tango device.
+        """
+        super().__init__(device_fqdn, DEFAULT_DEVICE_TIMEOUT, None)
+
+    def _prep_alobserver_tracer(self: DeployerClient):
+        """No subscriptions necessary for DeployerClient."""
 
     def wr_target_talons(self: DeployerClient, talon_nos: List[int]):
         """
