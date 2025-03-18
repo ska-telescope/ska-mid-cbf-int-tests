@@ -71,10 +71,10 @@ class SubarrayClient(DeviceClient):
         """
         end_time = time.time() + max_wait_time_sec
         while time.time() < end_time:
-            if (self.get_obsstate() not in obs_states_to_exit):
+            if self.get_obsstate() not in obs_states_to_exit:
                 return True
             time.sleep(delay_between_read_sec)
-        if (self.get_obsstate() not in obs_states_to_exit):
+        if self.get_obsstate() not in obs_states_to_exit:
             return True
         self.alobserver.logger.error(
             f"{self.fqdn}: Timeout waiting to exit one of states: "
@@ -84,7 +84,7 @@ class SubarrayClient(DeviceClient):
             f"{self.fqdn}: Final state was: {self.get_obsstate()}"
         )
         return False
-    
+
     def get_obsstate(self: SubarrayClient) -> ObsState:
         """
         Get current ObsState of subarray.
@@ -100,7 +100,7 @@ class SubarrayClient(DeviceClient):
 
         :param receptors: list of receptors to add to the subarray. Receptors
             must match dish receptor id format associated with dish_mapping of
-            a relevant schema in 
+            a relevant schema in
             https://developer.skao.int/projects/ska-telmodel/en/latest/schemas/midcbf/initsysparam/index.html
         :raises AssertionError: error if alobserver is ASSERTING and (subarray
             does not change to ObsState.IDLE or LRC ok message is not received)
@@ -131,7 +131,7 @@ class SubarrayClient(DeviceClient):
 
         :param receptors: list of receptors to remove from the subarray.
             Receptors must match dish receptor id format associated with
-            dish_mapping of a relevant schema in 
+            dish_mapping of a relevant schema in
             https://developer.skao.int/projects/ska-telmodel/en/latest/schemas/midcbf/initsysparam/index.html
         :raises AssertionError: error if alobserver is ASSERTING and (subarray
             does not change to ObsState.EMPTY/IDLE or LRC ok message is not
@@ -366,7 +366,7 @@ class SubarrayClient(DeviceClient):
         Follows observing state machine
         https://developer.skao.int/projects/ska-control-model/en/latest/obs_state.html
         to bring subarray to ObsState.EMPTY from any current observing state.
-        
+
         :raises AssertionError: error if alobserver is ASSERTING and (subarray
             does not change to expected state or LRC ok message is not
             received)
