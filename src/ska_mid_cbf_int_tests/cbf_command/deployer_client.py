@@ -12,7 +12,7 @@ from .device_client import DeviceClient
 
 class DeployerClient(DeviceClient):
     """
-    API Client for controlling the EC Deployer,
+    API Client for controlling the EC Deployer.
 
     Note: Likely will be deleted for AA2+ as TDC is left behind.
     """

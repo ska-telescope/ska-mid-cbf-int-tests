@@ -22,7 +22,11 @@ STATE_ATTR_NAME = "state"
 
 
 class ControllerClient(DeviceClient):
-    """API Client for controlling the MCS CBF Controller"""
+    """
+    API Client for controlling the MCS CBF Controller. Implemented commands
+    generally follow
+    https://developer.skao.int/projects/ska-mid-cbf-mcs/en/latest/guide/interfaces/lmc_mcs_interface.html
+    """
 
     def __init__(
         self: ControllerClient,
@@ -101,11 +105,12 @@ class ControllerClient(DeviceClient):
         """
         Send given init_sys_param_str to the controller.
 
-        :param init_sys_param_str: json string containing information
-            controller initial system parameters according to schema:
+        :param init_sys_param_str: json string containing initial system
+            parameters for the controller. Format and info should be according
+            to a supported schema in
             https://developer.skao.int/projects/ska-telmodel/en/latest/schemas/midcbf/initsysparam/index.html
-        :raises AssertionError: error if alobserver is ASSERTING and LRC
-            ok message is not received
+        :raises AssertionError: error if alobserver is ASSERTING and LRC ok
+            message is not received
         """
         init_sys_param_cmd_name = "InitSysParam"
 

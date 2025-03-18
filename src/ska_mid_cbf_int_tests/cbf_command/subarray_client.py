@@ -22,7 +22,13 @@ OBSSTATE_ATTR_NAME = "obsstate"
 
 
 class SubarrayClient(DeviceClient):
-    """TODO"""
+    """
+    API Client for controlling an MCS subarray device. Implemented commands
+    generally follow
+    https://developer.skao.int/projects/ska-mid-cbf-mcs/en/latest/guide/interfaces/lmc_mcs_interface.html
+    and for success observing states should follow state machine in
+    https://developer.skao.int/projects/ska-control-model/en/latest/obs_state.html
+    """
 
     def __init__(
         self: SubarrayClient,
@@ -65,29 +71,40 @@ class SubarrayClient(DeviceClient):
         """
         end_time = time.time() + max_wait_time_sec
         while time.time() < end_time:
-            if (
-                self.proxy.read_attribute(OBSSTATE_ATTR_NAME).value
-                not in obs_states_to_exit
-            ):
+            if (self.get_obsstate() not in obs_states_to_exit):
                 return True
             time.sleep(delay_between_read_sec)
-        if (
-            self.proxy.read_attribute(OBSSTATE_ATTR_NAME).value
-            not in obs_states_to_exit
-        ):
+        if (self.get_obsstate() not in obs_states_to_exit):
             return True
         self.alobserver.logger.error(
             f"{self.fqdn}: Timeout waiting to exit one of states: "
             f"{obs_states_to_exit}"
         )
         self.alobserver.logger.error(
-            f"{self.fqdn}: Final state was: "
-            f"{self.proxy.read_attribute(OBSSTATE_ATTR_NAME).value}"
+            f"{self.fqdn}: Final state was: {self.get_obsstate()}"
         )
         return False
+    
+    def get_obsstate(self: SubarrayClient) -> ObsState:
+        """
+        Get current ObsState of subarray.
+
+        :returns ObsState: current ObsState of subarray.
+        """
+        return self.proxy.read_attribute(OBSSTATE_ATTR_NAME).value
 
     def add_receptors(self: SubarrayClient, receptors: List[str]):
-        """TODO"""
+        """
+        Add given receptors to the subarray. On success, subarray should go to
+        ObsState.IDLE.
+
+        :param receptors: list of receptors to add to the subarray. Receptors
+            must match dish receptor id format associated with dish_mapping of
+            a relevant schema in 
+            https://developer.skao.int/projects/ska-telmodel/en/latest/schemas/midcbf/initsysparam/index.html
+        :raises AssertionError: error if alobserver is ASSERTING and (subarray
+            does not change to ObsState.IDLE or LRC ok message is not received)
+        """
         add_receptors_cmd_name = "AddReceptors"
 
         self.alobserver.logger.info(
@@ -107,7 +124,19 @@ class SubarrayClient(DeviceClient):
         )
 
     def remove_receptors(self: SubarrayClient, receptors: List[str]):
-        """TODO"""
+        """
+        Remove given receptors from the subarray. On success, subarray should
+        go to ObsState.IDLE if not all receptors are removed or ObsState.EMPTY
+        if all receptors are removed.
+
+        :param receptors: list of receptors to remove from the subarray.
+            Receptors must match dish receptor id format associated with
+            dish_mapping of a relevant schema in 
+            https://developer.skao.int/projects/ska-telmodel/en/latest/schemas/midcbf/initsysparam/index.html
+        :raises AssertionError: error if alobserver is ASSERTING and (subarray
+            does not change to ObsState.EMPTY/IDLE or LRC ok message is not
+            received)
+        """
         remove_receptors_cmd_name = "RemoveReceptors"
 
         self.alobserver.logger.info(
@@ -134,7 +163,14 @@ class SubarrayClient(DeviceClient):
         )
 
     def remove_all_receptors(self: SubarrayClient):
-        """TODO"""
+        """
+        Remove all receptors from the subarray. On success, subarray should
+        go to ObsState.EMPTY.
+
+        :raises AssertionError: error if alobserver is ASSERTING and (subarray
+            does not change to ObsState.EMPTY or LRC ok message is not
+            received)
+        """
         remove_all_receptors_cmd_name = "RemoveAllReceptors"
 
         self.alobserver.logger.info(
@@ -152,7 +188,18 @@ class SubarrayClient(DeviceClient):
         )
 
     def configure_scan(self: SubarrayClient, configure_str: str):
-        """TODO"""
+        """
+        Configure the scan of the subarray. On success, subarray should go to
+        ObsState.READY.
+
+        :param configure_str: json string containing configuration for subarray
+            to configure scan to. Format and info should be according to a
+            supported schema in
+            https://developer.skao.int/projects/ska-telmodel/en/latest/schemas/csp/mid/configurescan/index.html
+        :raises AssertionError: error if alobserver is ASSERTING and (subarray
+            does not change to ObsState.READY or LRC ok message is not
+            received)
+        """
         configure_scan_cmd_names = "ConfigureScan"
 
         self.alobserver.logger.info(
@@ -172,7 +219,17 @@ class SubarrayClient(DeviceClient):
         )
 
     def scan(self: SubarrayClient, scan_str: str):
-        """TODO"""
+        """
+        Starts the scan of the subarray. On success, subarray should go to
+        ObsState.SCANNING.
+
+        :param configure_str: json string containing scan info. Format and info
+            should be according to a supported schema in
+            https://developer.skao.int/projects/ska-telmodel/en/latest/schemas/csp/mid/scan/index.html
+        :raises AssertionError: error if alobserver is ASSERTING and (subarray
+            does not change to ObsState.SCANNING or LRC ok message is not
+            received)
+        """
         scan_cmd_name = "Scan"
 
         self.alobserver.logger.info(self._log_cmd_msg(scan_cmd_name, scan_str))
@@ -180,10 +237,7 @@ class SubarrayClient(DeviceClient):
         lrc_result = self.proxy.command_inout(scan_cmd_name, scan_str)
 
         self.alobserver.observe_device_attr_change(
-            self.fqdn,
-            OBSSTATE_ATTR_NAME,
-            ObsState.SCANNING,
-            TIMEOUT_SHORT,
+            self.fqdn, OBSSTATE_ATTR_NAME, ObsState.SCANNING, TIMEOUT_SHORT
         )
 
         self.alobserver.observe_lrc_ok(
@@ -191,7 +245,14 @@ class SubarrayClient(DeviceClient):
         )
 
     def end_scan(self: SubarrayClient):
-        """TODO"""
+        """
+        Ends the scan of the subarray. On success, subarray should go to
+        ObsState.READY.
+
+        :raises AssertionError: error if alobserver is ASSERTING and (subarray
+            does not change to ObsState.READY or LRC ok message is not
+            received)
+        """
         end_scan_cmd_name = "EndScan"
 
         self.alobserver.logger.info(self._log_cmd_msg(end_scan_cmd_name))
@@ -199,10 +260,7 @@ class SubarrayClient(DeviceClient):
         lrc_result = self.proxy.command_inout(end_scan_cmd_name)
 
         self.alobserver.observe_device_attr_change(
-            self.fqdn,
-            OBSSTATE_ATTR_NAME,
-            ObsState.READY,
-            TIMEOUT_SHORT,
+            self.fqdn, OBSSTATE_ATTR_NAME, ObsState.READY, TIMEOUT_SHORT
         )
 
         self.alobserver.observe_lrc_ok(
@@ -210,7 +268,14 @@ class SubarrayClient(DeviceClient):
         )
 
     def go_to_idle(self: SubarrayClient):
-        """TODO"""
+        """
+        Sends the subarray to idle. On success, subarray should go to
+        ObsState.IDLE.
+
+        :raises AssertionError: error if alobserver is ASSERTING and (subarray
+            does not change to ObsState.IDLE or LRC ok message is not
+            received)
+        """
         go_to_idle_cmd_name = "GoToIdle"
 
         self.alobserver.logger.info(self._log_cmd_msg(go_to_idle_cmd_name))
@@ -226,7 +291,15 @@ class SubarrayClient(DeviceClient):
         )
 
     def abort(self: SubarrayClient):
-        """TODO"""
+        """
+        Aborts current stage of subarray from
+        ObsState.IDLE/CONFIGURING/READY/SCANNING. On success, subarray should
+        go to ObsState.ABORTED.
+
+        :raises AssertionError: error if alobserver is ASSERTING and (subarray
+            does not change to ObsState.ABORTED or LRC ok message is not
+            received)
+        """
         abort_cmd_name = "Abort"
 
         self.alobserver.logger.info(self._log_cmd_msg(abort_cmd_name))
@@ -242,7 +315,14 @@ class SubarrayClient(DeviceClient):
         )
 
     def reset(self: SubarrayClient):
-        """TODO"""
+        """
+        Resets current stage of subarray from ObsState.FAULT/ABORTED keeping
+        assigned receptors. On success, subarray should go to ObsState.IDLE.
+
+        :raises AssertionError: error if alobserver is ASSERTING and (subarray
+            does not change to ObsState.IDLE or LRC ok message is not
+            received)
+        """
         reset_cmd_name = "Reset"
 
         self.alobserver.logger.info(self._log_cmd_msg(reset_cmd_name))
@@ -250,59 +330,73 @@ class SubarrayClient(DeviceClient):
         lrc_result = self.proxy.command_inout(reset_cmd_name)
 
         self.alobserver.observe_device_attr_change(
-            self.fqdn, OBSSTATE_ATTR_NAME, ObsState.EMPTY, TIMEOUT_SHORT
+            self.fqdn, OBSSTATE_ATTR_NAME, ObsState.IDLE, TIMEOUT_SHORT
         )
 
         self.alobserver.observe_lrc_ok(
             self.fqdn, lrc_result, reset_cmd_name, TIMEOUT_SHORT
         )
 
+    def restart(self: SubarrayClient):
+        """
+        Restarts current stage of subarray from ObsState.FAULT/ABORTED not
+        keeping assigned receptors. On success, subarray should go to
+        ObsState.EMPTY.
+
+        :raises AssertionError: error if alobserver is ASSERTING and (subarray
+            does not change to ObsState.ABORTED or LRC ok message is not
+            received)
+        """
+        restart_cmd_name = "Restart"
+
+        self.alobserver.logger.info(self._log_cmd_msg(restart_cmd_name))
+
+        lrc_result = self.proxy.command_inout(restart_cmd_name)
+
+        self.alobserver.observe_device_attr_change(
+            self.fqdn, OBSSTATE_ATTR_NAME, ObsState.EMPTY, TIMEOUT_SHORT
+        )
+
+        self.alobserver.observe_lrc_ok(
+            self.fqdn, lrc_result, restart_cmd_name, TIMEOUT_SHORT
+        )
+
     def send_to_empty(self: SubarrayClient):
-        """TODO"""
+        """
+        Follows observing state machine
+        https://developer.skao.int/projects/ska-control-model/en/latest/obs_state.html
+        to bring subarray to ObsState.EMPTY from any current observing state.
+        
+        :raises AssertionError: error if alobserver is ASSERTING and (subarray
+            does not change to expected state or LRC ok message is not
+            received)
+        """
         exiting_wait_time_sec = TIMEOUT_SHORT
 
-        if (
-            self.proxy.read_attribute(OBSSTATE_ATTR_NAME).value
-            == ObsState.READY
-        ):
+        if self.get_obsstate() == ObsState.READY:
             self.go_to_idle()
 
-        if (
-            self.proxy.read_attribute(OBSSTATE_ATTR_NAME).value
-            == ObsState.IDLE
-        ):
+        if self.get_obsstate() == ObsState.IDLE:
             self.remove_all_receptors()
 
-        if self.proxy.read_attribute(OBSSTATE_ATTR_NAME).value in [
-            ObsState.RESOURCING,
-            ObsState.RESTARTING,
-        ]:
+        if self.get_obsstate() in [ObsState.RESOURCING, ObsState.RESTARTING]:
             self._wait_to_exit_obs_states(
                 [ObsState.RESOURCING, ObsState.RESTARTING],
                 exiting_wait_time_sec,
             )
 
-        # Take abort reset path if not in EMPTY yet
-        if (
-            self.proxy.read_attribute(OBSSTATE_ATTR_NAME).value
-            != ObsState.EMPTY
-        ):
+        # Take abort restart path if not in EMPTY yet
+        if self.get_obsstate() != ObsState.EMPTY:
 
             # Ensure not in erroring transition state
-            if self.proxy.read_attribute(OBSSTATE_ATTR_NAME).value in [
-                ObsState.ABORTING,
-                ObsState.RESETTING,
-            ]:
+            if self.get_obsstate() in [ObsState.ABORTING, ObsState.RESETTING]:
                 self._wait_to_exit_obs_states(
                     [ObsState.ABORTING, ObsState.RESETTING],
                     exiting_wait_time_sec,
                 )
 
-            # Ensure in resettable state
-            if self.proxy.read_attribute(OBSSTATE_ATTR_NAME).value in [
-                ObsState.FAULT,
-                ObsState.ABORTED,
-            ]:
+            # Ensure in restartable state
+            if self.get_obsstate() not in [ObsState.FAULT, ObsState.ABORTED]:
                 self.abort()
 
-            self.reset()
+            self.restart()
