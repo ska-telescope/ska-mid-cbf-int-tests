@@ -6,7 +6,7 @@ PROJECT = ska-mid-cbf-int-tests
 # depending on dev environment, specifically regarding trailing whitespace. Do
 # not include trailing whitespace for any variables set as true or false. 
 
-KUBE_NAMESPACE ?= ci-ska-mid-cbf-int-tests-1723373927-bremedios
+KUBE_NAMESPACE ?=
 
 KUBE_APP ?= ska-mid-cbf-int-tests
 
