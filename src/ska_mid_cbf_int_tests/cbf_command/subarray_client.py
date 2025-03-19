@@ -19,6 +19,7 @@ from ska_mid_cbf_int_tests.constants.timeout_constants import (
 from .device_client import DeviceClient
 
 OBSSTATE_ATTR_NAME = "obsstate"
+RECEPTORS_ATTR_NAME = "receptors"
 
 
 class SubarrayClient(DeviceClient):
@@ -89,9 +90,17 @@ class SubarrayClient(DeviceClient):
         """
         Get current ObsState of subarray.
 
-        :returns ObsState: current ObsState of subarray.
+        :returns: current ObsState of subarray.
         """
         return self.proxy.read_attribute(OBSSTATE_ATTR_NAME).value
+
+    def get_receptors(self: SubarrayClient) -> List[str]:
+        """
+        Get current receptors assigned to subarray.
+
+        :returns: current receptors assigned to subarray.
+        """
+        return list(self.proxy.read_attribute(RECEPTORS_ATTR_NAME).value)
 
     def add_receptors(self: SubarrayClient, receptors: List[str]):
         """
@@ -314,7 +323,7 @@ class SubarrayClient(DeviceClient):
             self.fqdn, lrc_result, abort_cmd_name, TIMEOUT_SHORT
         )
 
-    def reset(self: SubarrayClient):
+    def obsreset(self: SubarrayClient):
         """
         Resets current stage of subarray from ObsState.FAULT/ABORTED keeping
         assigned receptors. On success, subarray should go to ObsState.IDLE.
@@ -323,18 +332,18 @@ class SubarrayClient(DeviceClient):
             does not change to ObsState.IDLE or LRC ok message is not
             received)
         """
-        reset_cmd_name = "Reset"
+        obsreset_cmd_name = "ObsReset"
 
-        self.alobserver.logger.info(self._log_cmd_msg(reset_cmd_name))
+        self.alobserver.logger.info(self._log_cmd_msg(obsreset_cmd_name))
 
-        lrc_result = self.proxy.command_inout(reset_cmd_name)
+        lrc_result = self.proxy.command_inout(obsreset_cmd_name)
 
         self.alobserver.observe_device_attr_change(
             self.fqdn, OBSSTATE_ATTR_NAME, ObsState.IDLE, TIMEOUT_SHORT
         )
 
         self.alobserver.observe_lrc_ok(
-            self.fqdn, lrc_result, reset_cmd_name, TIMEOUT_SHORT
+            self.fqdn, lrc_result, obsreset_cmd_name, TIMEOUT_SHORT
         )
 
     def restart(self: SubarrayClient):

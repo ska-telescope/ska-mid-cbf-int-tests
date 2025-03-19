@@ -2,7 +2,6 @@
 Module containing general pytest configuration for ska-mid-cbf-int-tests
 milestone tests.
 """
-import json
 import logging
 import os
 from typing import Generator
@@ -15,15 +14,22 @@ from ska_mid_cbf_common_test_infrastructure.test_logging.format import (
     LOG_FORMAT,
 )
 
-from ska_mid_cbf_int_tests.cbf_command import ControllerClient, DeployerClient
-from ska_mid_cbf_int_tests.constants.tango_constants import (
-    CONTROLLER_FQDN,
-    DEPLOYER_FQDN,
-)
+from ska_mid_cbf_int_tests.cbf_command import ControllerClient
+from ska_mid_cbf_int_tests.constants.tango_constants import CONTROLLER_FQDN
 
 from .test_lib.test_packages import DeviceClientPkg, RecordingPkg
 
-TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+
+@pytest.fixture(scope="session")
+def connect_tango_host(request: pytest.FixtureRequest):
+    """Pytest Ficture for connecting to TANGO_HOST for session"""
+    tango_host = request.config.getoption("--tango-host")
+    namespace = request.config.getoption("--namespace")
+    cluster_domain = request.config.getoption("--cluster-domain")
+    tango_hostname, tango_port = tango_host.split(":")
+    os.environ[
+        "TANGO_HOST"
+    ] = f"{tango_hostname}.{namespace}.svc.{cluster_domain}:{tango_port}"
 
 
 @pytest.fixture(scope="session")
@@ -51,82 +57,22 @@ def recording_pkg(request: pytest.FixtureRequest) -> RecordingPkg:
 
 @pytest.fixture(scope="session")
 def device_clients_pkg_sesh_setup_teardown(
-    request: pytest.FixtureRequest,
+    connect_tango_host,
     recording_pkg: RecordingPkg,
 ) -> Generator[DeviceClientPkg, None, None]:
-    """
-    Pytest Fixture setting up and tearing down the main DeviceClientPkg class
-    instance of the pytest session. Turns CBF on instantiating ControllerClient
-    and using current sequence with its context descibed in "Notes". Ensures
-    admin mode is online and in event of error fatal to session that admin mode
-    is set to offline before propagating the error.
+    """TODO"""
 
-    Notes:
-    - TEMP: Uses EC deployer interacting with TDC attributes and commands,
-    will be used until replaced or changed in AA2+
-    - TEMP: Sets to simulation mode on until bitstream + FHS + MCS connection
-    is defined and completed
-    - TEMP: Turns CBF on using similar sequence to minimal controller
-    integration tests of https://gitlab.com/ska-telescope/ska-mid-cbf-mcs will
-    change sequence once MCS is changed for AA2+
-
-    :param recording_pkg: Fixture of RecordingPkg for pytest session, used to
-        associate alobserver to instantiated device client instances
-    :return: pytest session's DeviceClientPkg instance
-    """
     # Setup
 
-    # Connect to TANGO_HOST
-    tango_host = request.config.getoption("--tango-host")
-    namespace = request.config.getoption("--namespace")
-    cluster_domain = request.config.getoption("--cluster-domain")
-    tango_hostname, tango_port = tango_host.split(":")
-    os.environ[
-        "TANGO_HOST"
-    ] = f"{tango_hostname}.{namespace}.svc.{cluster_domain}:{tango_port}"
-
-    # TEMP: Use deployer to write target talons and generate config json for
-    # controller
-    deployer_client = DeployerClient(DEPLOYER_FQDN)
-    deployer_client.wr_target_talons([1, 2, 3, 4])
-    deployer_client.generate_config_jsons()
-
+    # Create and yield device_clients_pkg
     device_clients_pkg_obj = DeviceClientPkg(
         ControllerClient(CONTROLLER_FQDN, recording_pkg.alobserver),
         {},
     )
 
-    # TEMP: Set to simulation mode off, use until MCS-FHS connection is ready
-    # Note: will break if simulationMode is added to deployment as is planned
-    #       so remove if that happens, just here to explicitly remind us that
-    #       simulation mode is TRUE
-    device_clients_pkg_obj.controller.simulation_mode_on()
+    yield device_clients_pkg_obj
 
-    # CBF Controller On Sequence Start
-
-    # If anything goes wrong with session in scope of admin mode online ensure
-    # admin mode is set to offline after
-    device_clients_pkg_obj.controller.admin_mode_online()
-    try:
-        with open(
-            os.path.join(TEST_DATA_DIR, "dummy_init_sys_param.json"),
-            "r",
-            encoding="utf_8",
-        ) as file_in:
-            device_clients_pkg_obj.controller.init_sys_param(
-                json.dumps(json.load(file_in))
-            )
-        device_clients_pkg_obj.controller.on()
-
-        yield device_clients_pkg_obj
-
-        # Teardown
-
-        device_clients_pkg_obj.controller.admin_mode_offline()
-
-    except Exception as exception:
-        device_clients_pkg_obj.controller.admin_mode_offline()
-        raise exception
+    # Teardown
 
 
 @pytest.fixture()
@@ -140,11 +86,11 @@ def device_clients_pkg(
 
     :param device_clients_pkg_sesh_setup_teardown: Resulting DeviceClientPkg
         for pytest session from setup
-    :return: pytest session's RecordingPkg instance
+    :return: pytest session's DeviceClientPkg instance
     """
     # Setup
 
-    # Return device_clients_pkg_obj
+    # Yield sesh DeviceClientPkg
     device_clients_pkg_obj = device_clients_pkg_sesh_setup_teardown
 
     yield device_clients_pkg_obj
@@ -162,7 +108,7 @@ def device_clients_pkg(
 
 @pytest.fixture(scope="session", autouse=True)
 def session_setup_teardown(
-    recording_pkg, device_clients_pkg_sesh_setup_teardown
+    connect_tango_host, recording_pkg, device_clients_pkg_sesh_setup_teardown
 ):
     """
     General pytest session setup and teardown, used to ensure pytest
