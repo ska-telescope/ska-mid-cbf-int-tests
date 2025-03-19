@@ -29,3 +29,10 @@ Welcome to ska-mid-cbf-int-tests' documentation!
    :caption: CBF Command API Documentation
 
    cbf_command/cbf_command.rst
+
+.. tests/test_lib Test Packages Documentation =============================================================
+.. toctree::
+   :maxdepth: 2
+   :caption: tests/test_lib Test Packages Documentation
+
+   test_lib/test_packages.rst

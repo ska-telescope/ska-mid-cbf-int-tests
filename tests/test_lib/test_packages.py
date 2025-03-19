@@ -1,6 +1,6 @@
 """
-Module containing test relevant class instance packages to reduce the number of
-fixtures necessary for testing and improve organization/readability.
+Module containing bundles of test relevant class instances to reduce the number
+of fixtures and improve test organization/readability.
 """
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ from ska_mid_cbf_int_tests.cbf_command import ControllerClient, SubarrayClient
 @dataclasses.dataclass
 class RecordingPkg:
     """
-    Package for testing grouping class instances relevant to recording.
+    Package bundling class instances relevant to test recording.
     """
 
     logger: logging.Logger
@@ -37,7 +37,7 @@ class RecordingPkg:
 @dataclasses.dataclass
 class DeviceClientPkg:
     """
-    Package for testing grouping class instances of relevant device clients.
+    Package bundling class instances of relevant int-tests device clients.
     """
 
     controller: ControllerClient
