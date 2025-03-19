@@ -19,9 +19,6 @@ CBF_COMMAND_TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 class TestSubarrayClient:
     """Tests command sequencing and functionality of SubarrayClient."""
 
-    def __init__(self: TestSubarrayClient):
-        self.subarray_1 = None
-
     @classmethod
     def setup_class(cls: TestSubarrayClient):
         """Read in dummy_configure_scan str and dummy_scan str."""
@@ -75,7 +72,6 @@ class TestSubarrayClient:
 
     def test_removereceptors(
         self: TestSubarrayClient,
-        device_clients_pkg: DeviceClientPkg,
         recording_pkg: RecordingPkg,
     ):
         """

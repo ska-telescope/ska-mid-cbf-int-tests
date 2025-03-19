@@ -77,9 +77,12 @@ PYTHON_VARS_AFTER_PYTEST = -v \
 	--cluster-domain $(CLUSTER_DOMAIN) \
 	--tango-host $(TANGO_HOST)
 
-# lint exception justification: redefined-outer-name must be disabled for pytest fixtures
-# lint exception justification: unused-argument must be disabled for pytest fixtures
-PYTHON_SWITCHES_FOR_PYLINT = --disable=redefined-outer-name,unused-argument
+# lint exception: redefined-outer-name must be disabled for pytest fixtures
+# lint exception: unused-argument must be disabled for pytest fixtures
+# lint exception: attribute-defined-outside-init must be disabled to satisfy
+#     pytest requirement of not collecting test classes with __init__ while
+#     using attributes
+PYTHON_SWITCHES_FOR_PYLINT = --disable=redefined-outer-name,unused-argument,attribute-defined-outside-init
 
 # Quickly fix isort lint issues
 python-fix-isort:
