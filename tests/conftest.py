@@ -66,7 +66,7 @@ def device_clients_pkg_sesh_setup_teardown(
     to the conftest of each test package but instantiates Controller since
     will be used across all tests.
 
-    :param connect_tango_host: Dependency fixture 
+    :param connect_tango_host: Dependency fixture
     :param recording_pkg: Dependency fixture of RecordingPkg for pytest
         session, used to associate alobserver to instantiated device client
         instances
