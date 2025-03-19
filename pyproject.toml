@@ -35,7 +35,7 @@ pytango = "9.5.0"
 ska-tango-base = "1.0.0"
 ska-tango-testing = "0.7.2"
 # Ensure that ska-mid-cbf-common-test-infrastructure dependency is synced with docs
-ska-mid-cbf-common-test-infrastructure = { version = "0.0.0+dev.c4d2ea95e", source = "gitlab-pkg-registry-common-test-infrastructure"}
+ska-mid-cbf-common-test-infrastructure = { version = "0.0.0+dev.ccaa49b63", source = "gitlab-pkg-registry-common-test-infrastructure"}
 
 [tool.poetry.group.docs]
 optional = true
@@ -47,7 +47,7 @@ myst-parser = "^4.0.1"
 ska-tango-base = "1.0.0"
 ska-tango-testing = "0.7.2"
 # Ensure that ska-mid-cbf-common-test-infrastructure dependency is synced with project depedencies
-ska-mid-cbf-common-test-infrastructure = { version = "0.0.0+dev.c4d2ea95e", source = "gitlab-pkg-registry-common-test-infrastructure"}
+ska-mid-cbf-common-test-infrastructure = { version = "0.0.0+dev.ccaa49b63", source = "gitlab-pkg-registry-common-test-infrastructure"}
 
 [[tool.poetry.source]]
 name = "gitlab-pkg-registry-common-test-infrastructure"
