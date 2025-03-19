@@ -1,6 +1,6 @@
 """
-Module containing general pytest configuration for ska-mid-cbf-int-tests
-milestone tests.
+Conftest containing general pytest configuration for all ska-mid-cbf-int-tests
+basic client and integration milestone tests.
 """
 import logging
 import os
@@ -22,7 +22,7 @@ from .test_lib.test_packages import DeviceClientPkg, RecordingPkg
 
 @pytest.fixture(scope="session")
 def connect_tango_host(request: pytest.FixtureRequest):
-    """Pytest Ficture for connecting to TANGO_HOST for session"""
+    """Pytest Fixture for connecting to TANGO_HOST for session."""
     tango_host = request.config.getoption("--tango-host")
     namespace = request.config.getoption("--namespace")
     cluster_domain = request.config.getoption("--cluster-domain")
@@ -60,7 +60,18 @@ def device_clients_pkg_sesh_setup_teardown(
     connect_tango_host,
     recording_pkg: RecordingPkg,
 ) -> Generator[DeviceClientPkg, None, None]:
-    """TODO"""
+    """
+    Pytest Fixture setting up and tearing down the main DeviceClientPkg class
+    instance of the pytest session. Leaves actual device setup and teardown
+    to the conftest of each test package but instantiates Controller since
+    will be used across all tests.
+
+    :param connect_tango_host: Dependency fixture 
+    :param recording_pkg: Dependency fixture of RecordingPkg for pytest
+        session, used to associate alobserver to instantiated device client
+        instances
+    :return: pytest session's DeviceClientPkg instance
+    """
 
     # Setup
 
@@ -84,8 +95,8 @@ def device_clients_pkg(
     class instance of the pytest session. On each call ensures teardown of any
     subarrays added to main DeviceClientPkg's subarray_dict.
 
-    :param device_clients_pkg_sesh_setup_teardown: Resulting DeviceClientPkg
-        for pytest session from setup
+    :param device_clients_pkg_sesh_setup_teardown: Dependency fixture
+        setting up and returning the session's DeviceClientPkg instance
     :return: pytest session's DeviceClientPkg instance
     """
     # Setup
@@ -112,7 +123,8 @@ def session_setup_teardown(
 ):
     """
     General pytest session setup and teardown, used to ensure pytest
-    session's RecordingPkg and DeviceClientPkg are instantiated.
+    session is connected to TANGO_HOST and that the session's RecordingPkg and
+    DeviceClientPkg are instantiated.
     """
     # Setup
     yield

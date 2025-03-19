@@ -1,4 +1,6 @@
-"""TODO"""
+"""
+Conftest containing pytest configuration for cbf_command basic client testing.
+"""
 
 import json
 import os
@@ -19,23 +21,21 @@ def cbf_command_test_setup_teardown(
     device_clients_pkg_sesh_setup_teardown,
 ) -> Generator[DeviceClientPkg, None, None]:
     """
-    Pytest Fixture setting up and tearing down the main DeviceClientPkg class
-    instance of the pytest session. Turns CBF on instantiating ControllerClient
-    and using current sequence with its context descibed in "Notes". Ensures
-    admin mode is online and in event of error fatal to session that admin mode
-    is set to offline before propagating the error.
+    Pytest Fixture setting up and tearing down the session DeviceClientPkg
+    instance for the cbf_command testing package. Turns CBF on in simulation
+    mode using current sequence descibed in "Notes". Ensures admin mode is
+    online and in event of error fatal to session that admin mode is set to
+    offline before propagating the error.
 
     Notes:
     - TEMP: Uses EC deployer interacting with TDC attributes and commands,
     will be used until replaced or changed in AA2+
-    - TEMP: Sets to simulation mode on until bitstream + FHS + MCS connection
-    is defined and completed
     - TEMP: Turns CBF on using similar sequence to minimal controller
     integration tests of https://gitlab.com/ska-telescope/ska-mid-cbf-mcs will
     change sequence once MCS is changed for AA2+
 
-    :param recording_pkg: Fixture of RecordingPkg for pytest session, used to
-        associate alobserver to instantiated device client instances
+    :param device_clients_pkg_sesh_setup_teardown: Dependency fixture
+        setting up and returning the session's DeviceClientPkg instance
     :return: pytest session's DeviceClientPkg instance
     """
     # Setup
@@ -47,10 +47,9 @@ def cbf_command_test_setup_teardown(
     deployer_client.wr_target_talons([1, 2, 3, 4])
     deployer_client.generate_config_jsons()
 
-    # TEMP: Set to simulation mode off, use until MCS-FHS connection is ready
     # Note: will break if simulationMode is added to deployment as is planned
-    #       so remove if that happens, just here to explicitly remind us that
-    #       simulation mode is TRUE
+    #       so remove if that happens and adjust accordingly, just here to
+    #       explicitly remind us that simulation mode is TRUE
     device_clients_pkg_obj.controller.simulation_mode_on()
 
     # CBF Controller On Sequence Start

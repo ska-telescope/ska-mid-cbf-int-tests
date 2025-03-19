@@ -47,7 +47,10 @@ class TestSubarrayClient:
         device_clients_pkg: DeviceClientPkg,
         recording_pkg: RecordingPkg,
     ):
-        """Setup a SubarrayClient for testing and outer fixture cleanup."""
+        """
+        Setup a SubarrayClient for testing and correct registration for outer
+        fixture subarray cleanup.
+        """
         # Create subarray proxy, add to subarray_dict for potential cleanup,
         # and send to empty
         subarray_1_fqdn = gen_subarray_fqdn(1)
@@ -62,7 +65,6 @@ class TestSubarrayClient:
         Test nominal scan sequence as defined in
         https://developer.skao.int/projects/ska-mid-cbf-mcs/en/latest/guide/interfaces/lmc_mcs_interface.html
         """
-
         # Test nominal scan sequence
         self.subarray_1.add_receptors(["SKA001", "SKA036", "SKA063", "SKA100"])
         self.subarray_1.configure_scan(self.conf_scan_str)
@@ -79,7 +81,6 @@ class TestSubarrayClient:
         """
         Test obsreset maintains recetors and does not go to EMPTY but to IDLE.
         """
-
         # Add receptors
         self.subarray_1.add_receptors(["SKA001", "SKA036", "SKA063", "SKA100"])
         self.subarray_1.remove_receptors(["SKA001", "SKA036"])
@@ -106,7 +107,6 @@ class TestSubarrayClient:
         """
         Test obsreset maintains recetors and does not go to EMPTY but to IDLE.
         """
-
         # Test obsreset doesn't go to empty
         receptors = ["SKA001", "SKA036", "SKA063", "SKA100"]
         self.subarray_1.add_receptors(receptors)
