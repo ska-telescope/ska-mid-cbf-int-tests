@@ -3,7 +3,6 @@ Conftest containing general pytest configuration for all ska-mid-cbf-int-tests
 basic client and integration milestone tests.
 """
 import logging
-import os
 from typing import Generator
 
 import pytest
@@ -14,6 +13,7 @@ from ska_mid_cbf_common_test_infrastructure.test_logging.format import (
     LOG_FORMAT,
 )
 
+import ska_mid_cbf_int_tests.utils.connect_tango_host
 from ska_mid_cbf_int_tests.cbf_command import ControllerClient
 from ska_mid_cbf_int_tests.constants.tango_constants import CONTROLLER_FQDN
 
@@ -23,13 +23,12 @@ from .test_lib.test_packages import DeviceClientPkg, RecordingPkg
 @pytest.fixture(scope="session")
 def connect_tango_host(request: pytest.FixtureRequest):
     """Pytest Fixture for connecting to TANGO_HOST for session."""
-    tango_host = request.config.getoption("--tango-host")
     namespace = request.config.getoption("--namespace")
+    tango_host = request.config.getoption("--tango-host")
     cluster_domain = request.config.getoption("--cluster-domain")
-    tango_hostname, tango_port = tango_host.split(":")
-    os.environ[
-        "TANGO_HOST"
-    ] = f"{tango_hostname}.{namespace}.svc.{cluster_domain}:{tango_port}"
+    ska_mid_cbf_int_tests.utils.connect_tango_host.connect_tango_host(
+        namespace, tango_host, cluster_domain
+    )
 
 
 @pytest.fixture(scope="session")
