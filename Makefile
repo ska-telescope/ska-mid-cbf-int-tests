@@ -83,6 +83,7 @@ PYTHON_VARS_AFTER_PYTEST = -v \
 #     pytest requirement of not collecting test classes with __init__ while
 #     using attributes
 PYTHON_SWITCHES_FOR_PYLINT = --disable=redefined-outer-name,unused-argument,attribute-defined-outside-init
+PYTHON_LINT_TARGET = src tests/ notebooks/
 
 # Quickly fix isort lint issues
 python-fix-isort:
