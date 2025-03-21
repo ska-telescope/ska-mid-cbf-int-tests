@@ -6,5 +6,13 @@
         "init_sys_param_id": "dummy_init_sys_param",
         "configure_scan_id": "dummy_configure_scan",
         "scan_id": "dummy_scan"
+    },
+    "host_connection": {
+        "namespace": "",
+        "tango_host": "databaseds-tango-base:10000",
+        "cluster_domain": "cluster.local"
+    },
+    "recording": {
+        "asserting": false
     }
 }

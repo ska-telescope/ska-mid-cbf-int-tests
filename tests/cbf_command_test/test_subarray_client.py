@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-import importlib.resources as res
+import importlib.resources
 
 import pytest
 from ska_control_model import ObsState
@@ -22,12 +22,14 @@ class TestSubarrayClient:
     def setup_class(cls: TestSubarrayClient):
         """Read in dummy_configure_scan str and dummy_scan str."""
 
-        conf_scan_json_file = res.files(configure_scan_data).joinpath(
-            "dummy_configure_scan.json"
-        )
+        conf_scan_json_file = importlib.resources.files(
+            configure_scan_data
+        ).joinpath("dummy_configure_scan.json")
         cls.conf_scan_str = conf_scan_json_file.read_text()
 
-        scan_json_file = res.files(scan_data).joinpath("dummy_scan.json")
+        scan_json_file = importlib.resources.files(scan_data).joinpath(
+            "dummy_scan.json"
+        )
         cls.scan_str = scan_json_file.read_text()
 
     @pytest.fixture(autouse=True)

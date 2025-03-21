@@ -2,7 +2,7 @@
 Conftest containing pytest configuration for cbf_command basic client testing.
 """
 
-import importlib.resources as res
+import importlib.resources
 from typing import Generator
 
 import pytest
@@ -57,9 +57,9 @@ def cbf_command_test_setup_teardown(
     device_clients_pkg_obj.controller.admin_mode_online()
     try:
 
-        init_sys_param_json_file = res.files(init_sys_param_data).joinpath(
-            "dummy_init_sys_param.json"
-        )
+        init_sys_param_json_file = importlib.resources.files(
+            init_sys_param_data
+        ).joinpath("dummy_init_sys_param.json")
         device_clients_pkg_obj.controller.init_sys_param(
             init_sys_param_json_file.read_text()
         )
