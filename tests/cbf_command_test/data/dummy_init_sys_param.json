@@ -1,0 +1,37 @@
+{
+    "interface": "https://schema.skao.int/ska-mid-cbf-initsysparam/1.0",
+    "dish_parameters": {
+        "SKA001": {
+            "vcc": 1,
+            "k"  : 2
+        },
+        "SKA036": {
+            "vcc": 2,
+            "k"  : 2221
+        },
+        "SKA063": {
+            "vcc": 3,
+            "k"  : 1220
+        },
+        "SKA100": {
+            "vcc": 4,
+            "k"  : 1815
+        },
+        "SKA081": {
+            "vcc": 5,
+            "k"  : 1766
+        },
+        "SKA046": {
+            "vcc": 6,
+            "k"  : 23
+        },
+        "SKA077": {
+            "vcc": 7,
+            "k"  : 954
+        },
+        "SKA048": {
+            "vcc": 8,
+            "k"  : 1227
+        }
+    }
+}
