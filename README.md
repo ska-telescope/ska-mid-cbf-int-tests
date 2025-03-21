@@ -1,5 +1,7 @@
 # SKA Mid.CBF I&T Tests
 
-This internal repository contains I&T driven testing and prototyping Python code for M2, H2, and M3 integration milestones.
+This repository contains testing and prototyping Python code for CIPA team integration testing of internal CBF components, largely driven by issuing commands to MCS.
 
-Code repository: [ska-mid-cbf-int-tests](https://gitlab.com/ska-telescope/ska-mid-cbf-int-tests)
+Code repository: [here](https://gitlab.com/ska-telescope/ska-mid-cbf-int-tests)
+
+ReadtheDocs: [here](https://developer.skao.int/projects/ska-mid-cbf-int-tests/en/latest/)
