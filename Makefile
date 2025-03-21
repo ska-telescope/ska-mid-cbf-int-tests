@@ -93,6 +93,17 @@ python-fix-isort:
 python-fix-black:
 	$(PYTHON_RUNNER) black --exclude .+\.ipynb --line-length $(PYTHON_LINE_LENGTH) $(PYTHON_SWITCHES_FOR_BLACK) $(PYTHON_LINT_TARGET)
 
+# lint exception: missing-module-docstring notebook modules dont need docstring
+NOTEBOOK_SWITCHES_FOR_PYLINT = --disable=missing-module-docstring
+
+# Quickly fix notebook isort lint issues
+python-fix-notebook-isort:
+	$(PYTHON_RUNNER) nbqa isort --profile=black --line-length=$(PYTHON_LINE_LENGTH) $(PYTHON_SWITCHES_FOR_ISORT) $(NOTEBOOK_SWITCHES_FOR_ISORT) $(NOTEBOOK_LINT_TARGET)
+
+# Quickly fix notebook black line issues
+python-fix-notebook-black:
+	$(PYTHON_RUNNER) nbqa black --line-length=$(PYTHON_LINE_LENGTH) $(PYTHON_SWITCHES_FOR_BLACK) $(NOTEBOOK_SWITCHES_FOR_BLACK) $(NOTEBOOK_LINT_TARGET)
+
 echo-charts:
 	@echo $(K8S_CHART_PARAMS)
 
