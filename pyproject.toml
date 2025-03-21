@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "ska-mid-cbf-int-tests"
 version = "0.0.0"
-description = ""
+description = "Internal I&T Testing CBF command code"
 authors = [
     "Rob Huxtable <robert.huxtable@mda.space>",
     "Anton Deriabine <anton.deriabine@mda.space>",
@@ -12,10 +12,11 @@ authors = [
 ]
 license = "BSD License"
 readme = "README.md"
-
 packages = [
     { include = "ska_mid_cbf_int_tests", from = "src" },
 ]
+# Include data jsons in project build for import
+include = [{path = ".json"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"

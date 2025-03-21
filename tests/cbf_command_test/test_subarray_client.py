@@ -2,18 +2,17 @@
 
 from __future__ import annotations
 
-import json
-import os
+import importlib.resources as res
 
 import pytest
 from ska_control_model import ObsState
 
+import ska_mid_cbf_int_tests.data.configure_scan as configure_scan_data
+import ska_mid_cbf_int_tests.data.scan as scan_data
 from ska_mid_cbf_int_tests.cbf_command import SubarrayClient
 from ska_mid_cbf_int_tests.constants.tango_constants import gen_subarray_fqdn
 
 from ..test_lib.test_packages import DeviceClientPkg, RecordingPkg
-
-CBF_COMMAND_TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 
 
 class TestSubarrayClient:
@@ -22,21 +21,14 @@ class TestSubarrayClient:
     @classmethod
     def setup_class(cls: TestSubarrayClient):
         """Read in dummy_configure_scan str and dummy_scan str."""
-        with open(
-            os.path.join(
-                CBF_COMMAND_TEST_DATA_DIR, "dummy_configure_scan.json"
-            ),
-            "r",
-            encoding="utf_8",
-        ) as file_in:
-            cls.conf_scan_str = json.dumps(json.load(file_in))
 
-        with open(
-            os.path.join(CBF_COMMAND_TEST_DATA_DIR, "dummy_scan.json"),
-            "r",
-            encoding="utf_8",
-        ) as file_in:
-            cls.scan_str = json.dumps(json.load(file_in))
+        conf_scan_json_file = res.files(configure_scan_data).joinpath(
+            "dummy_configure_scan.json"
+        )
+        cls.conf_scan_str = conf_scan_json_file.read_text()
+
+        scan_json_file = res.files(scan_data).joinpath("dummy_scan.json")
+        cls.scan_str = scan_json_file.read_text()
 
     @pytest.fixture(autouse=True)
     def setup_function(

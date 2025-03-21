@@ -2,18 +2,16 @@
 Conftest containing pytest configuration for cbf_command basic client testing.
 """
 
-import json
-import os
+import importlib.resources as res
 from typing import Generator
 
 import pytest
 
+import ska_mid_cbf_int_tests.data.init_sys_param as init_sys_param_data
 from ska_mid_cbf_int_tests.cbf_command import DeployerClient
 from ska_mid_cbf_int_tests.constants.tango_constants import DEPLOYER_FQDN
 
 from ..test_lib.test_packages import DeviceClientPkg
-
-CBF_COMMAND_TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 
 
 @pytest.fixture(scope="package", autouse=True)
@@ -58,16 +56,13 @@ def cbf_command_test_setup_teardown(
     # admin mode is set to offline after
     device_clients_pkg_obj.controller.admin_mode_online()
     try:
-        with open(
-            os.path.join(
-                CBF_COMMAND_TEST_DATA_DIR, "dummy_init_sys_param.json"
-            ),
-            "r",
-            encoding="utf_8",
-        ) as file_in:
-            device_clients_pkg_obj.controller.init_sys_param(
-                json.dumps(json.load(file_in))
-            )
+
+        init_sys_param_json_file = res.files(init_sys_param_data).joinpath(
+            "dummy_init_sys_param.json"
+        )
+        device_clients_pkg_obj.controller.init_sys_param(
+            init_sys_param_json_file.read_text()
+        )
         device_clients_pkg_obj.controller.on()
 
         yield device_clients_pkg_obj
