@@ -56,12 +56,12 @@ name = "gitlab-pkg-registry-common-test-infrastructure"
 url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple/"
 
 [[tool.poetry.source]]
-name = "PyPI-public"
-url = "https://pypi.org/simple/"
-
-[[tool.poetry.source]]
 name = "nexus-internal"
 url = "https://artefact.skao.int/repository/pypi-internal/simple/"
+
+[[tool.poetry.source]]
+name = "PyPI-public"
+url = "https://pypi.org/simple/"
 
 [build-system]
 requires = ["poetry-core"]
