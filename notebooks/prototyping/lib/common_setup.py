@@ -7,7 +7,7 @@ from ska_mid_cbf_int_tests.utils.connect_tango_host import connect_tango_host
 from .common_notebook_package import CommonNotebookPkg
 
 NOTEBOOK_PARAM_JSON = (
-    Path.resolve(__file__).parents[1] / "notebook_params.json"
+    Path.resolve(Path(__file__)).parents[1] / "notebook_params.json"
 )
 
 

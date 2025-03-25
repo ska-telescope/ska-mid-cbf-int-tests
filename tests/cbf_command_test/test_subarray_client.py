@@ -71,12 +71,11 @@ class TestSubarrayClient:
         """
         Test obsreset maintains recetors and does not go to EMPTY but to IDLE.
         """
-        # Add receptors
         self.subarray_1.add_receptors(["SKA001", "SKA036", "SKA063", "SKA100"])
-        self.subarray_1.remove_receptors(["SKA001", "SKA036"])
 
         # Check some receptors removed in order invariant fashion and that
         # correctly got to and checked IDLE
+        self.subarray_1.remove_receptors(["SKA001", "SKA036"])
         recording_pkg.alobserver.observe_equality(
             self.subarray_1.get_obsstate(), ObsState.IDLE
         )
