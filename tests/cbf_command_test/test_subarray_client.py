@@ -17,7 +17,7 @@ from ska_mid_cbf_int_tests.cbf_constants.tango_constants import (
 from ..test_lib.test_packages import DeviceClientPkg, RecordingPkg
 
 # Mark all tests in module
-pytestmarker = pytest.mark.client_test
+pytestmark = pytest.mark.client_test
 
 
 class TestSubarrayClient:
