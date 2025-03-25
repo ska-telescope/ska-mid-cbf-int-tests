@@ -56,7 +56,7 @@ def recording_pkg(request: pytest.FixtureRequest) -> RecordingPkg:
 
 @pytest.fixture(scope="session")
 def device_clients_pkg_sesh_setup_teardown(
-    connect_tango_host,
+    call_connect_tango_host,
     recording_pkg: RecordingPkg,
 ) -> Generator[DeviceClientPkg, None, None]:
     """
