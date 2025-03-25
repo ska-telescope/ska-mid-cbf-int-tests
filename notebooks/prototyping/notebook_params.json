@@ -14,9 +14,9 @@
         "asserting": false
     },
     "scan": {
-        "subarray_id": 1,
+        "subarray_no": 1,
         "receptors": [],
-        "configure_scan_id": "dummy_configure_scan",
+        "scan_config_id": "dummy_configure_scan",
         "scan_id": "dummy_scan"
     }
 }

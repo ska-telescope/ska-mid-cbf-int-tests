@@ -97,11 +97,11 @@ python-fix-black:
 NOTEBOOK_SWITCHES_FOR_PYLINT = --disable=missing-module-docstring
 
 # Quickly fix notebook isort lint issues
-python-fix-notebook-isort:
+notebook-fix-isort:
 	$(PYTHON_RUNNER) nbqa isort --profile=black --line-length=$(PYTHON_LINE_LENGTH) $(PYTHON_SWITCHES_FOR_ISORT) $(NOTEBOOK_SWITCHES_FOR_ISORT) $(NOTEBOOK_LINT_TARGET)
 
 # Quickly fix notebook black line issues
-python-fix-notebook-black:
+notebook-fix-black:
 	$(PYTHON_RUNNER) nbqa black --line-length=$(PYTHON_LINE_LENGTH) $(PYTHON_SWITCHES_FOR_BLACK) $(NOTEBOOK_SWITCHES_FOR_BLACK) $(NOTEBOOK_LINT_TARGET)
 
 echo-charts:

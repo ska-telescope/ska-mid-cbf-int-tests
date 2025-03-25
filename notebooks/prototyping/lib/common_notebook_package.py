@@ -31,10 +31,14 @@ class CommonNotebookPkg:
     tango_host: str
     cluster_domain: str
 
-    # Scan information
+    # CBF control information
     deployer_json: List[str]
     init_sys_param: str
-    configure_scan: str
+
+    # Scan information
+    subarray_no: int
+    receptors: List[str]
+    scan_config: str
     scan: str
 
     # Recording class instances
@@ -60,16 +64,6 @@ class CommonNotebookPkg:
             .joinpath(controller_json["init_sys_param_id"] + ".json")
             .read_text()
         )
-        self.configure_scan = (
-            importlib.resources.files(configure_scan_data)
-            .joinpath(controller_json["configure_scan_id"] + ".json")
-            .read_text()
-        )
-        self.scan = (
-            importlib.resources.files(scan_data)
-            .joinpath(controller_json["scan_id"] + ".json")
-            .read_text()
-        )
 
         recording_json = param_json["recording"]
         logging.basicConfig(format=LOG_FORMAT, level=logging.INFO)
@@ -79,4 +73,18 @@ class CommonNotebookPkg:
             if recording_json["asserting"]
             else AssertiveLoggingObserverMode.REPORTING,
             self.logger,
+        )
+
+        scan_json = param_json["scan"]
+        self.subarray_no = scan_json["subarray_no"]
+        self.receptors = scan_json["receptors"]
+        self.scan_config = (
+            importlib.resources.files(configure_scan_data)
+            .joinpath(scan_json["scan_config_id"] + ".json")
+            .read_text()
+        )
+        self.scan = (
+            importlib.resources.files(scan_data)
+            .joinpath(scan_json["scan_id"] + ".json")
+            .read_text()
         )
