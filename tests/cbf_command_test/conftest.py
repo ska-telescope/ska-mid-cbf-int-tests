@@ -9,7 +9,7 @@ import pytest
 
 import ska_mid_cbf_int_tests.cbf_data.init_sys_param as init_sys_param_data
 from ska_mid_cbf_int_tests.cbf_command import DeployerClient
-from ska_mid_cbf_int_tests.constants.tango_constants import DEPLOYER_FQDN
+from ska_mid_cbf_int_tests.cbf_constants.tango_constants import DEPLOYER_FQDN
 
 from ..test_lib.test_packages import DeviceClientPkg
 

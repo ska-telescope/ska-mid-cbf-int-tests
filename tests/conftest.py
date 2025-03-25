@@ -14,7 +14,7 @@ from ska_mid_cbf_common_test_infrastructure.test_logging.format import (
 )
 
 from ska_mid_cbf_int_tests.cbf_command import ControllerClient
-from ska_mid_cbf_int_tests.constants.tango_constants import CONTROLLER_FQDN
+from ska_mid_cbf_int_tests.cbf_constants.tango_constants import CONTROLLER_FQDN
 from ska_mid_cbf_int_tests.env_connect.connect_tango_host import (
     connect_tango_host,
 )
