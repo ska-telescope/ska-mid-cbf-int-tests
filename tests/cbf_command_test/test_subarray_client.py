@@ -7,8 +7,8 @@ import importlib.resources
 import pytest
 from ska_control_model import ObsState
 
-import ska_mid_cbf_int_tests.data.configure_scan as configure_scan_data
-import ska_mid_cbf_int_tests.data.scan as scan_data
+import ska_mid_cbf_int_tests.cbf_data.configure_scan as configure_scan_data
+import ska_mid_cbf_int_tests.cbf_data.scan as scan_data
 from ska_mid_cbf_int_tests.cbf_command import SubarrayClient
 from ska_mid_cbf_int_tests.constants.tango_constants import gen_subarray_fqdn
 

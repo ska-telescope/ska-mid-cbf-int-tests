@@ -13,22 +13,22 @@ from ska_mid_cbf_common_test_infrastructure.test_logging.format import (
     LOG_FORMAT,
 )
 
-import ska_mid_cbf_int_tests.utils.connect_tango_host
 from ska_mid_cbf_int_tests.cbf_command import ControllerClient
 from ska_mid_cbf_int_tests.constants.tango_constants import CONTROLLER_FQDN
+from ska_mid_cbf_int_tests.env_connect.connect_tango_host import (
+    connect_tango_host,
+)
 
 from .test_lib.test_packages import DeviceClientPkg, RecordingPkg
 
 
 @pytest.fixture(scope="session")
-def connect_tango_host(request: pytest.FixtureRequest):
+def call_connect_tango_host(request: pytest.FixtureRequest):
     """Pytest Fixture for connecting to TANGO_HOST for session."""
     namespace = request.config.getoption("--namespace")
     tango_host = request.config.getoption("--tango-host")
     cluster_domain = request.config.getoption("--cluster-domain")
-    ska_mid_cbf_int_tests.utils.connect_tango_host.connect_tango_host(
-        namespace, tango_host, cluster_domain
-    )
+    connect_tango_host(namespace, tango_host, cluster_domain)
 
 
 @pytest.fixture(scope="session")
@@ -118,7 +118,9 @@ def device_clients_pkg(
 
 @pytest.fixture(scope="session", autouse=True)
 def session_setup_teardown(
-    connect_tango_host, recording_pkg, device_clients_pkg_sesh_setup_teardown
+    call_connect_tango_host,
+    recording_pkg,
+    device_clients_pkg_sesh_setup_teardown,
 ):
     """
     General pytest session setup and teardown, used to ensure pytest

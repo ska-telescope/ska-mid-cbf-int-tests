@@ -16,9 +16,9 @@ from ska_mid_cbf_common_test_infrastructure.test_logging.format import (
     LOG_FORMAT,
 )
 
-import ska_mid_cbf_int_tests.data.configure_scan as configure_scan_data
-import ska_mid_cbf_int_tests.data.init_sys_param as init_sys_param_data
-import ska_mid_cbf_int_tests.data.scan as scan_data
+import ska_mid_cbf_int_tests.cbf_data.configure_scan as configure_scan_data
+import ska_mid_cbf_int_tests.cbf_data.init_sys_param as init_sys_param_data
+import ska_mid_cbf_int_tests.cbf_data.scan as scan_data
 
 
 @dataclasses.dataclass
