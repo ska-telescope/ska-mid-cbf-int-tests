@@ -3,9 +3,7 @@
         "talons": [1, 2, 3, 4]
     },
     "controller": {
-        "init_sys_param_id": "dummy_init_sys_param",
-        "configure_scan_id": "dummy_configure_scan",
-        "scan_id": "dummy_scan"
+        "init_sys_param_id": "dummy_init_sys_param"
     },
     "host_connection": {
         "namespace": "",
@@ -14,5 +12,11 @@
     },
     "recording": {
         "asserting": false
+    },
+    "scan": {
+        "subarray_id": 1,
+        "receptors": [],
+        "configure_scan_id": "dummy_configure_scan",
+        "scan_id": "dummy_scan"
     }
 }

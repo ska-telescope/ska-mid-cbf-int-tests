@@ -1,1 +1,1 @@
-"""Dunder for configure_scan data package"""
+"""Dunder for configure_scan data package."""
