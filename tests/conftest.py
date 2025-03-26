@@ -139,11 +139,9 @@ def session_setup_teardown(
 
 def pytest_addoption(parser):  # pylint: disable=C0116
 
-    parser.addoption("--cluster-domain", action="store", help="Cluster domain")
-    parser.addoption(
-        "--namespace", action="store", help="Kubernetes namespace"
-    )
-    parser.addoption("--tango-host", action="store", help="Tango Host")
+    parser.addoption("--namespace-tango-db-address", action="store")
+    parser.addoption("--kube-namespace", action="store")
+    parser.addoption("--kube-cluster-domain", action="store")
 
     parser.addoption(
         "--alo-asserting",
