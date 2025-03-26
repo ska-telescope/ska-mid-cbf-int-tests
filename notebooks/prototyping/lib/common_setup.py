@@ -19,7 +19,7 @@ def common_notebook_setup() -> CommonNotebookPkg:
     common_notebook_pkg = CommonNotebookPkg(NOTEBOOK_PARAM_JSON)
 
     connect_tango_host(
-        common_notebook_pkg.namespace,
+        common_notebook_pkg.kube_namespace,
         common_notebook_pkg.tango_host,
         common_notebook_pkg.cluster_domain,
     )

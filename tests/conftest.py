@@ -25,10 +25,10 @@ from .test_lib.test_packages import DeviceClientPkg, RecordingPkg
 @pytest.fixture(scope="session")
 def call_connect_tango_host(request: pytest.FixtureRequest):
     """Pytest Fixture for connecting to TANGO_HOST for session."""
-    namespace = request.config.getoption("--namespace")
+    kube_namespace = request.config.getoption("--kube-namespace")
     tango_host = request.config.getoption("--tango-host")
     cluster_domain = request.config.getoption("--cluster-domain")
-    connect_tango_host(namespace, tango_host, cluster_domain)
+    connect_tango_host(kube_namespace, tango_host, cluster_domain)
 
 
 @pytest.fixture(scope="session")

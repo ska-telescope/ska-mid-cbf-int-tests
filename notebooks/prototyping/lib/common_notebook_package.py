@@ -27,7 +27,7 @@ class CommonNotebookPkg:
     """TODO"""
 
     # Tango host information
-    namespace: str
+    kube_namespace: str
     tango_host: str
     cluster_domain: str
 
@@ -51,7 +51,7 @@ class CommonNotebookPkg:
             param_json = json.load(json_in)
 
         host_connection_json = param_json["host_connection"]
-        self.namespace = host_connection_json["namespace"]
+        self.namespace = host_connection_json["kube_namespace"]
         self.tango_host = host_connection_json["tango_host"]
         self.cluster_domain = host_connection_json["cluster_domain"]
 
