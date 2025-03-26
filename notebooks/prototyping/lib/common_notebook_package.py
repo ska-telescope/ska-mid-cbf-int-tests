@@ -1,4 +1,4 @@
-"""TODO"""
+"""Module defining common information package for all notebooks."""
 
 from __future__ import annotations
 
@@ -24,7 +24,10 @@ import ska_mid_cbf_int_tests.cbf_data.scan as scan_data
 @dataclasses.dataclass
 class CommonNotebookPkg:
     # pylint: disable=too-many-instance-attributes
-    """TODO"""
+    """
+    Information bundle for easy common access to notebook_params.json
+    information for all prototyping notebooks.
+    """
 
     # Tango host information
     kube_namespace: str
@@ -46,6 +49,11 @@ class CommonNotebookPkg:
     logger: logging.Logger
 
     def __init__(self: CommonNotebookPkg, param_json_path: str):
+        """
+        Loads data from notebook_param.json file reading in values directly
+        or loading in text from referenced json file ids from cbf_data as
+        appropriate.
+        """
 
         with open(param_json_path, "r", encoding="utf-8") as json_in:
             param_json = json.load(json_in)

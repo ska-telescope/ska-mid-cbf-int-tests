@@ -1,4 +1,4 @@
-"""TODO"""
+"""Module containing common setup for all prototyping notebooks."""
 
 from pathlib import Path
 
@@ -14,7 +14,13 @@ NOTEBOOK_PARAM_JSON = (
 
 
 def common_notebook_setup() -> CommonNotebookPkg:
-    """TODO"""
+    """
+    Connect to tango_host and return the CommonNotebookPackage common
+    information bundle.
+
+    :returns: common notebook information bundle containing info in and
+        referenced in NOTEBOOK_PARAM_JSON json
+    """
 
     common_notebook_pkg = CommonNotebookPkg(NOTEBOOK_PARAM_JSON)
 
