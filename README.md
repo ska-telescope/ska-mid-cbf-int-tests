@@ -13,9 +13,9 @@ ReadtheDocs: [here](https://developer.skao.int/projects/ska-mid-cbf-int-tests/en
     * [Automated Testing](#automated-testing)
     * [Prototyping Notebook](#prototyping-notebook)
 * [Technical Notes](#technical-notes)
+    * [LMC Emulation for MCS Interaction](#lmc-emulation-for-mcs-interaction)
     * [Data Access Through importlib.resources](#data-access-through-importlibresources)
-    * [Client Interfaces](#client-interfaces)
-    * [Sphinx API Auto-Documentation](#sphinx-api-auto-documentation)
+    * [Docstring Style and Sphinx API Auto-Documentation](#docstring-style-and-sphinx-api-auto-documentation)
 
 
 # Guides
@@ -88,11 +88,20 @@ Cleaning up the notebook to upload to Gitlab: in the local code repo run scripts
 
 # Technical Notes
 
-## Docstring documentation
+## LMC Emulation for MCS Interaction
+
+Code in ska_mid_cbf_int_tests philosophically should seek to mirror the emulation of LMC as much as possible through its interactions with MCS. See this as a kind of guiding light for this repository. See https://developer.skao.int/projects/ska-mid-cbf-mcs/en/latest/guide/interfaces/lmc_mcs_interface.html for the expected interface. This is important to do as replicating LMC behavior increases the accuracy of tests and prototyping to its final product usage and accordingly increases the probability that the finished Mid.CBF product will be successful in the actual telescope. This further reduces integration issues down the line, especially ensuring that site acceptance and other teams' integration work is successful. An example of doing this is the SubarrayClient in ska_mid_cbf_int_tests in cbf_command which replicates commands in the LMC-MCS interface directly and only additionally contains subroutines that would be possible sequences for LMC to run. 
 
 ## Data Access Through importlib.resources
 
-## Client Interfaces
+The paradigm for data access in ska_mid_cbf_int_tests is to use the modern Python library of importlib.resources (python >=3.7) to import data through Python's import builtin system. This allows data to be imported anywhere in the repository as long as the project is built and installed (via poetry) and corresponding data is included in that build. This is necessary such that data can be commonly used in both the testing executions and also the notebooks executions without tying to specific common relative paths which would introduce high coupling to the data location. See https://docs.python.org/3/library/importlib.resources.html for further information and usage.
 
-## Sphinx API Auto-Documentation
+This means data must be kept in the build directories (src directory) and included in the installed package of the repository which is also under the name ska_mid_cbf_int_tests. Data must be registered in the build specification to be included in the ska_mid_cbf_int_tests package build, as only .py files are included default. Modify the pyproject.toml "include" variable to include non py files as per https://python-poetry.org/docs/pyproject/#exclude-and-include.
 
+## Docstring Style and Sphinx API Auto-Documentation
+
+The docstring style of ska_mid_cbf_int_tests is sphinx https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html. This is necessary for automatic API documentation using the sphinx autodoc extension.
+
+Reference https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html to see how to setup autodoc, such that it automatically generates API documentation from API docstrings in the generated ReadtheDocs pages. Modify files in docs as appropriate to implement this. Importantly, two things to be aware of:
+- Documentation for modules may just generate nothing which commonly is caused by the module not being importable to docs generation code. This requires modifying sys.path attributes in conf.py in the docs directory to get the module importable and recognized.
+- API to be documented requires all of their dependencies installed since they are imported as normal modules for documentation generation, so ensure that the docs dependencies group includes all normal dependencies of the API.
