@@ -5,11 +5,6 @@
     "controller": {
         "init_sys_param_id": "dummy_init_sys_param"
     },
-    "host_connection": {
-        "kube_namespace": "",
-        "tango_host": "databaseds-tango-base:10000",
-        "cluster_domain": "cluster.local"
-    },
     "recording": {
         "asserting": false
     },
@@ -18,5 +13,10 @@
         "receptors": [],
         "scan_config_id": "dummy_configure_scan",
         "scan_id": "dummy_scan"
+    },
+    "tango_host_connection": {
+        "namespace_tango_db_address": "databaseds-tango-base:10000",
+        "kube_namespace": "",
+        "kube_cluster_domain": "cluster.local"
     }
 }

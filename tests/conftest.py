@@ -2,6 +2,7 @@
 Conftest containing general pytest configuration for all ska-mid-cbf-int-tests
 basic client and integration milestone tests.
 """
+
 import logging
 from typing import Generator
 
@@ -26,9 +27,13 @@ from .test_lib.test_packages import DeviceClientPkg, RecordingPkg
 def call_connect_tango_host(request: pytest.FixtureRequest):
     """Pytest Fixture for connecting to TANGO_HOST for session."""
     kube_namespace = request.config.getoption("--kube-namespace")
-    tango_host = request.config.getoption("--tango-host")
-    cluster_domain = request.config.getoption("--cluster-domain")
-    connect_tango_host(kube_namespace, tango_host, cluster_domain)
+    namespace_tango_db_address = request.config.getoption(
+        "--namespace-tango-db-address"
+    )
+    kube_cluster_domain = request.config.getoption("--kube-cluster-domain")
+    connect_tango_host(
+        namespace_tango_db_address, kube_namespace, kube_cluster_domain
+    )
 
 
 @pytest.fixture(scope="session")

@@ -50,10 +50,14 @@ class CommonNotebookPkg:
         with open(param_json_path, "r", encoding="utf-8") as json_in:
             param_json = json.load(json_in)
 
-        host_connection_json = param_json["host_connection"]
-        self.namespace = host_connection_json["kube_namespace"]
-        self.tango_host = host_connection_json["tango_host"]
-        self.cluster_domain = host_connection_json["cluster_domain"]
+        tango_host_connection_json = param_json["tango_host_connection"]
+        self.namespace_tango_db_address = tango_host_connection_json[
+            "namespace_tango_db_address"
+        ]
+        self.kube_namespace = tango_host_connection_json["kube_namespace"]
+        self.kube_cluster_domain = tango_host_connection_json[
+            "kube_cluster_domain"
+        ]
 
         deployer_json = param_json["deployer"]
         self.deployer_talons = deployer_json["talons"]

@@ -47,8 +47,8 @@ PYTEST_MARKER ?= default
 ALO_ASSERTING ?= 1
 
 CI_JOB_ID ?= local##pipeline job id
-TANGO_HOST ?= databaseds-tango-base:10000## TANGO_HOST connection to the Tango DS
-CLUSTER_DOMAIN ?= cluster.local## Domain used for naming Tango Device Servers
+TANGO_HOST ?= databaseds-tango-base:10000## Tango DB DNS address on namespace
+CLUSTER_DOMAIN ?= cluster.local## DNS cluster name
 
 TARANTA_PARAMS = --set ska-taranta.enabled=$(TARANTA) \
 	--set global.taranta_auth_enabled=$(TARANTA_AUTH) \
@@ -76,17 +76,18 @@ PYTHON_VARS_AFTER_PYTEST = \
     --capture=no \
 	--log-cli-level=INFO \
 	--alo-asserting $(ALO_ASSERTING) \
-	--namespace $(KUBE_NAMESPACE) \
-	--cluster-domain $(CLUSTER_DOMAIN) \
-	--tango-host $(TANGO_HOST)
+	--namespace-tango-db-address $(TANGO_HOST) \
+	--kube-namespace $(KUBE_NAMESPACE) \
+	--kube-cluster-domain $(CLUSTER_DOMAIN)
 
+PYTHON_LINT_TARGET = src tests/ notebooks/
+# IMPORTANT: include a justification if adding something to the list
 # lint exception: redefined-outer-name must be disabled for pytest fixtures
 # lint exception: unused-argument must be disabled for pytest fixtures
 # lint exception: attribute-defined-outside-init must be disabled to satisfy
 #     pytest requirement of not collecting test classes with __init__ while
-#     using attributes
+#     still being able to use class instance attributes
 PYTHON_SWITCHES_FOR_PYLINT = --disable=redefined-outer-name,unused-argument,attribute-defined-outside-init
-PYTHON_LINT_TARGET = src tests/ notebooks/
 
 # Quickly fix isort lint issues
 python-fix-isort:
@@ -96,7 +97,9 @@ python-fix-isort:
 python-fix-black:
 	$(PYTHON_RUNNER) black --exclude .+\.ipynb --line-length $(PYTHON_LINE_LENGTH) $(PYTHON_SWITCHES_FOR_BLACK) $(PYTHON_LINT_TARGET)
 
-# lint exception: missing-module-docstring notebook modules dont need docstring
+# IMPORTANT: include a justification if adding something to the list
+# lint exception: missing-module-docstring markdown cells acting as better
+#                 formatted docstrings for notebooks cover this
 NOTEBOOK_SWITCHES_FOR_PYLINT = --disable=missing-module-docstring
 
 # Quickly fix notebook isort lint issues

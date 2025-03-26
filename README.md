@@ -88,6 +88,8 @@ Cleaning up the notebook to upload to Gitlab: in the local code repo run scripts
 
 # Technical Notes
 
+## Docstring documentation
+
 ## Data Access Through importlib.resources
 
 ## Client Interfaces
