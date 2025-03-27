@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from ska_mid_cbf_int_tests.env_connect.connect_tango_host import (
+from ska_mid_cbf_int_tests.env_management.connect_tango_host import (
     connect_tango_host,
 )
 
