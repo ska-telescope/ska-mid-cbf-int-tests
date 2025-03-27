@@ -78,7 +78,7 @@ Running the notebook:
     <li> Run the steps to create a namespace
     <li> Ensure you're running on a machine that can access the relevant kubernetes cluster of the created namespace
     <li> Navigate to the notebooks/prototyping directory in the local code repository 
-    <li> Fill in the parameters in notebook_parameters.json, importantly "kube_namespace" will need to be set as the name of the created namespace
+    <li> Fill in the parameters in notebook_parameters.json, explanation of the parameters is located in the accompanying notebook_params_README.md
     <li> Begin running an ipython kernel with command "jupyter-notebook --no-browser"
     <li> Open the notebooks in notebooks/prototyping
     <li> Run the notebooks going in index order and following listed instructions in notebook if any
