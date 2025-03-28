@@ -122,9 +122,9 @@ log-collector:
     - $RUNNER_TAG
   before_script:
     - apt update
-    - apt install -y util-linux
+    - apt install -y bsdmainutils
   script:
-    - ./scripts/log_collection/collect_namespace_pod_logs.sh
+    - ./scripts/log_collection/collect_namespace_pod_logs.sh $KUBE_NAMESPACE
     - ./scripts/log_collection/summarize_log_levels.sh
   needs:
     - job: python-test
