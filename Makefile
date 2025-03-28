@@ -69,7 +69,7 @@ endif
 CONTROLLER_TIMEOUT?=100
 
 # Add verbosity and INFO logging to python-test
-PYTHON_VARS_AFTER_PYTEST = -vs \
+PYTHON_VARS_AFTER_PYTEST = -v -s \
 	--alo-asserting $(ALO_ASSERTING) \
 	--namespace $(KUBE_NAMESPACE) \
 	--cluster-domain $(CLUSTER_DOMAIN) \
