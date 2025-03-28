@@ -37,8 +37,8 @@ for LOG_FILE in ${DEVICE_SERVER_LOG_FILES[@]}; do
     DS_TABLE_OUT+=$LOG_FILE
     LOG_FILE_PATH="$LOGS_DIR/$LOG_FILE"
     for LOG_LEVEL in ${DEVICE_LOG_LEVELS[@]}; do
-        OCCURENCE_COUNT=$(grep "|$LOG_LEVEL|" $LOG_FILE_PATH | wc -l)
-        DS_TABLE_OUT+=" $OCCURENCE_COUNT"
+        OCCURRENCE_COUNT=$(grep "|$LOG_LEVEL|" $LOG_FILE_PATH | wc -l)
+        DS_TABLE_OUT+=" $OCCURRENCE_COUNT"
     done
     DS_TABLE_OUT+=$'\n'
 done
@@ -83,8 +83,8 @@ if [ -s $TEMP_CONSUMER_FILE_PATH ]; then
         if [ $CURRENT_DEVICE_NAME != $LAST_DEVICE_NAME ]; then
             LC_TABLE_OUT+=$CURRENT_DEVICE_NAME
             for LOG_LEVEL in ${DEVICE_LOG_LEVELS[@]}; do
-                OCCURENCE_COUNT=$(echo $CURR_CHUNK | grep $LOG_LEVEL | wc -l)
-                LC_TABLE_OUT+=" $OCCURENCE_COUNT"
+                OCCURRENCE_COUNT=$(echo $CURR_CHUNK | grep $LOG_LEVEL | wc -l)
+                LC_TABLE_OUT+=" $OCCURRENCE_COUNT"
             done
             LC_TABLE_OUT+=$'\n'
             CURR_CHUNK=""
@@ -116,8 +116,8 @@ for LOG_FILE in ${DATABASE_LOG_FILES[@]}; do
     DB_TABLE_OUT+=$LOG_FILE
     LOG_FILE_PATH="$LOGS_DIR/$LOG_FILE"
     for LOG_LEVEL in ${DATABASE_LOG_LEVELS[@]}; do
-        OCCURENCE_COUNT=$(grep "$LOG_LEVEL" $LOG_FILE_PATH | wc -l)
-        DB_TABLE_OUT+=" $OCCURENCE_COUNT"
+        OCCURRENCE_COUNT=$(grep "$LOG_LEVEL" $LOG_FILE_PATH | wc -l)
+        DB_TABLE_OUT+=" $OCCURRENCE_COUNT"
     done
     DB_TABLE_OUT+=$'\n'
 done
