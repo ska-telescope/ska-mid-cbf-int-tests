@@ -53,8 +53,9 @@ class CommonNotebookPkg:
         Loads data from notebook_param.json file reading in values directly
         or loading in text from referenced json file ids from cbf_data as
         appropriate.
-        """
 
+        :param param_json_path: Path to the notebook parameter json
+        """
         with open(param_json_path, "r", encoding="utf-8") as json_in:
             param_json = json.load(json_in)
 
