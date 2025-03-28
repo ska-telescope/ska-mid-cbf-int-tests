@@ -22,31 +22,27 @@ ReadtheDocs: [here](https://developer.skao.int/projects/ska-mid-cbf-int-tests/en
 
 ## Setup I&T Tests
 
-<ol>
-    <li> Clone the repository: git clone https://gitlab.com/ska-telescope/ska-mid-cbf-int-tests.git
-    <li> Create a virtual environment: python3.10 -m venv *path-ending-in-dir-of-venv-name*
-    <li> Activate the virtual environment: source *path-ending-in-dir-of-venv-name*/bin/activate
-    <li> Install poetry: pip install poetry
-    <li> Navigate into the cloned repository
-    <li> Install dependencies to the venv: poetry install
-</ol>
+- Clone the repository ```git clone https://gitlab.com/ska-telescope/ska-mid-cbf-int-tests.git```
+- Create a virtual environment ```python3.10 -m venv <path-ending-in-dir-of-venv-name>```
+- Activate the virtual environment ```source <path-ending-in-dir-of-venv-name>/bin/activate```
+- Install poetry ```pip install poetry```
+- Navigate into the cloned repository
+- Install dependencies to the venv ```poetry install```
 
 ## Using Namespaces
 
 Creating a namespace:
 
-<ol>
-    <li> Open the Gitlab repository in a browser
-    <li> Navigate to Pipelines
-    <li> Click New pipeline, and identify the newly created pipeline associated with your username
-    <li> Wait for initial jobs to run
-    <li> Select the on_demand stage and the mid-on-demand-deploy job
-    <li> Click run on the job, once completed this will create a namespace for you, the name of the namespace created will be viewable in the job log
-</ol>
+- Open the Gitlab repository in a browser
+- Navigate to Pipelines
+- Click New pipeline, and identify the newly created pipeline associated with your username
+- Wait for initial jobs to run
+- Select the on_demand stage and the mid-on-demand-deploy job
+- Click run on the job, once completed this will create a namespace for you, the name of the namespace created will be viewable in the job log
 
 Redeploying a namespace: run the mid-on-demand-redeploy job
 
-Destroying a namespace: either run the mid-on-demand-destroy job in stage cleanup or if not available run command "kubectl delete namespace \*name-of-namespace\*" on a node connected to the relevant cluster. Destruction will be automatically run if automated testing is run on Gitlab.
+Destroying a namespace: either run the mid-on-demand-destroy job in stage cleanup or if not available run command ```kubectl delete namespace <name-of-namespace>``` on a node connected to the relevant cluster. Destruction will be automatically run if automated testing is run on Gitlab.
 
 ## Automated Testing
 
@@ -54,35 +50,28 @@ Required parameters:
 - PYTEST_MARKER: test set to run valid values can be found in pytest.ini
 
 Running automated testing:
-<ol>
-<li> Run the steps to create a namespace
-   <li> For running on Gitlab:
-   <ol>
-        <li> Click into the python-test job in the test stage 
-        <li> Fill the variables in with the above listed required parameters
-        <li> Run the job
-   </ol>
-   <li> For running locally:
-   <ol>
-        <li> Ensure you're running on a machine that can access the relevant kubernetes cluster of the created namespace
-        <li> Navigate to your local code repository
-        <li> Run command "make python-test KUBE_NAMESPACE=*namespace-name* KEYWORD1=VALUE1 KEYWORD2=VALUE2 ..." replacing *namespace-name* with the name of the created namespace and KEYWORDn, VALUEn pairs with the above required parameters
-   </ol>
-</ol>
+
+- Run the steps to create a namespace
+   - For running on Gitlab:
+        - Click into the python-test job in the test stage 
+        - Fill the variables in with the above listed required parameters
+        - Run the job
+   - For running locally:
+        - Ensure you're running on a machine that can access the relevant kubernetes cluster of the created namespace
+        - Navigate to your local code repository
+        - Run command ```make python-test KUBE_NAMESPACE=<namespace-name> KEYWORD1=VALUE1 KEYWORD2=VALUE2 ...``` replacing ```<namespace-name>``` with the name of the created namespace and ```KEYWORDn```, ```VALUEn``` pairs with the above required parameters
 
 ## Prototyping Notebook
 
 Running the notebook:
 
-<ol>
-    <li> Run the steps to create a namespace
-    <li> Ensure you're running on a machine that can access the relevant kubernetes cluster of the created namespace
-    <li> Navigate to the notebooks/prototyping directory in the local code repository 
-    <li> Fill in the parameters in notebook_parameters.json, explanation of the parameters is located in the accompanying notebook_params_README.md
-    <li> Begin running an ipython kernel with command "jupyter-notebook --no-browser"
-    <li> Open the notebooks in notebooks/prototyping
-    <li> Run the notebooks going in index order and following listed instructions in notebook if any
-</ol>
+- Run the steps to create a namespace
+- Ensure you're running on a machine that can access the relevant kubernetes cluster of the created namespace
+- Navigate to the notebooks/prototyping directory in the local code repository 
+- Fill in the parameters in notebook_parameters.json, explanation of the parameters is located in the accompanying notebook_params_README.md
+- Begin running an ipython kernel with command ```jupyter-notebook --no-browser```
+- Open the notebooks in notebooks/prototyping
+- Run the notebooks going in index order and following listed instructions in notebook if any
 
 Cleaning up the notebook to upload to Gitlab: in the local code repo run scripts/clear-notebooks-data.sh to clear outputs and metadata on all notebooks in the notebooks directory
 
@@ -94,7 +83,7 @@ Code in ska_mid_cbf_int_tests philosophically should seek to mirror the emulatio
 
 ## Data Access Through importlib.resources
 
-The paradigm for data access in ska_mid_cbf_int_tests is to use the modern Python library of importlib.resources (python >=3.7) to import data through Python's import builtin system. This allows data to be imported anywhere in the repository as long as the project is built and installed (via poetry) and corresponding data is included in that build. This is necessary such that data can be commonly used in both the testing executions and also the notebooks executions without tying to specific common relative paths which would introduce high coupling to the data location. See [https://docs.python.org/3/library/importlib.resources.html](https://python-poetry.org/docs/pyproject/#exclude-and-include) for further information and usage.
+The paradigm for data access in ska_mid_cbf_int_tests is to use the modern Python library of importlib.resources (python >= 3.7) to import data through Python's import builtin system. This allows data to be imported anywhere in the repository as long as the project is built and installed (via poetry) and corresponding data is included in that build. This is necessary such that data can be commonly used in both the testing executions and also the notebooks executions without tying to specific common relative paths which would introduce high coupling to the data location. See [https://docs.python.org/3/library/importlib.resources.html](https://python-poetry.org/docs/pyproject/#exclude-and-include) for further information and usage.
 
 This means data must be kept in the build directories (src directory) and included in the installed package of the repository which is also under the name ska_mid_cbf_int_tests. Data must be registered in the build specification to be included in the ska_mid_cbf_int_tests package build, as only .py files are included default. Modify the pyproject.toml "include" variable to include non py files as per [https://python-poetry.org/docs/pyproject/#exclude-and-include](https://python-poetry.org/docs/pyproject/#exclude-and-include).
 
