@@ -19,7 +19,6 @@ def connect_tango_host(
 
     # See:
     # https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/
-    # and
     full_tango_database_address = (
         f"{db_hostname}.{kube_namespace}.svc.{kube_cluster_domain}:{db_port}"
     )
