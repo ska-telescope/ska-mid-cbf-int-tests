@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from typing import List
 
-from ska_mid_cbf_int_tests.constants.timeout_constants import (
+from ska_mid_cbf_int_tests.cbf_constants.timeout_constants import (
     DEFAULT_DEVICE_TIMEOUT,
 )
 
