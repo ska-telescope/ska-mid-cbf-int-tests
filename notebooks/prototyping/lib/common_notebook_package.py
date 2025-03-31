@@ -12,8 +12,8 @@ from ska_mid_cbf_common_test_infrastructure.assertive_logging_observer import (
     AssertiveLoggingObserver,
     AssertiveLoggingObserverMode,
 )
-from ska_mid_cbf_common_test_infrastructure.test_logging.format import (
-    LOG_FORMAT,
+from ska_mid_cbf_common_test_infrastructure.test_logging.formatting import (
+    setup_logger,
 )
 
 import ska_mid_cbf_int_tests.cbf_data.configure_scan as configure_scan_data
@@ -79,8 +79,7 @@ class CommonNotebookPkg:
         )
 
         recording_json = param_json["recording"]
-        logging.basicConfig(format=LOG_FORMAT, level=logging.INFO)
-        self.logger = logging.getLogger(__name__)
+        self.logger = setup_logger(logging.getLogger(__name__))
         self.alobserver = AssertiveLoggingObserver(
             AssertiveLoggingObserverMode.ASSERTING
             if recording_json["asserting"]
