@@ -125,11 +125,13 @@ log-collector:
     - apt install -y bsdmainutils
   script:
     - ./scripts/log_collection/collect_namespace_pod_logs.sh $KUBE_NAMESPACE
+    - ./scripts/log_collection/summarize_pod_images.sh $KUBE_NAMESPACE
     - ./scripts/log_collection/summarize_log_levels.sh
   needs:
     - job: python-test
   artifacts:
     paths:
     - logs/*.log
+    - logs/pod_image_summary.txt
     - logs/log_level_summary.txt
   allow_failure: true

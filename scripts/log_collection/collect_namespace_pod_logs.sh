@@ -13,8 +13,8 @@ mkdir -p $LOGS_DIR
 
 CAPTURE_LOGS_SINCE_N_HOURS=5
 POD_LIST=$(kubectl get pods -n $KUBE_NAMESPACE --no-headers -o custom-columns=":metadata.name")
-for pod in ${POD_LIST[@]}; do
-    KUBE_POD_LOG_CAPTURE_CMD="kubectl logs ${pod} -n ${KUBE_NAMESPACE} --since=${CAPTURE_LOGS_SINCE_N_HOURS}h &> ${LOGS_DIR}/${pod}.log"
+for POD in ${POD_LIST[@]}; do
+    KUBE_POD_LOG_CAPTURE_CMD="kubectl logs ${POD} -n ${KUBE_NAMESPACE} --since=${CAPTURE_LOGS_SINCE_N_HOURS}h &> ${LOGS_DIR}/${POD}.log"
     echo $KUBE_POD_LOG_CAPTURE_CMD
     eval $KUBE_POD_LOG_CAPTURE_CMD
 done

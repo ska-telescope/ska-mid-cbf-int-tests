@@ -8,6 +8,8 @@
 SCRIPT_DIR=$(dirname "$0")
 LOGS_DIR="$SCRIPT_DIR/../../logs"
 
+mkdir -p $LOGS_DIR
+
 LOG_LEVEL_SUMMARY_FILE="$LOGS_DIR/log_level_summary.txt"
 DEVICE_LOG_LEVELS=("CRITICAL" "ERROR" "WARNING" "INFO" "DEBUG")
 DATABASE_LOG_LEVELS=("Error" "Warn" "Note")
@@ -107,6 +109,7 @@ fi
 
 echo $"$LC_TABLE_OUT" | column -t >> $LOG_LEVEL_SUMMARY_FILE
 echo "" >> $LOG_LEVEL_SUMMARY_FILE
+rm $TEMP_CONSUMER_FILE_PATH
 
 ##### Write out table count of log level occurrences for each database log #####
 echo "DATABASE LOGS:" >> $LOG_LEVEL_SUMMARY_FILE
