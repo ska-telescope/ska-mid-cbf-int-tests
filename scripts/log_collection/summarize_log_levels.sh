@@ -10,7 +10,7 @@ LOGS_DIR="$SCRIPT_DIR/../../logs"
 
 LOG_LEVEL_SUMMARY_FILE="$LOGS_DIR/log_level_summary.txt"
 DEVICE_LOG_LEVELS=("CRITICAL" "ERROR" "WARNING" "INFO" "DEBUG")
-DATABASE_LOG_LEVELS=("Error" "Warning" "Note")
+DATABASE_LOG_LEVELS=("Error" "Warn" "Note")
 
 function add_log_level_heading() {
     TABLE_HEADING_STR=$1
@@ -81,19 +81,27 @@ if [ -s $TEMP_CONSUMER_FILE_PATH ]; then
     while IFS= read -r LINE; do
         CURRENT_DEVICE_NAME=$(echo $LINE | cut -d " " -f 1)
         if [ $CURRENT_DEVICE_NAME != $LAST_DEVICE_NAME ]; then
-            LC_TABLE_OUT+=$CURRENT_DEVICE_NAME
+            LC_TABLE_OUT+=$LAST_DEVICE_NAME
             for LOG_LEVEL in ${DEVICE_LOG_LEVELS[@]}; do
-                OCCURRENCE_COUNT=$(echo $CURR_CHUNK | grep $LOG_LEVEL | wc -l)
+                OCCURRENCE_COUNT=$(echo $"$CURR_CHUNK" | grep $LOG_LEVEL | wc -l)
                 LC_TABLE_OUT+=" $OCCURRENCE_COUNT"
             done
             LC_TABLE_OUT+=$'\n'
-            CURR_CHUNK=""
+            CURR_CHUNK=$LINE
+            CURR_CHUNK+=$'\n'
             LAST_DEVICE_NAME=$CURRENT_DEVICE_NAME
         else
             CURR_CHUNK+=$LINE
             CURR_CHUNK+=$'\n'
         fi
     done < $TEMP_CONSUMER_FILE_PATH
+    LC_TABLE_OUT+=$LAST_DEVICE_NAME
+    for LOG_LEVEL in ${DEVICE_LOG_LEVELS[@]}; do
+        OCCURRENCE_COUNT=$(echo $"$CURR_CHUNK" | grep $LOG_LEVEL | wc -l)
+        LC_TABLE_OUT+=" $OCCURRENCE_COUNT"
+    done
+    LC_TABLE_OUT+=$'\n'
+    CURR_CHUNK=$LINE
     LC_TABLE_OUT+=$'\n'
 fi
 
