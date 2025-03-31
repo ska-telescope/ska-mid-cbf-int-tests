@@ -9,8 +9,8 @@ from ska_mid_cbf_common_test_infrastructure.assertive_logging_observer import (
     AssertiveLoggingObserver,
 )
 
-from ska_mid_cbf_int_tests.constants.tango_constants import LRC_ATTR_NAME
-from ska_mid_cbf_int_tests.constants.timeout_constants import (
+from ska_mid_cbf_int_tests.cbf_constants.tango_constants import LRC_ATTR_NAME
+from ska_mid_cbf_int_tests.cbf_constants.timeout_constants import (
     DEFAULT_DEVICE_TIMEOUT,
     TIMEOUT_LONG,
     TIMEOUT_SHORT,
