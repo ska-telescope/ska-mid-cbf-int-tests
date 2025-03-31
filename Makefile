@@ -113,10 +113,6 @@ notebook-fix-black:
 echo-charts:
 	@echo $(K8S_CHART_PARAMS)
 
-# TODO: the target for pylint should be specified when the repo is more developed
-# run-pylint:
-# 	pylint --output-format=parseable notebooks/ tests/ test_parameters/ | tee build/code_analysis.stdout
-
 vars:
 	$(info ##### Mid deploy vars)
 	@echo "$(VARS)" | sed "s#VAR_#\n#g"
