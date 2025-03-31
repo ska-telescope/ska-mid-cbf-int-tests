@@ -2549,14 +2549,14 @@ reference = "nexus-internal"
 
 [[package]]
 name = "ska-mid-cbf-common-test-infrastructure"
-version = "0.0.0+dev.c82cf6220"
+version = "0.0.0+dev.c98401487"
 description = ""
 optional = false
 python-versions = ">=3.10,<4.0"
 groups = ["main", "docs"]
 files = [
-    {file = "ska_mid_cbf_common_test_infrastructure-0.0.0+dev.c82cf6220-py3-none-any.whl", hash = "sha256:5a1d32649306cbc618cefc7ed121235aecc1f3a6e94b794fe3adc799363f8480"},
-    {file = "ska_mid_cbf_common_test_infrastructure-0.0.0+dev.c82cf6220.tar.gz", hash = "sha256:d522226be4601401c11fca7491921cad2f65dc6b7f661e2b5295690ae3f861f0"},
+    {file = "ska_mid_cbf_common_test_infrastructure-0.0.0+dev.c98401487-py3-none-any.whl", hash = "sha256:5ab92d9bad744f0815ce1794e15c420fc517a1312f0e5bccfefdc9e0631d5a46"},
+    {file = "ska_mid_cbf_common_test_infrastructure-0.0.0+dev.c98401487.tar.gz", hash = "sha256:8fe3095517bf2f0387afc4f74f95f4a9eef3bc694b15bc89f64664c14ee1b27d"},
 ]
 
 [package.dependencies]
@@ -3231,4 +3231,4 @@ reference = "gitlab-pkg-registry-common-test-infrastructure"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "5079958477e4e75a4067bb4e8cd618258a6d5ec04cc82f1135e092b79b3f6758"
+content-hash = "b5605e84f21a672ae1de1aa94365ee996f66b3f8b1fee45c9259d1dddef0814e"
