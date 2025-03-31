@@ -112,6 +112,11 @@ python-test:
       when: manual
       needs:
         - job: psi-mid-on-demand-deploy
+  script:
+    - make python-test  2>&1 | tee >(tail --bytes 20971520 > python-test.log)
+  artifacts:
+    paths:
+    - python-test.log
   allow_failure: true
 
 log-collector:
@@ -131,6 +136,7 @@ log-collector:
     - job: python-test
   artifacts:
     paths:
+    - python-test.log
     - logs/*.log
     - logs/pod_image_summary.txt
     - logs/log_level_summary.txt
