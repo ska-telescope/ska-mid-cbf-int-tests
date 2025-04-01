@@ -73,7 +73,7 @@ Running the notebook:
 - Open the notebooks in notebooks/prototyping
 - Run the notebooks going in index order and following listed instructions in notebook if any
 
-Cleaning up the notebook to upload to Gitlab: in the local code repo run scripts/clear-notebooks-data.sh to clear outputs and metadata on all notebooks in the notebooks directory
+Cleaning up the notebook to upload to Gitlab: in the local code repo run scripts/notebooks/clear-notebooks-data.sh to clear outputs and metadata on all notebooks in the notebooks directory
 
 # Technical Notes
 

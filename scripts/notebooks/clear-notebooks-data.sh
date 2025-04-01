@@ -2,7 +2,7 @@
 
 # Clear metadata and outputs from all notebooks in the ../notebooks dir
 
-NOTEBOOKS_DIR="$(dirname "$0")/../notebooks"
+NOTEBOOKS_DIR="$(dirname "$0")/../../notebooks"
 
 TARGET_IPYNBS=$(find $NOTEBOOKS_DIR -name "*.ipynb")
 
