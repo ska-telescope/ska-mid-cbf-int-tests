@@ -67,13 +67,25 @@ Running the notebook:
 
 - Run the steps to create a namespace
 - Ensure you're running on a machine that can access the relevant kubernetes cluster of the created namespace
-- Navigate to the notebooks/prototyping directory in the local code repository 
+- Navigate to ```ska-mid-cbf-int-tests/notebooks/prototyping```
 - Fill in the parameters in notebook_parameters.json, explanation of the parameters is located in the accompanying notebook_params_README.md
 - Begin running an ipython kernel with command ```jupyter-notebook --no-browser```
 - Open the notebooks in notebooks/prototyping
 - Run the notebooks going in index order and following listed instructions in notebook if any
 
-Cleaning up the notebook to upload to Gitlab: in the local code repo run scripts/notebooks/clear-notebooks-data.sh to clear outputs and metadata on all notebooks in the notebooks directory
+Cleaning up the notebook to upload to Gitlab: in the local code repo run ```ska-mid-cbf-int-tests/scripts/notebooks/clear-notebooks-data.sh``` to clear outputs and metadata on all notebooks in the notebooks directory
+
+## Log Collection
+
+Log collection is automatically run in the Gitlab pipeline after the test stage python-test job.
+
+To run manually:
+- Ensure a namespace was created (see Creating a Namespace in [Using Namespaces](#using-namespaces))
+- Navigate to directory ```ska-mid-cbf-int-tests/scripts/log_collection```
+- Run ```./collect_namespace_pod_logs.sh <name-of-namespace>```
+- Run ```./summarize_pod_images.sh <name-of-namespace>```
+- Run ```./summarize_log_levels.sh```
+- Logs should be generated in ```ska-mid-cbf-int-tests/logs``` 
 
 # Technical Notes
 
