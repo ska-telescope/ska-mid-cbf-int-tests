@@ -1,0 +1,50 @@
+apiVersion: v2
+metadata:
+  name: ska-mid-cbf-int-tests-dependencies
+dependencies:
+  # CBF
+  # Note: Versions and repository links defined here do not necessarily reflect what will be
+  # deployed to the namespace. These values can be overwritten by Makefile processing at runtime
+  # based on USE_DEV_BUILD and <repo>_HASH_VERSION variables.
+  - name: ska-mid-cbf-mcs
+    version: {{ .Values.mcsGeneral.version }}
+    # repository: https://gitlab.com/api/v4/projects/12488466/packages/helm/dev
+    repository: {{ .Values.mcsGeneral.helmRepository }}
+    condition: ska-mid-cbf-mcs.enabled
+  - name: ska-mid-cbf-tmleafnode
+    version: {{ .Values.mcsGeneral.version }}
+    # repository: https://gitlab.com/api/v4/projects/12488466/packages/helm/dev
+    repository: {{ .Values.mcsGeneral.helmRepository }}
+    condition: ska-mid-cbf-tmleafnode.enabled
+  - name: ska-mid-cbf-engineering-console
+    version: {{ .Values.ecGeneral.version }}
+    # repository: https://gitlab.com/api/v4/projects/29657133/packages/helm/dev
+    # To use a tagged version, update the version above and use the CAR repository below instead
+    repository: {{ .Values.ecGeneral.helmRepository }}
+    condition: ska-mid-cbf-engineering-console.enabled
+  # Tango
+  - name: ska-tango-base
+    version: 0.4.13
+    repository: {{ .Values.skaGeneral.helmRepository }}
+    condition: ska-tango-base.enabled
+  - name: ska-tango-util
+    version: 0.4.13
+    repository: {{ .Values.skaGeneral.helmRepository }}
+  # Taranta Suite
+  - name: ska-tango-taranta
+    version: 2.12
+    repository: {{ .Values.skaGeneral.helmRepository }}
+    condition: ska-taranta.enabled
+  - name: ska-tango-tangogql
+    version: 1.4.8
+    repository: {{ .Values.skaGeneral.helmRepository }}
+    condition: ska-taranta.enabled
+  - name: ska-tango-taranta-auth
+    version: 0.2.3
+    repository: {{ .Values.skaGeneral.helmRepository }}
+    condition: global.taranta_auth_enabled
+  # EDA
+  - name: ska-tango-archiver
+    version: 2.8.1
+    repository: {{ .Values.skaGeneral.helmRepository }}
+    condition: ska-tango-archiver.enabled
