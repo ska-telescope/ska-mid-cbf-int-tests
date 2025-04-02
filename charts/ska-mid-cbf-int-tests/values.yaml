@@ -28,10 +28,6 @@ global:
 
 ##### Mid CBF MCS Subchart values #####
 
-mcsGeneral:
-  version: 1.1.1
-  helmRepository: https://artefact.skao.int/repository/helm-internal
-
 ska-mid-cbf-mcs:
   enabled: true
   midcbf:
@@ -63,10 +59,6 @@ ska-mid-cbf-tmleafnode:
 
 ##### Mid CBF EC Subchart values #####
 
-ecGeneral:
-  version: 1.1.1
-  helmRepository: https://artefact.skao.int/repository/helm-internal
-
 ska-mid-cbf-engineering-console:
   enabled: true
   engineeringconsole:
@@ -78,9 +70,6 @@ ska-mid-cbf-engineering-console:
       pullPolicy: IfNotPresent
 
 ##### SKA Subchart values #####
-
-skaGeneral:
-  helmRepository: https://artefact.skao.int/repository/helm-internal
 
 ska-tango-base:
   enabled: true
