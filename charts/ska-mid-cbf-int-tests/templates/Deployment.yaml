@@ -1,6 +1,8 @@
 apiVersion: v2
 metadata:
-  name: ska-mid-cbf-int-tests-dependencies
+  name: ska-mid-cbf-int-tests-deployment
+version: {{ .Chart.Version }}
+type: application
 dependencies:
   # CBF
   # Note: Versions and repository links defined here do not necessarily reflect what will be
