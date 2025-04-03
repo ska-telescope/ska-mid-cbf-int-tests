@@ -7,6 +7,7 @@ variables:
   TANGO_HOST: databaseds-tango-base:10000
   CLUSTER_DOMAIN: "cluster.local"
   K8S_TIMEOUT: 800s
+  MAX_TEST_LOG_ARTIFACT_SIZE_BYTES: 20971520
 
 workflow:
   name: '$CI_PIPELINE_NAME'
@@ -17,6 +18,7 @@ stages:
   - on_demand_psi
   - pages
   - test
+  - log-collector
   - scan
   - publish
   - cleanup
@@ -111,4 +113,32 @@ python-test:
       when: manual
       needs:
         - job: psi-mid-on-demand-deploy
+  script:
+    - make python-test 2>&1 | tee >(tail --bytes $MAX_TEST_LOG_ARTIFACT_SIZE_BYTES > python-test.log)
+  artifacts:
+    paths:
+    - python-test.log
+  allow_failure: true
+
+log-collector:
+  stage: log-collector
+  extends:
+    - .mid
+  tags:
+    - $RUNNER_TAG
+  before_script:
+    - apt update
+    - apt install -y bsdmainutils
+  script:
+    - ./scripts/log_collection/collect_namespace_pod_logs.sh $KUBE_NAMESPACE
+    - ./scripts/log_collection/summarize_pod_images.sh $KUBE_NAMESPACE
+    - ./scripts/log_collection/summarize_log_levels.sh
+  needs:
+    - job: python-test
+  artifacts:
+    paths:
+    - python-test.log
+    - logs/*.log
+    - logs/pod_image_summary.txt
+    - logs/log_level_summary.txt
   allow_failure: true

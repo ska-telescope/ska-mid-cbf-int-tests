@@ -81,7 +81,7 @@ ALO_ASSERTING ?= 1## 1 for assertions in test 0 for no assertions
 
 PYTHON_VARS_AFTER_PYTEST = \
 	-m $(PYTEST_MARKER) \
-	-v \
+	-v -s \
 	--capture=no \
 	--log-cli-level=INFO \
 	--alo-asserting $(ALO_ASSERTING) \

@@ -10,8 +10,8 @@ import pytest
 from ska_mid_cbf_common_test_infrastructure.assertive_logging_observer import (
     AssertiveLoggingObserverMode,
 )
-from ska_mid_cbf_common_test_infrastructure.test_logging.format import (
-    LOG_FORMAT,
+from ska_mid_cbf_common_test_infrastructure.test_logging.formatting import (
+    setup_logger,
 )
 
 from ska_mid_cbf_int_tests.cbf_command import ControllerClient
@@ -45,8 +45,7 @@ def recording_pkg(request: pytest.FixtureRequest) -> RecordingPkg:
 
     :return: pytest session's RecordingPkg instance
     """
-    logging.basicConfig(format=LOG_FORMAT, level=logging.INFO)
-    test_logger = logging.getLogger(__name__)
+    test_logger = setup_logger(logging.getLogger(__name__))
 
     asserting = bool(int(request.config.getoption("--alo-asserting")))
     if asserting:
