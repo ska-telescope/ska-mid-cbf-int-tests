@@ -102,7 +102,7 @@ notebook-test:
 
 python-test:
   extends:
-    - .mid
+    - .mid_kubernetes
   tags:
     - $RUNNER_TAG
   rules:
@@ -123,7 +123,7 @@ python-test:
 log-collector:
   stage: log-collector
   extends:
-    - .mid
+    - .mid_kubernetes
   tags:
     - $RUNNER_TAG
   before_script:

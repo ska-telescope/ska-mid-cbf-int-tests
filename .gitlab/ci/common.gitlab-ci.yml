@@ -1,4 +1,4 @@
-.mid:
+.mid_kubernetes:
   variables:
     CONFIG: mid
     HELM_RELEASE: "test-$CI_PIPELINE_ID"
