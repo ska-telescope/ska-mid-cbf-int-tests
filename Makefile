@@ -58,7 +58,7 @@ k8s-pre-install-chart:
 	if [[ "$(CHARTS_USE_DEV_HASH)" = true ]]; then make update-cbf-charts-to-dev-hash; fi
 
 PYTEST_MARKER ?= default
-ALO_ASSERTING ?= true
+ALO_ASSERTING ?= 1## 1 for assertions in test 0 for no assertions
 
 PYTHON_VARS_AFTER_PYTEST = \
 	-m $(PYTEST_MARKER) \
