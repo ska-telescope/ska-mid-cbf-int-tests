@@ -51,9 +51,10 @@ ska-tango-testing = "0.7.2"
 # Ensure that ska-mid-cbf-common-test-infrastructure dependency is synced with depedencies group
 ska-mid-cbf-common-test-infrastructure = "0.1.0"
 
-[[tool.poetry.source]]
-name = "gitlab-pkg-registry-common-test-infrastructure"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple/"
+# Enable for dev hash testing of CTI
+# [[tool.poetry.source]]
+# name = "gitlab-pkg-registry-common-test-infrastructure"
+# url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple/"
 
 [[tool.poetry.source]]
 name = "nexus-internal"
