@@ -33,18 +33,6 @@ psi-mid-on-demand-info:
     - when: manual
   allow_failure: true
 
-psi-mid-on-demand-redeploy:
-  stage: on_demand_psi
-  extends:
-    - .redeploy
-    - .psi_mid_kubernetes
-  needs:
-    - job: psi-mid-on-demand-deploy
-  rules:
-    - when: manual
-  environment:
-    name: psi-mid/ska-$CI_COMMIT_REF_NAME
-
 psi-mid-on-demand-destroy:
   stage: on_demand_psi
   extends:
@@ -76,3 +64,14 @@ psi-mid-auto-destroy:
     name: psi-mid/ska-$CI_COMMIT_REF_NAME
     action: stop
 
+psi-mid-on-demand-redeploy:
+  stage: on_demand_psi
+  extends:
+    - .redeploy
+    - .psi_mid_kubernetes
+  needs:
+    - job: psi-mid-on-demand-deploy
+  rules:
+    - when: manual
+  environment:
+    name: psi-mid/ska-$CI_COMMIT_REF_NAME

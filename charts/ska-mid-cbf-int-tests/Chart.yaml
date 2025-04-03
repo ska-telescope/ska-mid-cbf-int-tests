@@ -7,6 +7,10 @@ appVersion: 0.13.0
 icon: https://www.skatelescope.org/wp-content/uploads/2016/07/09545_NEW_LOGO_2014.png
 dependencies:
   # CBF
+  # Note: Versions and repository links defined here do not necessarily reflect
+  # what will be deployed to the namespace. These values can be overwritten by
+  # Makefile processing at runtime based on CHARTS_USE_DEV_HASH and
+  # <repo>_DEV_HASH_VERSION variables.
   - name: ska-mid-cbf-mcs
     version: 1.1.1
     repository: https://artefact.skao.int/repository/helm-internal
