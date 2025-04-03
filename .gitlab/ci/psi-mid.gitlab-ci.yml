@@ -33,6 +33,8 @@ psi-mid-on-demand-info:
   rules:
     - when: manual
   allow_failure: true
+  script:
+    - echo $MAX_TEST_LOG_ARTIFACT_SIZE_BYTES
 
 psi-mid-on-demand-destroy:
   stage: cleanup
