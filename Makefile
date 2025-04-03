@@ -1,4 +1,3 @@
-
 PROJECT = ska-mid-cbf-int-tests
 
 include .make/base.mk
@@ -18,16 +17,12 @@ SCRIPT_DIR := $(MAKEFILE_ROOT_DIR)/scripts
 KUBE_APP ?= ska-mid-cbf-int-tests
 KUBE_NAMESPACE ?=
 
-# Enable Taranta
-TARANTA ?= true
-TARANTA_AUTH ?= false
-
 EXPOSE_All_DS ?= true## Expose All Tango Services to the external network (enable Loadbalancer service)
 SKA_TANGO_OPERATOR ?= true
 SKA_TANGO_ARCHIVER ?= false## Set to true to deploy EDA
 
-TARGET_SITE ?= psi
-
+TARANTA ?= true
+TARANTA_AUTH ?= false
 TARANTA_PARAMS = --set ska-taranta.enabled=$(TARANTA) \
 	--set global.taranta_auth_enabled=$(TARANTA_AUTH) \
 	--set global.taranta_dashboard_enabled=$(TARANTA)
@@ -37,9 +32,9 @@ TANGO_HOST ?= databaseds-tango-base:10000## Tango DB DNS address on namespace
 CLUSTER_DOMAIN ?= cluster.local## DNS cluster name
 
 # MCS timeout values in seconds
+TARGET_SITE ?= psi
 CONTROLLER_TIMEOUT ?= 100
 
-K8S_EXTRA_PARAMS ?=
 K8S_CHART_PARAMS = --set global.exposeAllDS=$(EXPOSE_All_DS) \
 	--set global.tango_host=$(TANGO_HOST) \
 	--set global.cluster_domain=$(CLUSTER_DOMAIN) \
@@ -47,37 +42,23 @@ K8S_CHART_PARAMS = --set global.exposeAllDS=$(EXPOSE_All_DS) \
 	--set ska-mid-cbf-mcs.hostInfo.clusterDomain=$(CLUSTER_DOMAIN) \
 	--set global.labels.app=$(KUBE_APP) \
 	$(TARANTA_PARAMS)
-ifeq ($(SKA_TANGO_ARCHIVER),true)
-	K8S_CHART_PARAMS += $(SKA_TANGO_ARCHIVER_PARAMS)
-endif
 
-CHART_FILE = $(MAKEFILE_ROOT_DIR)/charts/ska-mid-cbf-int-tests/Chart.yaml
-VALUES_FILE = $(MAKEFILE_ROOT_DIR)/charts/ska-mid-cbf-int-tests/values.yaml
+# Whether to update Mid.CBF charts to latest hash or not
+CHARTS_USE_DEV_HASH ?= true
 
-MCS_CHART_NAME = ska-mid-cbf-mcs
-MCS_TMLEAFNODE_CHART_NAME = ska-mid-cbf-tmleafnode
 MCS_PROJECT_ID = 12488466
-MCS_DEV_HELM_REPO = https://gitlab.com/api/v4/projects/$(MCS_PROJECT_ID)/packages/helm/dev
-MCS_DEV_IMAGE_REPO = registry.gitlab.com/ska-telescope/$(MCS_CHART_NAME)
-MCS_LATEST_HASH_VERSION ?= $(shell $(SCRIPT_DIR)/charts/get_latest_hash.sh $(MCS_PROJECT_ID))
+MCS_DEV_HASH_VERSION ?= $(shell $(SCRIPT_DIR)/charts/get_latest_hash.sh $(MCS_PROJECT_ID))## Default latest MCS hash
 
-EC_CHART_NAME = ska-mid-cbf-engineering-console
 EC_PROJECT_ID = 29657133
-EC_DEV_HELM_REPO = https://gitlab.com/api/v4/projects/$(EC_PROJECT_ID)/packages/helm/dev
-EC_DEV_IMAGE_REPO = registry.gitlab.com/ska-telescope/$(EC_CHART_NAME)
-EC_LATEST_HASH_VERSION ?= $(shell $(SCRIPT_DIR)/charts/get_latest_hash.sh $(EC_PROJECT_ID))
+EC_DEV_HASH_VERSION ?= $(shell $(SCRIPT_DIR)/charts/get_latest_hash.sh $(EC_PROJECT_ID))## Default latest EC hash
 
-# Whether to update to latest Mid.CBF charts to latest hash or not
-USE_DEV_HASH ?= true
+include scripts/charts/cbf-chart.mk
 
-# include int-tests chart update Make functions
-include scripts/charts/cbf-chart-update.mk
-
-echo-charts:
-	@echo $(K8S_CHART_PARAMS)
+k8s-pre-install-chart:
+	if [[ "$(CHARTS_USE_DEV_HASH)" = true ]]; then make update-cbf-charts-to-dev-hash; fi
 
 PYTEST_MARKER ?= default
-ALO_ASSERTING ?= 1## 1 for assertions in test 0 for no assertions
+ALO_ASSERTING ?= true
 
 PYTHON_VARS_AFTER_PYTEST = \
 	-m $(PYTEST_MARKER) \
@@ -90,6 +71,7 @@ PYTHON_VARS_AFTER_PYTEST = \
 	--kube-cluster-domain $(CLUSTER_DOMAIN)
 
 PYTHON_LINT_TARGET = src tests/ notebooks/
+
 # IMPORTANT: include a justification if adding something to the list
 # lint exception: redefined-outer-name must be disabled for pytest fixtures
 # lint exception: unused-argument must be disabled for pytest fixtures
