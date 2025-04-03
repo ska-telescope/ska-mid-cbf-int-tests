@@ -72,7 +72,7 @@ CONTROLLER_TIMEOUT?=100
 
 PYTHON_VARS_AFTER_PYTEST = \
 	-m $(PYTEST_MARKER) \
-	-v \
+	-v -s \
 	--capture=no \
 	--log-cli-level=INFO \
 	--alo-asserting $(ALO_ASSERTING) \
