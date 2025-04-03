@@ -4393,4 +4393,4 @@ reference = "gitlab-pkg-registry-common-test-infrastructure"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "c9f7f1f5b88f0ba7fb5cdee36ddfef605991d89b490f523eba82ccddfdb322a1"
+content-hash = "cf597dc8ef28d430917e62d6d4c2fddd1f53d3cd8cadda0fa4123e9734079797"
