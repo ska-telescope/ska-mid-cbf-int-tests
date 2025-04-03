@@ -1,44 +1,68 @@
 include:
   - local: "/.gitlab/ci/common.gitlab-ci.yml"
 
-.psi_mid_on_demand:
+.psi_mid:
   tags:
     - k8srunner-psi-mid
-  stage: on_demand_psi
   extends:
     - .mid
-  allow_failure: true
   variables:
-    VALUES: "values.yml"
     INGRESS_HOST: "INGRESS.IP.ADDRESS"
     SERVICE_ACCOUNT: "ci-svc-int-tests-$CI_PIPELINE_ID"
+  allow_failure: true
 
 psi-mid-on-demand-deploy:
+  stage: on_demand_psi
   extends:
     - .deploy
-    - .psi_mid_on_demand
+    - .psi_mid
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: always
     - if: $CI_PIPELINE_SOURCE != "schedule"
       when: manual
-  allow_failure: true
   environment:
     name: psi-mid/ska-$CI_COMMIT_REF_NAME
 
 psi-mid-on-demand-info:
+  stage: on_demand_psi
   extends:
     - .info
-    - .psi_mid_on_demand
+    - .psi_mid
   rules:
     - when: manual
   allow_failure: true
 
+psi-mid-on-demand-redeploy:
+  stage: on_demand_psi
+  extends:
+    - .redeploy
+    - .psi_mid
+  needs:
+    - job: psi-mid-on-demand-deploy
+  rules:
+    - when: manual
+  environment:
+    name: psi-mid/ska-$CI_COMMIT_REF_NAME
+
 psi-mid-on-demand-destroy:
+  stage: on_demand_psi
+  extends:
+    - .destroy
+    - .psi_mid
+  needs:
+    - job: psi-mid-on-demand-deploy
+  rules:
+    - when: manual
+  environment:
+    name: psi-mid/ska-$CI_COMMIT_REF_NAME
+    action: stop
+
+psi-mid-auto-destroy:
   stage: cleanup
   extends:
-    - .cleanup
-    - .psi_mid_on_demand
+    - .destroy
+    - .psi_mid
   needs:
     - job: python-test
   rules:
@@ -51,14 +75,4 @@ psi-mid-on-demand-destroy:
   environment:
     name: psi-mid/ska-$CI_COMMIT_REF_NAME
     action: stop
-
-psi-mid-on-demand-redeploy:
-  extends:
-    - .redeploy
-    - .psi_mid_on_demand
-  rules:
-    - when: manual
-  allow_failure: true
-  environment:
-    name: psi-mid/ska-$CI_COMMIT_REF_NAME
 
