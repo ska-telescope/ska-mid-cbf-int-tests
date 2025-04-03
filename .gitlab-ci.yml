@@ -7,6 +7,7 @@ variables:
   TANGO_HOST: databaseds-tango-base:10000
   CLUSTER_DOMAIN: "cluster.local"
   K8S_TIMEOUT: 800s
+  MAX_TEST_LOG_ARTIFACT_SIZE_BYTES: 20971520
 
 workflow:
   name: '$CI_PIPELINE_NAME'
@@ -113,7 +114,7 @@ python-test:
       needs:
         - job: psi-mid-on-demand-deploy
   script:
-    - make python-test  2>&1 | tee >(tail --bytes 20971520 > python-test.log)
+    - make python-test 2>&1 | tee >(tail --bytes $MAX_TEST_LOG_ARTIFACT_SIZE_BYTES > python-test.log)
   artifacts:
     paths:
     - python-test.log
