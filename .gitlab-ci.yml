@@ -64,12 +64,11 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/release.gitlab-ci.yml'
 
-# disable dev hash build
+# Disable build and publish jobs until necessary to import int-tests to another
+# project
 python-build-for-development:
   rules:
     - when: never
-
-# disable publish to gitlab until necessary to import
 python-publish-to-gitlab:
   rules:
     - when: never

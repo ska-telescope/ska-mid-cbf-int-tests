@@ -14,8 +14,8 @@ SCRIPT_DIR := $(MAKEFILE_ROOT_DIR)/scripts
 # depending on dev environment, specifically regarding trailing whitespace. Do
 # not include trailing whitespace for any variables set as true or false. 
 
-KUBE_APP ?= ska-mid-cbf-int-tests
 KUBE_NAMESPACE ?=
+KUBE_APP ?= ska-mid-cbf-int-tests
 
 EXPOSE_All_DS ?= true## Expose All Tango Services to the external network (enable Loadbalancer service)
 SKA_TANGO_OPERATOR ?= true
@@ -40,6 +40,7 @@ K8S_CHART_PARAMS = --set global.exposeAllDS=$(EXPOSE_All_DS) \
 	--set global.cluster_domain=$(CLUSTER_DOMAIN) \
 	--set global.operator=$(SKA_TANGO_OPERATOR) \
 	--set ska-mid-cbf-mcs.hostInfo.clusterDomain=$(CLUSTER_DOMAIN) \
+	--set ska-mid-cbf-mcs.controllerTimeout=$(CONTROLLER_TIMEOUT) \
 	--set global.labels.app=$(KUBE_APP) \
 	$(TARANTA_PARAMS)
 
