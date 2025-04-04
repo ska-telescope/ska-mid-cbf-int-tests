@@ -1,6 +1,5 @@
 .mid_kubernetes:
   variables:
-    CONFIG: mid
     HELM_RELEASE: "test-$CI_PIPELINE_ID"
     KUBE_NAMESPACE: "ci-$CI_PROJECT_NAME-$CI_PIPELINE_ID-$GITLAB_USER_LOGIN"
 
@@ -19,8 +18,6 @@
     - make k8s-wait
 
 .info:
-  variables:
-    K8S_CHART: "ska-$CONFIG"
   script:
     - echo "Get namespace resources"
     - make k8s-get
@@ -28,8 +25,6 @@
     - make k8s-info
 
 .destroy:
-  variables:
-    K8S_CHART: "ska-$CONFIG"
   script: &destroy_script
     - echo $CI_JOB_NAME - $CI_JOB_STAGE
     - make k8s-uninstall-chart || true
