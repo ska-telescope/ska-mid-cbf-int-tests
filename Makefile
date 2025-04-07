@@ -1,5 +1,13 @@
-
 PROJECT = ska-mid-cbf-int-tests
+
+include .make/base.mk
+include .make/k8s.mk
+include .make/helm.mk
+include .make/oci.mk
+include .make/python.mk
+
+MAKEFILE_ROOT_DIR := $(abspath $(dir $(firstword $(MAKEFILE_LIST))))
+SCRIPT_DIR := $(MAKEFILE_ROOT_DIR)/scripts
 
 # WARNING:
 # TODO: CIP-3061 Boolean strings used in this Makefile inconsistently behave
@@ -7,68 +15,51 @@ PROJECT = ska-mid-cbf-int-tests
 # not include trailing whitespace for any variables set as true or false. 
 
 KUBE_NAMESPACE ?=
-
 KUBE_APP ?= ska-mid-cbf-int-tests
-
-# Enable Taranta
-TARANTA ?= true
-TARANTA_AUTH ?= false
 
 EXPOSE_All_DS ?= true## Expose All Tango Services to the external network (enable Loadbalancer service)
 SKA_TANGO_OPERATOR ?= true
 SKA_TANGO_ARCHIVER ?= false## Set to true to deploy EDA
 
-TARGET_SITE ?= psi
-
-# include core make support
-include .make/base.mk
-
-# include OCI Images support
-include .make/oci.mk
-
-# include k8s support
-include .make/k8s.mk
-
-# include Helm Chart support
-include .make/helm.mk
-
-# Include Python support
-include .make/python.mk
-
-# include raw support
-include .make/raw.mk
-
-# include your own private variables for custom deployment configuration
--include PrivateRules.mak
-
-PYTEST_MARKER ?= default
-
-# 1 for assertions in test 0 for no assertions
-ALO_ASSERTING ?= 1
+TARANTA ?= true
+TARANTA_AUTH ?= false
+TARANTA_PARAMS = --set ska-taranta.enabled=$(TARANTA) \
+	--set global.taranta_auth_enabled=$(TARANTA_AUTH) \
+	--set global.taranta_dashboard_enabled=$(TARANTA)
 
 CI_JOB_ID ?= local##pipeline job id
 TANGO_HOST ?= databaseds-tango-base:10000## Tango DB DNS address on namespace
 CLUSTER_DOMAIN ?= cluster.local## DNS cluster name
 
-TARANTA_PARAMS = --set ska-taranta.enabled=$(TARANTA) \
-	--set global.taranta_auth_enabled=$(TARANTA_AUTH) \
-	--set global.taranta_dashboard_enabled=$(TARANTA)
+# MCS timeout values in seconds
+TARGET_SITE ?= psi
+CONTROLLER_TIMEOUT ?= 100
 
-K8S_EXTRA_PARAMS ?=
 K8S_CHART_PARAMS = --set global.exposeAllDS=$(EXPOSE_All_DS) \
 	--set global.tango_host=$(TANGO_HOST) \
 	--set global.cluster_domain=$(CLUSTER_DOMAIN) \
 	--set global.operator=$(SKA_TANGO_OPERATOR) \
 	--set ska-mid-cbf-mcs.hostInfo.clusterDomain=$(CLUSTER_DOMAIN) \
+	--set ska-mid-cbf-mcs.controllerTimeout=$(CONTROLLER_TIMEOUT) \
 	--set global.labels.app=$(KUBE_APP) \
 	$(TARANTA_PARAMS)
 
-ifeq ($(SKA_TANGO_ARCHIVER),true)
-	K8S_CHART_PARAMS += $(SKA_TANGO_ARCHIVER_PARAMS)
-endif
+# Whether to update Mid.CBF charts to latest hash or not
+CHARTS_USE_DEV_HASH ?= true
 
-# MCS timeout values in seconds
-CONTROLLER_TIMEOUT?=100
+MCS_PROJECT_ID = 12488466
+MCS_DEV_HASH_VERSION ?= $(shell $(SCRIPT_DIR)/charts/get_latest_hash.sh $(MCS_PROJECT_ID))## Default latest MCS hash
+
+EC_PROJECT_ID = 29657133
+EC_DEV_HASH_VERSION ?= $(shell $(SCRIPT_DIR)/charts/get_latest_hash.sh $(EC_PROJECT_ID))## Default latest EC hash
+
+include scripts/charts/cbf-chart.mk
+
+k8s-pre-install-chart:
+	if [[ "$(CHARTS_USE_DEV_HASH)" = true ]]; then make update-cbf-charts-to-dev-hash; fi
+
+PYTEST_MARKER ?= default
+ALO_ASSERTING ?= 1## 1 for assertions in test 0 for no assertions
 
 PYTHON_VARS_AFTER_PYTEST = \
 	-m $(PYTEST_MARKER) \
@@ -81,6 +72,7 @@ PYTHON_VARS_AFTER_PYTEST = \
 	--kube-cluster-domain $(CLUSTER_DOMAIN)
 
 PYTHON_LINT_TARGET = src tests/ notebooks/
+
 # IMPORTANT: include a justification if adding something to the list
 # lint exception: redefined-outer-name must be disabled for pytest fixtures
 # lint exception: unused-argument must be disabled for pytest fixtures
@@ -89,31 +81,10 @@ PYTHON_LINT_TARGET = src tests/ notebooks/
 #     still being able to use class instance attributes
 PYTHON_SWITCHES_FOR_PYLINT = --disable=redefined-outer-name,unused-argument,attribute-defined-outside-init
 
-# Quickly fix isort lint issues
-python-fix-isort:
-	$(PYTHON_RUNNER) isort --profile black --line-length $(PYTHON_LINE_LENGTH) $(PYTHON_SWITCHES_FOR_ISORT) $(PYTHON_LINT_TARGET)
-
-# Quickly fix black line issues
-python-fix-black:
-	$(PYTHON_RUNNER) black --exclude .+\.ipynb --line-length $(PYTHON_LINE_LENGTH) $(PYTHON_SWITCHES_FOR_BLACK) $(PYTHON_LINT_TARGET)
-
 # IMPORTANT: include a justification if adding something to the list
 # lint exception: missing-module-docstring markdown cells acting as better
 #                 formatted docstrings for notebooks cover this
 NOTEBOOK_SWITCHES_FOR_PYLINT = --disable=missing-module-docstring
 
-# Quickly fix notebook isort lint issues
-notebook-fix-isort:
-	$(PYTHON_RUNNER) nbqa isort --profile=black --line-length=$(PYTHON_LINE_LENGTH) $(PYTHON_SWITCHES_FOR_ISORT) $(NOTEBOOK_SWITCHES_FOR_ISORT) $(NOTEBOOK_LINT_TARGET)
-
-# Quickly fix notebook black line issues
-notebook-fix-black:
-	$(PYTHON_RUNNER) nbqa black --line-length=$(PYTHON_LINE_LENGTH) $(PYTHON_SWITCHES_FOR_BLACK) $(NOTEBOOK_SWITCHES_FOR_BLACK) $(NOTEBOOK_LINT_TARGET)
-
-echo-charts:
-	@echo $(K8S_CHART_PARAMS)
-
-vars:
-	$(info ##### Mid deploy vars)
-	@echo "$(VARS)" | sed "s#VAR_#\n#g"
-
+# include int-tests lint helper Make functions
+include scripts/lint/lint-helper.mk

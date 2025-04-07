@@ -64,12 +64,11 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/release.gitlab-ci.yml'
 
-# disable dev hash build
+# Disable build and publish jobs until necessary to import int-tests to another
+# project
 python-build-for-development:
   rules:
     - when: never
-
-# disable publish to gitlab until necessary to import
 python-publish-to-gitlab:
   rules:
     - when: never
@@ -102,7 +101,7 @@ notebook-test:
 
 python-test:
   extends:
-    - .mid
+    - .mid_kubernetes
   tags:
     - $RUNNER_TAG
   rules:
@@ -123,7 +122,7 @@ python-test:
 log-collector:
   stage: log-collector
   extends:
-    - .mid
+    - .mid_kubernetes
   tags:
     - $RUNNER_TAG
   before_script:

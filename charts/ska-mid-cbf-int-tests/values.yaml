@@ -1,6 +1,6 @@
 display: ":0"
 xauthority: "~/.Xauthority"
-
+##### Global values #####
 global:
   minikube: false
   operator: true
@@ -23,7 +23,54 @@ global:
   tango_host: databaseds-tango-base:10000
   device_server_port: 45450
   cluster_domain: cluster.local
-
+##### Mid CBF MCS Subchart values #####
+ska-mid-cbf-mcs:
+  enabled: true
+  midcbf:
+    image:
+      # Note: Versions and registry links defined here do not necessarily reflect
+      # what will be deployed to the namespace. These values can be overwritten by
+      # Makefile processing at runtime based on CHARTS_USE_DEV_HASH and
+      # <repo>_DEV_HASH_VERSION variables.
+      image: ska-mid-cbf-mcs
+      tag: 1.1.1
+      registry: artefact.skao.int
+      pullPolicy: IfNotPresent
+  hostInfo:
+    environment: "mid-psi"
+    clusterDomain: "cluster.local"
+  # MCS timeout values in seconds
+  controllerTimeout: 60
+  fspTimeout: 15
+  vccTimeout: 3
+  lruTimeout: 60
+  slimLinkTimeout: 10
+ska-mid-cbf-tmleafnode:
+  enabled: true
+  midcbf:
+    image:
+      # Note: Versions and registry links defined here do not necessarily reflect
+      # what will be deployed to the namespace. These values can be overwritten by
+      # Makefile processing at runtime based on CHARTS_USE_DEV_HASH and
+      # <repo>_DEV_HASH_VERSION variables.
+      image: ska-mid-cbf-mcs
+      tag: 1.1.1
+      registry: artefact.skao.int
+      pullPolicy: IfNotPresent
+##### Mid CBF EC Subchart values #####
+ska-mid-cbf-engineering-console:
+  enabled: true
+  engineeringconsole:
+    image:
+      # Note: Versions and registry links defined here do not necessarily reflect
+      # what will be deployed to the namespace. These values can be overwritten by
+      # Makefile processing at runtime based on CHARTS_USE_DEV_HASH and
+      # <repo>_DEV_HASH_VERSION variables.
+      image: ska-mid-cbf-engineering-console
+      tag: 1.1.1
+      registry: artefact.skao.int
+      pullPolicy: IfNotPresent
+##### SKA Subchart values #####
 ska-tango-base:
   enabled: true
   vnc:
@@ -34,77 +81,18 @@ ska-tango-base:
     replicas: 1
   tangodb:
     use_pv: true
-
 ska-tango-tangogql:
   enabled: true
   ska-tango-base:
     enabled: false
-
 ska-taranta:
   legacy_compatibility: true
   enabled: true
-
 ska-tango-util:
   enabled: true
-
-#telescope control
-## mid-cbf
-# Using talon demonstrator correlator version of MCS and tmleafnode
-# Note: Versions and repository links defined here do not necessarily reflect what will be
-# deployed to the namespace. These values can be overwritten by Makefile processing at runtime
-# based on USE_DEV_BUILD and <repo>_HASH_VERSION variables.
-ska-mid-cbf-mcs:
-  # To use a version from CAR instead, update the signalVerificationVersion and replace the Gitlab svImageRegistry with the one below it 
-  signalVerificationVersion: 0.2.24-dev.c57cfd28a
-  svImageRegistry: "registry.gitlab.com/ska-telescope/ska-mid-cbf-signal-verification"
-  # svImageRegistry: "artefact.skao.int"
-  hostInfo:
-    environment: "mid-psi"
-    clusterDomain: "cluster.local"
-  enabled: true
-  global:
-    minikube: false
-  midcbf:
-    image:
-      # registry: registry.gitlab.com/ska-telescope/ska-mid-cbf-mcs
-      # To use a tagged version from CAR instead, replace the Gitlab registry above with the one below and update the tag below
-      registry: artefact.skao.int
-      image: ska-mid-cbf-mcs
-      tag: 1.1.1
-      pullPolicy: IfNotPresent
-  # MCS timeout values in seconds
-  controllerTimeout: 60
-  fspTimeout: 15
-  vccTimeout: 3
-  lruTimeout: 60
-  slimLinkTimeout: 10
-
-ska-mid-cbf-tmleafnode:
-  enabled: true
-  midcbf:
-    image:
-      # registry: registry.gitlab.com/ska-telescope/ska-mid-cbf-mcs
-      # To use a tagged version from CAR instead, replace the Gitlab registry above with the one below and update the tag below
-      registry: artefact.skao.int
-      image: ska-mid-cbf-mcs
-      tag: 1.1.1
-      pullPolicy: IfNotPresent
-
-ska-mid-cbf-engineering-console:
-  enabled: true
-  engineeringconsole:
-    image:
-      # registry: registry.gitlab.com/ska-telescope/ska-mid-cbf-engineering-console
-      # To use a tagged version from CAR instead, replace the Gitlab registry above with the one below and update the tag below
-      registry: artefact.skao.int
-      image: ska-mid-cbf-engineering-console
-      tag: 1.1.1
-      pullPolicy: IfNotPresent
-
-# EDA
 ska-tango-archiver:
-  legacy_compatibility: true
   enabled: false
+  legacy_compatibility: true
   telescope: SKA-mid
   telescope_environment: MID_PSI
   hostname: timescaledb.ska-eda-mid-db.svc.cluster.local

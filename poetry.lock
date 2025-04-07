@@ -14,8 +14,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "anyio"
@@ -42,8 +42,8 @@ trio = ["trio (>=0.26.1)"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "appnope"
@@ -60,8 +60,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "argon2-cffi"
@@ -86,8 +86,8 @@ typing = ["mypy"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "argon2-cffi-bindings"
@@ -129,8 +129,8 @@ tests = ["pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "arrow"
@@ -154,8 +154,8 @@ test = ["dateparser (==1.*)", "pre-commit", "pytest", "pytest-cov", "pytest-mock
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "assertpy"
@@ -170,8 +170,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "astroid"
@@ -195,8 +195,8 @@ wrapt = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "asttokens"
@@ -216,8 +216,8 @@ test = ["astroid (>=2,<4)", "pytest", "pytest-cov", "pytest-xdist"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "async-lru"
@@ -236,8 +236,8 @@ typing_extensions = {version = ">=4.0.0", markers = "python_version < \"3.11\""}
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "attrs"
@@ -261,8 +261,8 @@ tests-mypy = ["mypy (>=1.11.1) ; platform_python_implementation == \"CPython\" a
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "autopep8"
@@ -282,8 +282,8 @@ toml = "*"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "babel"
@@ -302,8 +302,8 @@ dev = ["backports.zoneinfo ; python_version < \"3.9\"", "freezegun (>=1.0,<2.0)"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "beautifulsoup4"
@@ -330,8 +330,8 @@ lxml = ["lxml"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "black"
@@ -370,8 +370,8 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "bleach"
@@ -394,8 +394,8 @@ css = ["tinycss2 (>=1.1.0,<1.5)"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "certifi"
@@ -411,8 +411,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "cffi"
@@ -496,8 +496,8 @@ pycparser = "*"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "charset-normalizer"
@@ -603,8 +603,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "click"
@@ -623,8 +623,8 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "colorama"
@@ -641,8 +641,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "comm"
@@ -664,8 +664,8 @@ test = ["pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "coverage"
@@ -748,8 +748,8 @@ toml = ["tomli ; python_full_version <= \"3.11.0a6\""]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "debugpy"
@@ -789,8 +789,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "decorator"
@@ -806,8 +806,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "defusedxml"
@@ -823,8 +823,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "dill"
@@ -844,8 +844,8 @@ profile = ["gprof2dot (>=2022.7.29)"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "docutils"
@@ -861,8 +861,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "exceptiongroup"
@@ -882,8 +882,8 @@ test = ["pytest (>=6)"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "executing"
@@ -902,8 +902,8 @@ tests = ["asttokens (>=2.1.0)", "coverage", "coverage-enable-subprocess", "ipyth
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "fastjsonschema"
@@ -922,8 +922,8 @@ devel = ["colorama", "json-spec", "jsonschema", "pylint", "pytest", "pytest-benc
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "flake8"
@@ -944,8 +944,8 @@ pyflakes = ">=2.3.0,<2.4.0"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "fqdn"
@@ -961,8 +961,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "h11"
@@ -978,8 +978,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "httpcore"
@@ -1005,8 +1005,8 @@ trio = ["trio (>=0.22.0,<1.0)"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "httpx"
@@ -1035,8 +1035,8 @@ zstd = ["zstandard (>=0.18.0)"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "idna"
@@ -1055,8 +1055,8 @@ all = ["flake8 (>=7.1.1)", "mypy (>=1.11.2)", "pytest (>=8.3.2)", "ruff (>=0.6.2
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "imagesize"
@@ -1072,8 +1072,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "iniconfig"
@@ -1089,8 +1089,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "ipykernel"
@@ -1128,8 +1128,8 @@ test = ["flaky", "ipyparallel", "pre-commit", "pytest (>=7.0)", "pytest-asyncio 
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "ipython"
@@ -1173,8 +1173,68 @@ test-extra = ["curio", "ipython[test]", "matplotlib (!=3.2.0)", "nbformat", "num
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
+
+[[package]]
+name = "ipython"
+version = "9.0.2"
+description = "IPython: Productive Interactive Computing"
+optional = false
+python-versions = ">=3.11"
+groups = ["main"]
+markers = "python_version >= \"3.11\""
+files = [
+    {file = "ipython-9.0.2-py3-none-any.whl", hash = "sha256:143ef3ea6fb1e1bffb4c74b114051de653ffb7737a3f7ab1670e657ca6ae8c44"},
+    {file = "ipython-9.0.2.tar.gz", hash = "sha256:ec7b479e3e5656bf4f58c652c120494df1820f4f28f522fb7ca09e213c2aab52"},
+]
+
+[package.dependencies]
+colorama = {version = "*", markers = "sys_platform == \"win32\""}
+decorator = "*"
+ipython-pygments-lexers = "*"
+jedi = ">=0.16"
+matplotlib-inline = "*"
+pexpect = {version = ">4.3", markers = "sys_platform != \"win32\" and sys_platform != \"emscripten\""}
+prompt_toolkit = ">=3.0.41,<3.1.0"
+pygments = ">=2.4.0"
+stack_data = "*"
+traitlets = ">=5.13.0"
+typing_extensions = {version = ">=4.6", markers = "python_version < \"3.12\""}
+
+[package.extras]
+all = ["ipython[doc,matplotlib,test,test-extra]"]
+black = ["black"]
+doc = ["docrepr", "exceptiongroup", "intersphinx_registry", "ipykernel", "ipython[test]", "matplotlib", "setuptools (>=18.5)", "sphinx (>=1.3)", "sphinx-rtd-theme", "sphinx_toml (==0.0.4)", "typing_extensions"]
+matplotlib = ["matplotlib"]
+test = ["packaging", "pytest", "pytest-asyncio (<0.22)", "testpath"]
+test-extra = ["curio", "ipython[test]", "matplotlib (!=3.2.0)", "nbformat", "numpy (>=1.23)", "pandas", "trio"]
+
+[package.source]
+type = "legacy"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
+
+[[package]]
+name = "ipython-pygments-lexers"
+version = "1.1.1"
+description = "Defines a variety of Pygments lexers for highlighting IPython code."
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+markers = "python_version >= \"3.11\""
+files = [
+    {file = "ipython_pygments_lexers-1.1.1-py3-none-any.whl", hash = "sha256:a9462224a505ade19a605f71f8fa63c2048833ce50abc86768a0d81d876dc81c"},
+    {file = "ipython_pygments_lexers-1.1.1.tar.gz", hash = "sha256:09c0138009e56b6854f9535736f4171d855c8c08a563a0dcd8022f78355c7e81"},
+]
+
+[package.dependencies]
+pygments = "*"
+
+[package.source]
+type = "legacy"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "ipython"
@@ -1260,8 +1320,8 @@ test = ["ipykernel", "jsonschema", "pytest (>=3.6.0)", "pytest-cov", "pytz"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "isoduration"
@@ -1280,8 +1340,8 @@ arrow = ">=0.15.0"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "isort"
@@ -1300,8 +1360,8 @@ colors = ["colorama (>=0.4.6)"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "jedi"
@@ -1325,8 +1385,8 @@ testing = ["Django", "attrs", "colorama", "docopt", "pytest (<9.0.0)"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "jinja2"
@@ -1348,28 +1408,28 @@ i18n = ["Babel (>=2.7)"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "json5"
-version = "0.10.0"
+version = "0.12.0"
 description = "A Python implementation of the JSON5 data format."
 optional = false
 python-versions = ">=3.8.0"
 groups = ["main"]
 files = [
-    {file = "json5-0.10.0-py3-none-any.whl", hash = "sha256:19b23410220a7271e8377f81ba8aacba2fdd56947fbb137ee5977cbe1f5e8dfa"},
-    {file = "json5-0.10.0.tar.gz", hash = "sha256:e66941c8f0a02026943c52c2eb34ebeb2a6f819a0be05920a6f5243cd30fd559"},
+    {file = "json5-0.12.0-py3-none-any.whl", hash = "sha256:6d37aa6c08b0609f16e1ec5ff94697e2cbbfbad5ac112afa05794da9ab7810db"},
+    {file = "json5-0.12.0.tar.gz", hash = "sha256:0b4b6ff56801a1c7dc817b0241bca4ce474a0e6a163bfef3fc594d3fd263ff3a"},
 ]
 
 [package.extras]
-dev = ["build (==1.2.2.post1)", "coverage (==7.5.3)", "mypy (==1.13.0)", "pip (==24.3.1)", "pylint (==3.2.3)", "ruff (==0.7.3)", "twine (==5.1.1)", "uv (==0.5.1)"]
+dev = ["build (==1.2.2.post1)", "coverage (==7.5.4) ; python_version < \"3.9\"", "coverage (==7.8.0) ; python_version >= \"3.9\"", "mypy (==1.14.1) ; python_version < \"3.9\"", "mypy (==1.15.0) ; python_version >= \"3.9\"", "pip (==25.0.1)", "pylint (==3.2.7) ; python_version < \"3.9\"", "pylint (==3.3.6) ; python_version >= \"3.9\"", "ruff (==0.11.2)", "twine (==6.1.0)", "uv (==0.6.11)"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "jsonpointer"
@@ -1385,8 +1445,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "jsonschema"
@@ -1420,8 +1480,8 @@ format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "jsonschema-specifications"
@@ -1440,8 +1500,8 @@ referencing = ">=0.31.0"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "junit-xml-2"
@@ -1451,6 +1511,7 @@ optional = false
 python-versions = "*"
 groups = ["main", "docs"]
 files = [
+    {file = "junit-xml-2-1.9.tar.gz", hash = "sha256:3b8d9635c5215f754c7807104f6493e3ea3bc9481e2d33db294560da3a1b00f7"},
     {file = "junit_xml_2-1.9-py2.py3-none-any.whl", hash = "sha256:05093d75fe11120ccd51293884b5ee334ff3bc4b5106647c2bcc928486600588"},
 ]
 
@@ -1459,8 +1520,8 @@ six = "*"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "jupyter"
@@ -1484,8 +1545,8 @@ notebook = "*"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "jupyter-client"
@@ -1512,8 +1573,8 @@ test = ["coverage", "ipykernel (>=6.14)", "mypy", "paramiko ; sys_platform == \"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "jupyter-console"
@@ -1542,8 +1603,8 @@ test = ["flaky", "pexpect", "pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "jupyter-core"
@@ -1568,8 +1629,8 @@ test = ["ipykernel", "pre-commit", "pytest (<8)", "pytest-cov", "pytest-timeout"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "jupyter-events"
@@ -1600,8 +1661,8 @@ test = ["click", "pre-commit", "pytest (>=7.0)", "pytest-asyncio (>=0.19.0)", "p
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "jupyter-lsp"
@@ -1620,8 +1681,8 @@ jupyter-server = ">=1.1.2"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "jupyter-server"
@@ -1662,8 +1723,8 @@ test = ["flaky", "ipykernel", "pre-commit", "pytest (>=7.0,<9)", "pytest-console
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "jupyter-server-terminals"
@@ -1687,8 +1748,8 @@ test = ["jupyter-server (>=2.0.0)", "pytest (>=7.0)", "pytest-jupyter[server] (>
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "jupyterlab"
@@ -1727,8 +1788,8 @@ upgrade-extension = ["copier (>=9,<10)", "jinja2-time (<0.3)", "pydantic (<3.0)"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "jupyterlab-pygments"
@@ -1744,8 +1805,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "jupyterlab-server"
@@ -1775,8 +1836,8 @@ test = ["hatch", "ipykernel", "openapi-core (>=0.18.0,<0.19.0)", "openapi-spec-v
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "jupyterlab-widgets"
@@ -1792,8 +1853,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "lazy-object-proxy"
@@ -1844,8 +1905,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "markdown-it-py"
@@ -1874,8 +1935,8 @@ testing = ["coverage", "pytest", "pytest-cov", "pytest-regressions"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "markupsafe"
@@ -1950,8 +2011,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "matplotlib-inline"
@@ -1970,8 +2031,8 @@ traitlets = "*"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "mccabe"
@@ -1987,8 +2048,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "mdit-py-plugins"
@@ -2012,8 +2073,8 @@ testing = ["coverage", "pytest", "pytest-cov", "pytest-regressions"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "mdurl"
@@ -2029,8 +2090,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "mistune"
@@ -2049,8 +2110,8 @@ typing-extensions = {version = "*", markers = "python_version < \"3.11\""}
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "mypy-extensions"
@@ -2066,8 +2127,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "myst-parser"
@@ -2098,8 +2159,8 @@ testing-docutils = ["pygments", "pytest (>=8,<9)", "pytest-param-files (>=0.6.0,
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "nbclient"
@@ -2126,8 +2187,8 @@ test = ["flaky", "ipykernel (>=6.19.3)", "ipython", "ipywidgets", "nbconvert (>=
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "nbconvert"
@@ -2168,8 +2229,8 @@ webpdf = ["playwright"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "nbformat"
@@ -2195,8 +2256,8 @@ test = ["pep440", "pre-commit", "pytest", "testpath"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "nbmake"
@@ -2219,8 +2280,8 @@ pytest = ">=6.1.0"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "nbqa"
@@ -2245,8 +2306,8 @@ toolchain = ["black", "blacken-docs", "flake8", "isort", "jupytext", "mypy", "py
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "nest-asyncio"
@@ -2262,8 +2323,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "notebook"
@@ -2291,8 +2352,8 @@ test = ["importlib-resources (>=5.0) ; python_version < \"3.10\"", "ipykernel", 
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "notebook-shim"
@@ -2314,8 +2375,8 @@ test = ["pytest", "pytest-console-scripts", "pytest-jupyter", "pytest-tornasync"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "numpy"
@@ -2365,8 +2426,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "overrides"
@@ -2382,8 +2443,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "packaging"
@@ -2399,8 +2460,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "pandocfilters"
@@ -2416,8 +2477,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "parso"
@@ -2437,8 +2498,8 @@ testing = ["docopt", "pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "pathspec"
@@ -2454,8 +2515,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "pexpect"
@@ -2475,8 +2536,8 @@ ptyprocess = ">=0.5"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "platformdirs"
@@ -2497,8 +2558,8 @@ type = ["mypy (>=1.14.1)"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "pluggy"
@@ -2518,8 +2579,8 @@ testing = ["pytest", "pytest-benchmark"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "prometheus-client"
@@ -2538,8 +2599,8 @@ twisted = ["twisted"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "prompt-toolkit"
@@ -2558,8 +2619,8 @@ wcwidth = "*"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "psutil"
@@ -2587,8 +2648,8 @@ test = ["pytest", "pytest-xdist", "setuptools"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "ptyprocess"
@@ -2605,8 +2666,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "pure-eval"
@@ -2625,8 +2686,8 @@ tests = ["pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "pyarrow"
@@ -2685,8 +2746,8 @@ test = ["cffi", "hypothesis", "pandas", "pytest", "pytz"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "pycodestyle"
@@ -2702,8 +2763,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "pycparser"
@@ -2719,8 +2780,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "pyflakes"
@@ -2736,8 +2797,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "pygments"
@@ -2756,8 +2817,8 @@ windows-terminal = ["colorama (>=0.4.6)"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "pylance"
@@ -2783,8 +2844,8 @@ tests = ["duckdb", "ml_dtypes", "pandas (>=1.4)", "polars[pandas,pyarrow]", "pyt
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "pylint"
@@ -2817,8 +2878,8 @@ testutils = ["gitpython (>3)"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "pylint-junit"
@@ -2838,8 +2899,8 @@ pylint = "*"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "pytango"
@@ -2890,8 +2951,8 @@ tests = ["gevent (>=20.0)", "pytest", "pytest-asyncio", "pytest-cov", "pytest-fo
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "pytest"
@@ -2918,8 +2979,8 @@ dev = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "pygments
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "pytest-cov"
@@ -2942,8 +3003,8 @@ testing = ["fields", "hunter", "process-tests", "pytest-xdist", "six", "virtuale
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "pytest-json"
@@ -2961,8 +3022,8 @@ pytest = ">=2.3"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "pytest-json-report"
@@ -2982,8 +3043,8 @@ pytest-metadata = "*"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "pytest-metadata"
@@ -3005,8 +3066,8 @@ test = ["black (>=22.1.0)", "flake8 (>=4.0.1)", "pre-commit (>=2.17.0)", "tox (>
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "python-dateutil"
@@ -3025,8 +3086,8 @@ six = ">=1.5"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "python-json-logger"
@@ -3045,8 +3106,8 @@ dev = ["backports.zoneinfo ; python_version < \"3.9\"", "black", "build", "freez
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "pywin32"
@@ -3077,8 +3138,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "pywinpty"
@@ -3100,8 +3161,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "pyyaml"
@@ -3168,8 +3229,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "pyzmq"
@@ -3279,8 +3340,8 @@ cffi = {version = "*", markers = "implementation_name == \"pypy\""}
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "referencing"
@@ -3301,8 +3362,8 @@ typing-extensions = {version = ">=4.4.0", markers = "python_version < \"3.13\""}
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "requests"
@@ -3328,8 +3389,8 @@ use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "rfc3339-validator"
@@ -3348,8 +3409,8 @@ six = "*"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "rfc3986-validator"
@@ -3365,8 +3426,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "rpds-py"
@@ -3494,8 +3555,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "send2trash"
@@ -3516,8 +3577,8 @@ win32 = ["pywin32 ; sys_platform == \"win32\""]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "setuptools"
@@ -3542,8 +3603,8 @@ type = ["importlib_metadata (>=7.0.2) ; python_version < \"3.10\"", "jaraco.deve
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "six"
@@ -3559,8 +3620,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "ska-control-model"
@@ -3588,14 +3649,14 @@ reference = "nexus-internal"
 
 [[package]]
 name = "ska-mid-cbf-common-test-infrastructure"
-version = "0.0.0+dev.c47e1f593"
+version = "0.1.0"
 description = ""
 optional = false
 python-versions = ">=3.10,<4.0"
 groups = ["main", "docs"]
 files = [
-    {file = "ska_mid_cbf_common_test_infrastructure-0.0.0+dev.c47e1f593-py3-none-any.whl", hash = "sha256:af95c449da1fa664bee50165561b4d76ab033b2e4d165a266b67c9a095e6ddde"},
-    {file = "ska_mid_cbf_common_test_infrastructure-0.0.0+dev.c47e1f593.tar.gz", hash = "sha256:c9ae5f1199249277615de3bfddf3ceae89e65a8c95ce69024dd82838414650ea"},
+    {file = "ska_mid_cbf_common_test_infrastructure-0.1.0-py3-none-any.whl", hash = "sha256:e68574272b455fbff8bb6c2f49dea27d1cb5b2500084dff7f298fb64c2eef2c6"},
+    {file = "ska_mid_cbf_common_test_infrastructure-0.1.0.tar.gz", hash = "sha256:2ceec762c2e7a50523694a84bbe8cac543677033ae398fe531cd433dc51f3033"},
 ]
 
 [package.dependencies]
@@ -3615,8 +3676,8 @@ ska-tango-testing = "0.7.2"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://artefact.skao.int/repository/pypi-internal/simple"
+reference = "nexus-internal"
 
 [[package]]
 name = "ska-ser-logging"
@@ -3701,8 +3762,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "snowballstemmer"
@@ -3718,8 +3779,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "soupsieve"
@@ -3735,8 +3796,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "sphinx"
@@ -3776,8 +3837,8 @@ test = ["cython (>=3.0)", "defusedxml (>=0.7.1)", "pytest (>=8.0)", "setuptools 
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "sphinx-rtd-theme"
@@ -3801,8 +3862,8 @@ dev = ["bump2version", "transifex-client", "twine", "wheel"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "sphinxcontrib-applehelp"
@@ -3823,8 +3884,8 @@ test = ["pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "sphinxcontrib-devhelp"
@@ -3845,8 +3906,8 @@ test = ["pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "sphinxcontrib-htmlhelp"
@@ -3867,8 +3928,8 @@ test = ["html5lib", "pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "sphinxcontrib-jquery"
@@ -3887,8 +3948,8 @@ Sphinx = ">=1.8"
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "sphinxcontrib-jsmath"
@@ -3907,8 +3968,8 @@ test = ["flake8", "mypy", "pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "sphinxcontrib-qthelp"
@@ -3929,8 +3990,8 @@ test = ["defusedxml (>=0.7.1)", "pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "sphinxcontrib-serializinghtml"
@@ -3951,8 +4012,8 @@ test = ["pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "stack-data"
@@ -3976,8 +4037,8 @@ tests = ["cython", "littleutils", "pygments", "pytest", "typeguard"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "terminado"
@@ -4003,8 +4064,8 @@ typing = ["mypy (>=1.6,<2.0)", "traitlets (>=5.11.1)"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "tinycss2"
@@ -4027,8 +4088,8 @@ test = ["pytest", "ruff"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "tokenize-rt"
@@ -4044,8 +4105,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "toml"
@@ -4061,8 +4122,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "tomli"
@@ -4109,8 +4170,8 @@ markers = {docs = "python_version == \"3.10\""}
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "tomlkit"
@@ -4126,8 +4187,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "tornado"
@@ -4152,8 +4213,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "traitlets"
@@ -4173,8 +4234,8 @@ test = ["argcomplete (>=3.0.3)", "mypy (>=1.7.0)", "pre-commit", "pytest (>=7.0,
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "transitions"
@@ -4197,8 +4258,8 @@ test = ["pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "types-python-dateutil"
@@ -4214,26 +4275,26 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "typing-extensions"
-version = "4.13.0"
+version = "4.13.1"
 description = "Backported and Experimental Type Hints for Python 3.8+"
 optional = false
 python-versions = ">=3.8"
 groups = ["main", "docs"]
 files = [
-    {file = "typing_extensions-4.13.0-py3-none-any.whl", hash = "sha256:c8dd92cc0d6425a97c18fbb9d1954e5ff92c1ca881a309c45f06ebc0b79058e5"},
-    {file = "typing_extensions-4.13.0.tar.gz", hash = "sha256:0a4ac55a5820789d87e297727d229866c9650f6521b64206413c4fbada24d95b"},
+    {file = "typing_extensions-4.13.1-py3-none-any.whl", hash = "sha256:4b6cf02909eb5495cfbc3f6e8fd49217e6cc7944e145cdda8caa3734777f9e69"},
+    {file = "typing_extensions-4.13.1.tar.gz", hash = "sha256:98795af00fb9640edec5b8e31fc647597b4691f099ad75f469a2616be1a76dff"},
 ]
 markers = {docs = "python_version < \"3.13\""}
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "uri-template"
@@ -4252,8 +4313,8 @@ dev = ["flake8", "flake8-annotations", "flake8-bandit", "flake8-bugbear", "flake
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "urllib3"
@@ -4275,8 +4336,8 @@ zstd = ["zstandard (>=0.18.0)"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "wcwidth"
@@ -4292,8 +4353,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "webcolors"
@@ -4309,8 +4370,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "webencodings"
@@ -4326,8 +4387,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "websocket-client"
@@ -4348,8 +4409,8 @@ test = ["websockets"]
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "widgetsnbextension"
@@ -4365,8 +4426,8 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [[package]]
 name = "wrapt"
@@ -4459,10 +4520,10 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple"
-reference = "gitlab-pkg-registry-common-test-infrastructure"
+url = "https://pypi.org/simple"
+reference = "PyPI-public"
 
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "015cadbcd9899d3581ae6e171800cd6d8e58880167611f3aa5e065726fe9d8a0"
+content-hash = "e5325e1457f0b404003020ecab94bfd36625d7116ff92c65a3411a9ea4c99a3c"
