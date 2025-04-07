@@ -36,8 +36,8 @@ pylance = "^0.5.9"
 pytango = "9.5.0"
 ska-tango-base = "1.0.0"
 ska-tango-testing = "0.7.2"
-# Ensure that ska-mid-cbf-common-test-infrastructure dependency is synced with docs
-ska-mid-cbf-common-test-infrastructure = { version = "0.0.0+dev.c47e1f593", source = "gitlab-pkg-registry-common-test-infrastructure"}
+# Ensure that ska-mid-cbf-common-test-infrastructure dependency is synced with docs depedencies group
+ska-mid-cbf-common-test-infrastructure = "0.1.0"
 
 [tool.poetry.group.docs]
 optional = true
@@ -48,12 +48,13 @@ sphinx-rtd-theme = "^3.0.0"
 myst-parser = "^4.0.1"
 ska-tango-base = "1.0.0"
 ska-tango-testing = "0.7.2"
-# Ensure that ska-mid-cbf-common-test-infrastructure dependency is synced with project depedencies
-ska-mid-cbf-common-test-infrastructure = { version = "0.0.0+dev.c47e1f593", source = "gitlab-pkg-registry-common-test-infrastructure"}
+# Ensure that ska-mid-cbf-common-test-infrastructure dependency is synced with depedencies group
+ska-mid-cbf-common-test-infrastructure = "0.1.0"
 
-[[tool.poetry.source]]
-name = "gitlab-pkg-registry-common-test-infrastructure"
-url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple/"
+# Enable for dev hash testing of CTI
+# [[tool.poetry.source]]
+# name = "gitlab-pkg-registry-common-test-infrastructure"
+# url = "https://gitlab.com/api/v4/projects/67564529/packages/pypi/simple/"
 
 [[tool.poetry.source]]
 name = "nexus-internal"
