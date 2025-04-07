@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Retrieve latest hash from the given Gitlab project ID
-# param $1:
+# Retrieve latest commit hash from the given Gitlab project ID
+# param $1: Gitlab project ID to get commit hash for
 
 GITLAB_PROJECT_ID=$1
 
