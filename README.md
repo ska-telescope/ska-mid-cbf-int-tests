@@ -16,6 +16,7 @@ ReadtheDocs: [here](https://developer.skao.int/projects/ska-mid-cbf-int-tests/en
     * [LMC Emulation for MCS Interaction](#lmc-emulation-for-mcs-interaction)
     * [Data Access Through importlib.resources](#data-access-through-importlibresources)
     * [Docstring Style and Sphinx API Auto-Documentation](#docstring-style-and-sphinx-api-auto-documentation)
+    * [Chart Dependencies Runtime Replacement and CHARTS_USE_DEV_HASH](#chart-dependencies-runtime-replacement-and-charts_use_dev_hash)
 
 
 # Guides
@@ -37,12 +38,17 @@ Creating a namespace:
 - Navigate to Pipelines
 - Click New pipeline, and identify the newly created pipeline associated with your username
 - Wait for initial jobs to run
-- Select the on_demand stage and the mid-on-demand-deploy job
+- Select the on_demand_\<site\> stage and the \<site\>-mid-on-demand-deploy job
+- Decide on dependency versions to deploy:
+    - To use the tagged versions specified in ska-mid-cbf-int-tests/charts from CAR set CHARTS_USE_DEV_HASH=false
+    - To use dev hash versions from respective Gitlab repos, set nothing as CHARTS_USE_DEV_HASH=true by default
+        - To use latest dev hashes, set nothing as latest hashes are automatically grabbed by default
+        - To use a specific hash set MCS_HASH_VERSION and/or EC_HASH_VERSION to the desired hash
 - Click run on the job, once completed this will create a namespace for you, the name of the namespace created will be viewable in the job log
 
-Redeploying a namespace: run the mid-on-demand-redeploy job
+Redeploying a namespace: run the \<site\>-mid-on-demand-redeploy job
 
-Destroying a namespace: either run the mid-on-demand-destroy job in stage cleanup or if not available run command ```kubectl delete namespace <name-of-namespace>``` on a node connected to the relevant cluster. Destruction will be automatically run if automated testing is run on Gitlab.
+Destroying a namespace: either run the \<site\>-mid-on-demand-destroy job in stage on_demand_\<site\> or run command ```kubectl delete namespace <name-of-namespace>``` on a node connected to the relevant cluster. Destruction will be automatically run if the python-test job is run on Gitlab with job \<site\>-mid-on-demand-destroy in the stage cleanup.
 
 ## Automated Testing
 
@@ -106,3 +112,7 @@ The docstring style of ska_mid_cbf_int_tests is sphinx [https://sphinx-rtd-tutor
 Reference [https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html](https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html) to see how to setup autodoc, such that it automatically generates API documentation from API docstrings in the generated ReadtheDocs pages. Modify files in docs as appropriate to implement this. Importantly, two things to be aware of:
 - Documentation for modules may just generate nothing which commonly is caused by the module not being importable to docs generation code. This requires modifying sys.path attributes in conf.py in the docs directory to get the module importable and recognized.
 - API to be documented requires all of their dependencies installed since they are imported as normal modules for documentation generation, so ensure that the docs dependencies group includes all normal dependencies of the API.
+
+## Chart Dependencies Runtime Replacement and CHARTS_USE_DEV_HASH
+
+To facilitate easy testing of new features and fixes int-tests by default updates the Helm Charts controlling a namespace deployment with latest the dev hash from all relevant repositiories which is grabbed and inserted into charts at namespace deployment. This is controlled by the environment variables CHARTS_USE_DEV_HASH and others of form \<Repo Acronym\>_HASH_VERSION. For these if CHARTS_USE_DEV_HASH=true, Make functionality will call scripts that replace chart/image versions and repo/registry values in the Helm Charts before deployment with the versions set as \<Repo Acronym\>_HASH_VERSION. The \<Repo Acronym\>_HASH_VERSION can be explicitly set but have default values of the automatically grabbed latest main commit. Runtime replacement of values is the simplest method for updating charts as it allows a stable tagged setup to be available in the repository while also allowing devs to use latest or specific hashes flexibly without having to explicitly branch off of main. The main issue is confusion about what version is actually used as it does not always line up with the version in charts, however this should be addressed with the pod_image_summary.txt generated with ./summarize_pod_images.sh see [log collection](#log-collection) for more detail.
