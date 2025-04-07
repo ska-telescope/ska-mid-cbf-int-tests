@@ -28,7 +28,10 @@ ska-mid-cbf-mcs:
   enabled: true
   midcbf:
     image:
-      # registry: registry.gitlab.com/ska-telescope/ska-mid-cbf-mcs
+      # Note: Versions and registry links defined here do not necessarily reflect
+      # what will be deployed to the namespace. These values can be overwritten by
+      # Makefile processing at runtime based on CHARTS_USE_DEV_HASH and
+      # <repo>_DEV_HASH_VERSION variables.
       image: ska-mid-cbf-mcs
       tag: 1.1.1
       registry: artefact.skao.int
@@ -46,7 +49,10 @@ ska-mid-cbf-tmleafnode:
   enabled: true
   midcbf:
     image:
-      # registry: registry.gitlab.com/ska-telescope/ska-mid-cbf-mcs
+      # Note: Versions and registry links defined here do not necessarily reflect
+      # what will be deployed to the namespace. These values can be overwritten by
+      # Makefile processing at runtime based on CHARTS_USE_DEV_HASH and
+      # <repo>_DEV_HASH_VERSION variables.
       image: ska-mid-cbf-mcs
       tag: 1.1.1
       registry: artefact.skao.int
@@ -56,7 +62,10 @@ ska-mid-cbf-engineering-console:
   enabled: true
   engineeringconsole:
     image:
-      # registry: registry.gitlab.com/ska-telescope/ska-mid-cbf-engineering-console
+      # Note: Versions and registry links defined here do not necessarily reflect
+      # what will be deployed to the namespace. These values can be overwritten by
+      # Makefile processing at runtime based on CHARTS_USE_DEV_HASH and
+      # <repo>_DEV_HASH_VERSION variables.
       image: ska-mid-cbf-engineering-console
       tag: 1.1.1
       registry: artefact.skao.int
