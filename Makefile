@@ -64,7 +64,6 @@ ALO_ASSERTING ?= 1## 1 for assertions in test 0 for no assertions
 PYTHON_VARS_AFTER_PYTEST = \
 	-m $(PYTEST_MARKER) \
 	-v -s \
-	--capture=no \
 	--alo-asserting $(ALO_ASSERTING) \
 	--namespace-tango-db-address $(TANGO_HOST) \
 	--kube-namespace $(KUBE_NAMESPACE) \
