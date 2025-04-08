@@ -65,7 +65,6 @@ PYTHON_VARS_AFTER_PYTEST = \
 	-m $(PYTEST_MARKER) \
 	-v -s \
 	--capture=no \
-	--log-cli-level=INFO \
 	--alo-asserting $(ALO_ASSERTING) \
 	--namespace-tango-db-address $(TANGO_HOST) \
 	--kube-namespace $(KUBE_NAMESPACE) \
