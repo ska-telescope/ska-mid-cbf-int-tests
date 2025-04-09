@@ -12,6 +12,7 @@ ReadtheDocs: [here](https://developer.skao.int/projects/ska-mid-cbf-int-tests/en
     * [Using Namespaces](#using-namespaces)
     * [Automated Testing](#automated-testing)
     * [Prototyping Notebook](#prototyping-notebook)
+    * [Log Collection](#log-collection)
 * [Technical Notes](#technical-notes)
     * [LMC Emulation for MCS Interaction](#lmc-emulation-for-mcs-interaction)
     * [Data Access Through importlib.resources](#data-access-through-importlibresources)
