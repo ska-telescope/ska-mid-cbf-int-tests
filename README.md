@@ -12,11 +12,12 @@ ReadtheDocs: [here](https://developer.skao.int/projects/ska-mid-cbf-int-tests/en
     * [Using Namespaces](#using-namespaces)
     * [Automated Testing](#automated-testing)
     * [Prototyping Notebook](#prototyping-notebook)
+    * [Log Collection](#log-collection)
 * [Technical Notes](#technical-notes)
     * [LMC Emulation for MCS Interaction](#lmc-emulation-for-mcs-interaction)
     * [Data Access Through importlib.resources](#data-access-through-importlibresources)
     * [Docstring Style and Sphinx API Auto-Documentation](#docstring-style-and-sphinx-api-auto-documentation)
-    * [Chart Dependencies Runtime Replacement and CHARTS_USE_DEV_HASH](#chart-dependencies-runtime-replacement-and-charts_use_dev_hash)
+    * [Chart Dependencies Runtime Replacement](#chart-dependencies-runtime-replacement)
 
 
 # Guides
@@ -113,7 +114,7 @@ Reference [https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html](h
 - Documentation for modules may just generate nothing which commonly is caused by the module not being importable to docs generation code. This requires modifying sys.path attributes in conf.py in the docs directory to get the module importable and recognized.
 - API to be documented requires all of their dependencies installed since they are imported as normal modules for documentation generation, so ensure that the docs dependencies group includes all normal dependencies of the API.
 
-## Chart Dependencies Runtime Replacement and CHARTS_USE_DEV_HASH
+## Chart Dependencies Runtime Replacement
 
 To facilitate easy testing of new features and fixes int-tests by default updates the Helm Charts controlling a namespace deployment with latest the dev hash from all relevant repositiories which is grabbed and inserted into charts at namespace deployment. This is controlled by the environment variables CHARTS_USE_DEV_HASH and others of form \<Repo Acronym\>_DEV_HASH_VERSION. For these if CHARTS_USE_DEV_HASH=true, Make functionality will call scripts that replace chart/image versions and repo/registry values in the Helm Charts before deployment with the versions set as \<Repo Acronym\>_DEV_HASH_VERSION. The \<Repo Acronym\>_DEV_HASH_VERSION can be explicitly set but have default values of the automatically grabbed latest main commit.
 
